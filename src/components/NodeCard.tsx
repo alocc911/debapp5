@@ -23,7 +23,7 @@ function highlightParts(text: string, terms: string[]) {
       out.push(<mark key={start + '-m'}>{text.slice(start, end)}</mark>)
       lastIndex = end
     }
-    if (lastIndex < text.length) out.push(<span key={lastIndex + '-r'}>{text.slice(lastIndex)}</span>)
+    if (lastIndex < text.length) out.push(<span key={lastIndex + '-r'}>{text.slice[lastIndex)}</span>)
     return <>{out}</>
   } catch {
     return <>{text}</>
@@ -37,23 +37,21 @@ export default function NodeCard(props: { id: string; data: DebateNode['data']; 
   const name = participants.find(p => p.id === data.participantId)?.name ?? data.participantId
 
   const lc = data.kind.toLowerCase()
+
   const toggleCollapse = () => updateNode(id, { collapsed: !data.collapsed })
 
   const classes = ['node-card', lc, data.collapsed ? 'node-collapsed' : '', data.hit ? 'hit' : ''].join(' ')
 
   return (
-    <div className={classes}>
+    <div className={classes} onClick={toggleCollapse}>
       <div className="node-meta">
         <span className={['badge', lc].join(' ')}>{data.kind}</span>
         <span className="author">Debate Participant: {name}</span>
         {typeof data.relevance === 'number' && (<span className="author">Relevance: {data.relevance}</span>)}
       </div>
       <h3>{highlightParts(data.title || '(untitled)', data.searchTerms || [])}</h3>
-      {!data.collapsed && data.body && <p>{highlightParts(data.body, data.searchTerms || [])}</p>}
-
-      <div className="node-toolbar">
-        <button className="tiny secondary" onClick={toggleCollapse}>{data.collapsed ? 'Expand' : 'Collapse'}</button>
-      </div>
+      {/* Collapsed now only hides children (handled in App), not the body. */}
+      {data.body && <p>{highlightParts(data.body, data.searchTerms || [])}</p>}
 
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />

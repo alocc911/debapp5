@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import ReactFlow, {
   Background, Controls, MiniMap,
   useNodesState, useEdgesState, addEdge, Connection, NodeTypes, NodeMouseHandler,
-  applyNodeChanges, NodeChange
+  applyNodeChanges, NodeChange, useReactFlow
 } from 'reactflow'
 
 import NodeCard from './components/NodeCard'
@@ -47,6 +47,82 @@ function matches(node: DebateNode, terms: string[]): boolean {
   return terms.some(t => title.includes(t) || body.includes(t))
 }
 
+/** Compute bounding box for nodes (using width/height if available) */
+function boundsFor(nodes: DebateNode[]) {
+  if (!nodes.length) return { minX: -1000, minY: -1000, maxX: 1000, maxY: 1000 }
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
+  for (const n of nodes) {
+    const w = (n as any).width ?? 280
+    const h = (n as any).height ?? 120
+    const x0 = n.position.x
+    const y0 = n.position.y
+    const x1 = x0 + w
+    const y1 = y0 + h
+    if (x0 < minX) minX = x0
+    if (y0 < minY) minY = y0
+    if (x1 > maxX) maxX = x1
+    if (y1 > maxY) maxY = y1
+  }
+  return { minX, minY, maxX, maxY }
+}
+
+/** High-contrast minimap color helpers */
+function miniColor(kind?: string) {
+  switch (kind) {
+    case 'Thesis': return '#0ea5e9'    // bright blue
+    case 'Argument': return '#ffffff'  // white
+    case 'Counter': return '#ef4444'   // red
+    case 'Evidence': return '#f59e0b'  // amber
+    case 'Agreement': return '#06b6d4' // cyan
+    default: return '#94a3b8'          // slate
+  }
+}
+function miniStroke(kind?: string) {
+  switch (kind) {
+    case 'Thesis': return '#0284c7'
+    case 'Argument': return '#cbd5e1'
+    case 'Counter': return '#b91c1c'
+    case 'Evidence': return '#b45309'
+    case 'Agreement': return '#0891b2'
+    default: return '#64748b'
+  }
+}
+
+/** A wrapper that overlays click handling to center the viewport on click */
+function ClickableMiniMap(props: { nodes: DebateNode[] }) {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const { setCenter, getViewport } = useReactFlow()
+  const { minX, minY, maxX, maxY } = React.useMemo(() => boundsFor(props.nodes), [props.nodes])
+
+  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = ref.current?.getBoundingClientRect()
+    if (!r) return
+    const cx = e.clientX - r.left
+    const cy = e.clientY - r.top
+    const rx = Math.min(Math.max(cx / r.width, 0), 1)
+    const ry = Math.min(Math.max(cy / r.height, 0), 1)
+
+    const worldX = minX + rx * (maxX - minX)
+    const worldY = minY + ry * (maxY - minY)
+
+    const vp = getViewport()
+    setCenter(worldX, worldY, { zoom: vp.zoom, duration: 200 })
+  }
+
+  return (
+    <div ref={ref} className="minimap-wrap" onClick={onClick}>
+      <MiniMap
+        zoomable
+        pannable
+        nodeColor={(n) => miniColor((n.data as any)?.kind)}
+        nodeStrokeColor={(n) => miniStroke((n.data as any)?.kind)}
+        maskColor="rgba(15,23,42,0.4)"
+        style={{ width: 200, height: 140 }}
+      />
+    </div>
+  )
+}
+
 export default function App() {
   const store = useGraphStore()
   const [nodes, setNodes] = useNodesState<DebateNode>(store.nodes)
@@ -54,11 +130,12 @@ export default function App() {
 
   // Global search terms
   const [query, setQuery] = useState('')
+  const [showOnlyMatches, setShowOnlyMatches] = useState(false)
 
-  // Collapse all nodes on first mount; then sync + layout so ELK uses collapsed sizes
+  // Collapse all nodes on first mount; then sync
   useEffect(() => {
     store.setAllCollapsed(true)
-    setTimeout(() => { syncFromStore(); /* first layout occurs once visible state computed */ }, 0)
+    setTimeout(() => { syncFromStore() }, 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -106,7 +183,7 @@ export default function App() {
       else if (formType === 'Evidence') { if (!targetId) throw new Error('Choose an Argument/Counter to support'); store.addEvidence(participantId, targetId, title || 'Evidence', body) }
       else if (formType === 'Agreement') { if (!targetId) throw new Error('Choose an opponent Argument/Counter to agree with'); store.addAgreement(participantId, targetId, title || 'Agreement', body) }
       setTitle(''); setBody(''); setTargetId(''); setParentId('')
-      syncFromStore(); await relayout() // reflow after add
+      syncFromStore(); await relayout()
     } catch (e: any) { alert(e.message || String(e)) }
   }
 
@@ -115,20 +192,29 @@ export default function App() {
   const childrenMap = useMemo(() => buildChildrenMap(store.nodes as any, store.edges as any), [store.nodes, store.edges])
   const hiddenDueToCollapse = useMemo(() => getDescendants(collapsedIds, childrenMap), [collapsedIds, childrenMap])
 
-  // For layout: only include nodes/edges that will actually render
-  const visibleNodesForLayout = useMemo(
-    () => nodes.filter(n => !hiddenDueToCollapse.has(n.id)),
-    [nodes, hiddenDueToCollapse]
-  )
-  const visibleEdgesForLayout = useMemo(
-    () => edges.filter(e => !hiddenDueToCollapse.has(e.source) && !hiddenDueToCollapse.has(e.target)),
-    [edges, hiddenDueToCollapse]
-  )
-
-  // For rendering: annotate nodes with search hit and terms
+  // Search filter
   const searchTerms = useMemo(() => normalizeTerms(query), [query])
   const matchedIds = useMemo(() => new Set(store.nodes.filter(n => matches(n, searchTerms)).map(n => n.id)), [store.nodes, searchTerms])
 
+  // Visible nodes for layout and render
+  const baseVisible = useMemo(
+    () => nodes.filter(n => !hiddenDueToCollapse.has(n.id)),
+    [nodes, hiddenDueToCollapse]
+  )
+  const visibleNodesForLayout = useMemo(() => {
+    if (!showOnlyMatches) return baseVisible
+    return baseVisible.filter(n => matchedIds.has(n.id))
+  }, [baseVisible, showOnlyMatches, matchedIds])
+
+  const visibleEdgesForLayout = useMemo(
+    () => edges.filter(e =>
+      !hiddenDueToCollapse.has(e.source) && !hiddenDueToCollapse.has(e.target) &&
+      (!showOnlyMatches || (matchedIds.has(e.source) && matchedIds.has(e.target)))
+    ),
+    [edges, hiddenDueToCollapse, showOnlyMatches, matchedIds]
+  )
+
+  // Render nodes with highlighting
   const renderNodes = useMemo(() => {
     return visibleNodesForLayout.map(n => ({
       ...n,
@@ -144,15 +230,13 @@ export default function App() {
   // --- Auto-layout that respects "final view" ---
   const relayout = useCallback(async () => {
     const laid = await elkLayout(visibleNodesForLayout, visibleEdgesForLayout)
-    // Only update positions of nodes that were laid out (visible ones)
     setNodes(nds => nds.map(n => {
       const updated = laid.nodes.find(m => m.id === n.id)
       return updated ? { ...n, position: updated.position } : n
     }))
-    // Keep original edges; rendering already filters to visible ones
   }, [visibleNodesForLayout, visibleEdgesForLayout, setNodes])
 
-  // Drag parent -> drag descendants (maintain existing behavior)
+  // Drag parent -> drag descendants
   const handleNodesChange = useCallback((changes: NodeChange[]) => {
     const pos = new Map(nodes.map(n => [n.id, n.position]))
     const augmented: NodeChange[] = [...changes]
@@ -183,15 +267,13 @@ export default function App() {
     setNodes(nds => applyNodeChanges(augmented, nds))
   }, [nodes, setNodes, store.nodes, store.edges])
 
-  // Re-flow whenever collapsed state changes so layout uses visible-only graph
+  // Re-flow whenever collapsed state changes
   const collapseSignature = useMemo(
     () => store.nodes.map(n => (n.data.collapsed ? n.id : '')).join('|'),
     [store.nodes]
   )
   useEffect(() => {
-    // Sync then lay out based on current final view
     syncFromStore()
-    // small timeout to ensure nodes state reflects store before ELK call
     const t = setTimeout(() => { relayout() }, 0)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,7 +283,12 @@ export default function App() {
   const expandAll = async () => { store.setAllCollapsed(false); syncFromStore(); await relayout() }
   const collapseAll = async () => { store.setAllCollapsed(true); syncFromStore(); await relayout() }
 
-  const matchCount = matchedIds.size
+  // --- Hard walls: compute translate/node extent around visible nodes ---
+  const extentMargin = 800 // px margin around current diagram
+  const extent = useMemo<[ [number, number], [number, number] ]>(() => {
+    const { minX, minY, maxX, maxY } = boundsFor(visibleNodesForLayout)
+    return [[minX - extentMargin, minY - extentMargin], [maxX + extentMargin, maxY + extentMargin]]
+  }, [visibleNodesForLayout])
 
   // --- Edit / Delete panel ---
   const [editTitle, setEditTitle] = useState('')
@@ -240,6 +327,8 @@ export default function App() {
   }
   const doImport = () => { fileInputRef.current?.click() }
 
+  const matchCount = matchedIds.size
+
   return (
     <div className="app">
       <div className="sidebar">
@@ -248,7 +337,13 @@ export default function App() {
         <fieldset>
           <legend>Search</legend>
           <input placeholder="Find terms… (e.g., burden proof)" value={query} onChange={e => setQuery(e.target.value)} />
-          <div className="small">{matchCount} statement{matchCount === 1 ? '' : 's'} match</div>
+          <div className="row" style={{ marginTop: 6 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <input type="checkbox" checked={showOnlyMatches} onChange={e => setShowOnlyMatches(e.target.checked)} />
+              Show only matches
+            </label>
+            <div className="small" style={{ marginLeft: 'auto' }}>{matchCount} match{matchCount === 1 ? '' : 'es'}</div>
+          </div>
         </fieldset>
 
         <fieldset>
@@ -343,8 +438,8 @@ export default function App() {
         <fieldset>
           <legend>View</legend>
           <div className="toolbar">
-            <button className="secondary" onClick={() => { store.setAllCollapsed(true); syncFromStore(); relayout() }}>Collapse all</button>
-            <button className="secondary" onClick={() => { store.setAllCollapsed(false); syncFromStore(); relayout() }}>Expand all</button>
+            <button className="secondary" onClick={collapseAll}>Collapse all</button>
+            <button className="secondary" onClick={expandAll}>Expand all</button>
           </div>
           <div className="small">These apply to the whole map and immediately reflow the layout based on what is visible.</div>
         </fieldset>
@@ -371,7 +466,7 @@ export default function App() {
                 <button onClick={saveEdit}>Save</button>
                 <button className="secondary" onClick={deleteSelected}>Delete</button>
               </div>
-              <div className="small">Tip: click a node to select it; click empty canvas to deselect. Use Collapse to hide its body and descendants.</div>
+              <div className="small">Tip: click a node to collapse/expand; click empty canvas to deselect.</div>
             </>
           ) : (<div className="small">No node selected. Click a node in the canvas to edit or delete.</div>)}
         </fieldset>
@@ -397,10 +492,14 @@ export default function App() {
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           fitView
+          minZoom={0.02}
+          translateExtent={extent}
+          nodeExtent={extent}
           onNodeClick={onNodeClick}
           onPaneClick={onPaneClick}
         >
           <MiniMap />
+          <ClickableMiniMap nodes={renderNodes} />
           <Controls />
           <Background />
         </ReactFlow>
