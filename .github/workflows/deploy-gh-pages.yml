@@ -38,9 +38,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build (set Pages base path to /<repo-name>/)
-        env:
-          VITE_BASE: /${{ github.event.repository.name }}/
+      - name: Build 
         run: npm run build
 
       - name: Upload artifact
