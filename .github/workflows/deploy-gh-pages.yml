@@ -24,14 +24,21 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '24'      # modern Node with modern npm
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Upgrade npm (works around optional-deps bug)
+        run: npm i -g npm@^11.3.0
 
-      # Set the base path to "/<repo>/" so assets resolve correctly on GitHub Pages.
-      - name: Build
+      # IMPORTANT: remove the old lock so npm regenerates it with correct
+      # platform optional deps for rollup on Linux.
+      - name: Clean lockfile
+        run: rm -f package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (set Pages base path to /<repo-name>/)
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
         run: npm run build
