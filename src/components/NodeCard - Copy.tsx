@@ -23,9 +23,7 @@ function highlightParts(text: string, terms: string[]) {
       out.push(<mark key={start + '-m'}>{text.slice(start, end)}</mark>)
       lastIndex = end
     }
-    if (lastIndex < text.length) {
-      out.push(<span key={lastIndex + '-r'}>{text.slice(lastIndex)}</span>)
-    }
+    if (lastIndex < text.length) out.push(<span key={lastIndex + '-r'}>{text.slice[lastIndex)}</span>)
     return <>{out}</>
   } catch {
     return <>{text}</>
@@ -40,7 +38,6 @@ export default function NodeCard(props: { id: string; data: DebateNode['data']; 
 
   const lc = data.kind.toLowerCase()
 
-  // Click anywhere on the card to toggle collapse/expand (children only)
   const toggleCollapse = () => updateNode(id, { collapsed: !data.collapsed })
 
   const classes = ['node-card', lc, data.collapsed ? 'node-collapsed' : '', data.hit ? 'hit' : ''].join(' ')
