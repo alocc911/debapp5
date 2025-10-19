@@ -12,7 +12,7 @@ const H_GAP = 40
 const ROW_Y_OFFSET = 140
 const LAYER_Y_SPACING = 220
 
-const EVIDENCE_STAGGER = 120
+const EVIDENCE_STAGGER = 150
 
 type Kind = 'supports' | 'attacks' | 'evidence-of' | 'agrees-with'
 
