@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactFlow, {
-  Background,
+  Background, Controls, MiniMap,
   useNodesState, useEdgesState, addEdge, Connection, NodeTypes, NodeMouseHandler,
-  applyNodeChanges, NodeChange, EdgeTypes, OnEdgeClick, OnEdgeMouseEnter, OnEdgeMouseLeave
+  applyNodeChanges, NodeChange, useReactFlow, EdgeTypes, OnEdgeClick, OnEdgeMouseEnter, OnEdgeMouseLeave
 } from 'reactflow'
-import 'reactflow/dist/style.css'
 
 import NodeCard from './components/NodeCard'
 import ThickEdge from './components/ThickEdge'
@@ -16,16 +15,7 @@ import './styles.css'
 const nodeTypes: NodeTypes = { nodeCard: NodeCard }
 const edgeTypes: EdgeTypes = { thick: ThickEdge }
 
-type FormType = 'Thesis' | 'Argument' | 'Argument Summary' | 'Counter' | 'Evidence' | 'Agreement'
-
-const PALETTE = [
-  '#0072B2', '#D55E00', '#009E73', '#E69F00',
-  '#56B4E9', '#CC79A7', '#F0E442', '#999999',
-]
-const participantColor = (participantId: string, ids: string[]) => {
-  const idx = Math.max(0, ids.indexOf(participantId))
-  return PALETTE[idx % PALETTE.length]
-}
+type FormType = 'Thesis' | 'Argument' | 'Counter' | 'Evidence' | 'Agreement'
 
 function buildChildrenPairs(edges: DebateEdge[]) {
   const pairs: Array<[string, string]> = []
@@ -54,8 +44,10 @@ function boundsFor(nodes: DebateNode[]) {
   for (const n of nodes) {
     const w = (n as any).width ?? 280
     const h = (n as any).height ?? 120
-    const x0 = n.position.x, y0 = n.position.y
-    const x1 = x0 + w, y1 = y0 + h
+    const x0 = n.position.x
+    const y0 = n.position.y
+    const x1 = x0 + w
+    const y1 = y0 + h
     if (x0 < minX) minX = x0
     if (y0 < minY) minY = y0
     if (x1 > maxX) maxX = x1
@@ -64,16 +56,59 @@ function boundsFor(nodes: DebateNode[]) {
   return { minX, minY, maxX, maxY }
 }
 
-function kindColor(kind: string) {
+function miniColor(kind?: string) {
   switch (kind) {
-    case 'Thesis': return '#60a5fa'
-    case 'Argument': return '#a78bfa'
-    case 'Argument Summary': return '#86efac'
-    case 'Counter': return '#f472b6'
+    case 'Thesis': return '#0ea5e9'
+    case 'Argument': return '#ffffff'
+    case 'Counter': return '#ef4444'
     case 'Evidence': return '#f59e0b'
-    case 'Agreement': return '#22d3ee'
+    case 'Agreement': return '#06b6d4'
     default: return '#94a3b8'
   }
+}
+function miniStroke(kind?: string) {
+  switch (kind) {
+    case 'Thesis': return '#0284c7'
+    case 'Argument': return '#cbd5e1'
+    case 'Counter': return '#b91c1c'
+    case 'Evidence': return '#b45309'
+    case 'Agreement': return '#0891b2'
+    default: return '#64748b'
+  }
+}
+
+function ClickableMiniMap(props: { nodes: DebateNode[] }) {
+  const ref = React.useRef<HTMLDivElement | null>(null)
+  const { setCenter, getViewport } = useReactFlow()
+  const { minX, minY, maxX, maxY } = React.useMemo(() => boundsFor(props.nodes), [props.nodes])
+
+  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = ref.current?.getBoundingClientRect()
+    if (!r) return
+    const cx = e.clientX - r.left
+    const cy = e.clientY - r.top
+    const rx = Math.min(Math.max(cx / r.width, 0), 1)
+    const ry = Math.min(Math.max(cy / r.height, 0), 1)
+
+    const worldX = minX + rx * (maxX - minX)
+    const worldY = minY + ry * (maxY - minY)
+
+    const vp = getViewport()
+    setCenter(worldX, worldY, { zoom: vp.zoom, duration: 200 })
+  }
+
+  return (
+    <div ref={ref} className="minimap-wrap" onClick={onClick}>
+      <MiniMap
+        zoomable
+        pannable
+        nodeColor={(n) => miniColor((n.data as any)?.kind)}
+        nodeStrokeColor={(n) => miniStroke((n.data as any)?.kind)}
+        maskColor="rgba(15,23,42,0.4)"
+        style={{ width: 200, height: 140 }}
+      />
+    </div>
+  )
 }
 
 export default function App() {
@@ -104,12 +139,12 @@ export default function App() {
     () => store.nodes.filter(n => n.data.kind === 'Argument' && n.data.participantId === participantId),
     [store.nodes, participantId]
   )
-  const sameParticipantArgCounterOrSummary = React.useMemo(
-    () => store.nodes.filter(n => (n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Argument Summary') && n.data.participantId === participantId),
-    [store.nodes, participantId]
-  )
   const opponentArgOrCounter = React.useMemo(
     () => store.nodes.filter(n => (n.data.kind === 'Argument' || n.data.kind === 'Counter') && n.data.participantId !== participantId),
+    [store.nodes, participantId]
+  )
+  const sameParticipantArgOrCounter = React.useMemo(
+    () => store.nodes.filter(n => (n.data.kind === 'Argument' || n.data.kind === 'Counter') && n.data.participantId === participantId),
     [store.nodes, participantId]
   )
 
@@ -122,9 +157,11 @@ export default function App() {
     setEdges(eds => addEdge({ ...params, type: 'thick', label: 'link' }, eds))
   }, [setEdges])
 
+  // Single click selects
   const onNodeClick: NodeMouseHandler = (_, n) => setSelectedId(n.id)
-  const onPaneClick = () => { setSelectedId(''); setActiveEdgeId('') }
+  const onPaneClick = () => setSelectedId('')
 
+  // Double click collapses/expands (children only)
   const onNodeDoubleClick: NodeMouseHandler = async (_, n) => {
     const node = store.nodes.find(x => x.id === n.id)
     if (!node) return
@@ -137,18 +174,15 @@ export default function App() {
     try {
       if (formType === 'Thesis') store.addThesis(participantId, title || 'New Thesis', body)
       else if (formType === 'Argument') store.addArgument(participantId, title || 'New Argument', body, parentId || undefined)
-      else if (formType === 'Argument Summary') {
-        if (!parentId) throw new Error('Choose the Thesis this Summary belongs to')
-        store.addArgumentSummary(participantId, parentId, title || 'Argument Summary', body)
-      }
       else if (formType === 'Counter') { if (!targetId) throw new Error('Choose an opponent Argument or Counter to counter'); store.addCounter(participantId, targetId, title || 'New Counter', body) }
-      else if (formType === 'Evidence') { if (!targetId) throw new Error('Choose a target (Argument / Counter / Summary)'); store.addEvidence(participantId, targetId, title || 'Evidence', body) }
+      else if (formType === 'Evidence') { if (!targetId) throw new Error('Choose an Argument/Counter to support'); store.addEvidence(participantId, targetId, title || 'Evidence', body) }
       else if (formType === 'Agreement') { if (!targetId) throw new Error('Choose an opponent Argument or Counter to agree with'); store.addAgreement(participantId, targetId, title || 'Agreement', body) }
       setTitle(''); setBody(''); setTargetId(''); setParentId('')
       syncFromStore(); await relayout()
     } catch (e) { alert((e as any).message || String(e)) }
   }
 
+  // Visible graph (respects collapsed + search filter)
   const collapsedIds = React.useMemo(() => store.nodes.filter(n => n.data.collapsed).map(n => n.id), [store.nodes])
   const allPairs = React.useMemo(() => buildChildrenPairs(store.edges as any), [store.edges])
 
@@ -170,6 +204,7 @@ export default function App() {
   }
   const hiddenDueToCollapse = React.useMemo(() => getDesc(collapsedIds), [collapsedIds, childrenMapForCollapse])
 
+  // Search filter
   const searchTerms = React.useMemo(() => normalizeTerms(query), [query])
   const matchedIds = React.useMemo(() => new Set(store.nodes.filter(n => matches(n, searchTerms)).map(n => n.id)), [store.nodes, searchTerms])
 
@@ -177,16 +212,22 @@ export default function App() {
     () => nodes.filter(n => !hiddenDueToCollapse.has(n.id)),
     [nodes, hiddenDueToCollapse]
   )
-  const visibleNodesForLayout = baseVisible
+  const visibleNodesForLayout = React.useMemo(() => {
+    if (!showOnlyMatches) return baseVisible
+    return baseVisible.filter(n => matchedIds.has(n.id))
+  }, [baseVisible, showOnlyMatches, matchedIds])
+
   const visibleEdgesForLayout = React.useMemo(() => {
     return edges.filter(e => {
       const sHidden = hiddenDueToCollapse.has(e.source)
       const tHidden = hiddenDueToCollapse.has(e.target)
       if (sHidden || tHidden) return false
+      if (showOnlyMatches && (!matchedIds.has(e.source) || !matchedIds.has(e.target))) return false
       return true
     })
-  }, [edges, hiddenDueToCollapse])
+  }, [edges, hiddenDueToCollapse, showOnlyMatches, matchedIds])
 
+  // Edge interactivity
   const [activeEdgeId, setActiveEdgeId] = React.useState<string>('')
   const [hoverEdgeId, setHoverEdgeId] = React.useState<string>('')
   const onEdgeClick: OnEdgeClick = (_, edge) => setActiveEdgeId(edge.id)
@@ -209,28 +250,22 @@ export default function App() {
         ...n.data,
         hit: matchedIds.has(n.id),
         edgeActive: activeNodeIds.has(n.id),
-        searchTerms,
-        dimmed: showOnlyMatches && !matchedIds.has(n.id)
+        searchTerms
       }
     }))
-  }, [visibleNodesForLayout, matchedIds, searchTerms, activeNodeIds, showOnlyMatches])
+  }, [visibleNodesForLayout, matchedIds, searchTerms, activeNodeIds])
 
   const renderEdges = React.useMemo(() => {
-    return visibleEdgesForLayout.map(e => {
-      const endpointMatch = matchedIds.has(e.source) || matchedIds.has(e.target)
-      const dimmed = showOnlyMatches && !endpointMatch
-      return ({
-        ...e,
-        type: 'thick',
-        data: { ...(e.data || {}), active: e.id === activeEdgeId || e.id === hoverEdgeId, dimmed }
-      })
-    })
-  }, [visibleEdgesForLayout, activeEdgeId, hoverEdgeId, showOnlyMatches, matchedIds])
+    return visibleEdgesForLayout.map(e => ({
+      ...e,
+      type: 'thick',
+      data: { ...(e.data || {}), active: e.id === activeEdgeId || e.id === hoverEdgeId }
+    }))
+  }, [visibleEdgesForLayout, activeEdgeId, hoverEdgeId])
 
   const relayout = React.useCallback(async () => {
     const prevPos = new Map(nodes.map(n => [n.id, n.position]))
     const layout = computeLayout(visibleNodesForLayout, visibleEdgesForLayout)
-
     const firstThesis = visibleNodesForLayout.find(n => n.data.kind === 'Thesis') || visibleNodesForLayout[0]
     let dx = 0
     if (firstThesis) {
@@ -238,7 +273,6 @@ export default function App() {
       const next = layout.get(firstThesis.id)
       if (prev && next) dx = prev.x - next.x
     }
-
     setNodes(nds => nds.map(n => {
       const p = layout.get(n.id)
       if (!p) return n
@@ -253,10 +287,8 @@ export default function App() {
       if (!childMap.has(p)) childMap.set(p, [])
       childMap.get(p)!.push(c)
     }
-
     const pos = new Map(nodes.map(n => [n.id, n.position]))
     const augmented: NodeChange[] = [...changes]
-
     function getDesc(startIds: string[]) {
       const seen = new Set<string>(); const stack = [...startIds]
       while (stack.length) {
@@ -265,7 +297,6 @@ export default function App() {
       }
       return seen
     }
-
     for (const ch of changes) {
       if (ch.type === 'position' && ch.position && ch.dragging) {
         const old = pos.get(ch.id)
@@ -273,7 +304,6 @@ export default function App() {
         const dx = ch.position.x - old.x
         const dy = ch.position.y - old.y
         if (!dx && !dy) continue
-
         const descendants = Array.from(getDesc([ch.id]))
         for (const did of descendants) {
           const dOld = pos.get(did)
@@ -287,7 +317,6 @@ export default function App() {
         }
       }
     }
-
     setNodes(nds => applyNodeChanges(augmented, nds))
   }, [nodes, setNodes, visibleEdgesForLayout])
 
@@ -327,91 +356,6 @@ export default function App() {
     if (!selectedId) return; store.deleteNode(selectedId); setSelectedId(''); syncFromStore(); await relayout()
   }
 
-  // ---------- Reparenting (Selected Statement) ----------
-  const pairsForGraph = React.useMemo(() => buildChildrenPairs(store.edges as any), [store.edges])
-  const childMap = React.useMemo(() => {
-    const m = new Map<string, string[]>()
-    for (const [p, c] of pairsForGraph) {
-      if (!m.has(p)) m.set(p, [])
-      m.get(p)!.push(c)
-    }
-    return m
-  }, [pairsForGraph])
-
-  function descendantsOf(id: string): Set<string> {
-    const seen = new Set<string>()
-    const stack = [id]
-    while (stack.length) {
-      const cur = stack.pop()!
-      const kids = childMap.get(cur) || []
-      for (const k of kids) if (!seen.has(k)) { seen.add(k); stack.push(k) }
-    }
-    return seen
-  }
-
-  const [reparentTarget, setReparentTarget] = React.useState<string>('')
-  const eligibleParents = React.useMemo(() => {
-    if (!selectedNode) return []
-    const self = selectedNode
-    const pid = self.data.participantId
-    const opp = store.participants.find(p => p.id !== pid)?.id
-
-    if (self.data.kind === 'Argument') {
-      const desc = descendantsOf(self.id)
-      return store.nodes.filter(n =>
-        n.id !== self.id &&
-        !desc.has(n.id) &&
-        n.data.participantId === pid &&
-        (n.data.kind === 'Thesis' || n.data.kind === 'Argument'))
-    }
-    if (self.data.kind === 'Argument Summary') {
-      return store.nodes.filter(n =>
-        n.data.kind === 'Thesis' &&
-        n.data.participantId === pid &&
-        !store.edges.some(e =>
-          e.data?.kind === 'supports' &&
-          e.source === n.id &&
-          store.nodes.find(nn => nn.id === e.target)?.data.kind === 'Argument Summary' &&
-          e.target !== self.id
-        )
-      )
-    }
-    if (self.data.kind === 'Evidence') {
-      return store.nodes.filter(n =>
-        n.data.participantId === pid &&
-        (n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Argument Summary'))
-    }
-    if (self.data.kind === 'Counter' || self.data.kind === 'Agreement') {
-      return store.nodes.filter(n =>
-        n.data.participantId !== pid &&
-        (n.data.kind === 'Argument' || n.data.kind === 'Counter'))
-    }
-    return []
-  }, [selectedNode, store.nodes, store.edges, store.participants, childMap])
-
-  const doReattach = async () => {
-    if (!selectedNode || !reparentTarget) return
-    const kind = selectedNode.data.kind
-    try {
-      if (kind === 'Argument' || kind === 'Argument Summary') {
-        store.setSupportsParent(selectedNode.id, reparentTarget)
-      } else if (kind === 'Evidence') {
-        store.setEdgeTarget(selectedNode.id, 'evidence-of', reparentTarget)
-      } else if (kind === 'Counter') {
-        store.setEdgeTarget(selectedNode.id, 'attacks', reparentTarget)
-      } else if (kind === 'Agreement') {
-        store.setEdgeTarget(selectedNode.id, 'agrees-with', reparentTarget)
-      } else {
-        alert('This statement type cannot be reattached.')
-        return
-      }
-      setReparentTarget('')
-      syncFromStore(); await relayout()
-    } catch (e) {
-      alert((e as any).message || String(e))
-    }
-  }
-
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
   const doExport = () => {
     try {
@@ -430,7 +374,6 @@ export default function App() {
   }
 
   const [addOpen, setAddOpen] = React.useState(false)
-  const [participantsOpen, setParticipantsOpen] = React.useState(false)
 
   const parentMap = React.useMemo(() => {
     const pairs = buildChildrenPairs(visibleEdgesForLayout as any)
@@ -471,7 +414,7 @@ export default function App() {
         <fieldset>
           <legend>View</legend>
           <div className="toolbar">
-            <button className="secondary" onClick={async () => { store.setAllCollapsed(true); syncFromStore(); await relayout() }}>Collapse all</button>
+            <button className="secondary" onClick={collapseAll}>Collapse all</button>
             <button className="secondary" onClick={async () => await (store.setAllCollapsed(false), syncFromStore(), relayout())}>Expand all</button>
             <button className="secondary" onClick={async () => { await relayout() }}>Auto-layout</button>
           </div>
@@ -484,7 +427,7 @@ export default function App() {
           <div className="row" style={{ marginTop: 6 }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <input type="checkbox" checked={showOnlyMatches} onChange={e => setShowOnlyMatches(e.target.checked)} />
-              Show only matches (dim others)
+              Show only matches
             </label>
             <div className="small" style={{ marginLeft: 'auto' }}>{matchedIds.size} match{matchedIds.size === 1 ? '' : 'es'}</div>
           </div>
@@ -492,7 +435,7 @@ export default function App() {
 
         <fieldset className="collapsible">
           <legend className="collapsible-title" onClick={() => setAddOpen(v => !v)} style={{ cursor: 'pointer' }}>
-            {addOpen ? '▼' : '▶'} Add Statement
+            {addOpen ? '▼' : '▶'} Add Item
           </legend>
           {addOpen && (
             <div>
@@ -500,7 +443,6 @@ export default function App() {
               <select value={formType} onChange={e => setFormType(e.target.value as FormType)}>
                 <option>Thesis</option>
                 <option>Argument</option>
-                <option>Argument Summary</option>
                 <option>Counter</option>
                 <option>Evidence</option>
                 <option>Agreement</option>
@@ -533,19 +475,6 @@ export default function App() {
                 </>
               )}
 
-              {formType === 'Argument Summary' && (
-                <>
-                  <label>Attach to Thesis (same participant)</label>
-                  <select value={parentId} onChange={e => setParentId(e.target.value)}>
-                    <option value="">-- choose Thesis --</option>
-                    {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>[Thesis] {n.data.title}</option>))}
-                  </select>
-                  <div className="small" style={{ marginTop: 6 }}>
-                    Only one Argument Summary is allowed per Thesis, and only Evidence can attach to a Summary.
-                  </div>
-                </>
-              )}
-
               {formType === 'Counter' && (
                 <>
                   <label>Counter target (opponent Argument or Counter)</label>
@@ -560,10 +489,10 @@ export default function App() {
 
               {formType === 'Evidence' && (
                 <>
-                  <label>Evidence target (same participant: Argument, Counter or Summary)</label>
+                  <label>Evidence target (same participant: Argument or Counter)</label>
                   <select value={targetId} onChange={e => setTargetId(e.target.value)}>
                     <option value="">-- choose --</option>
-                    {sameParticipantArgCounterOrSummary.map(n => (<option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>))}
+                    {sameParticipantArgOrCounter.map(n => (<option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>))}
                   </select>
                 </>
               )}
@@ -604,22 +533,6 @@ export default function App() {
               <label>Body</label>
               <textarea value={editBody} onChange={e => setEditBody(e.target.value)} />
 
-              {/* Reattach controls, per-type */}
-              {eligibleParents.length > 0 && (
-                <>
-                  <label>Attach / Target</label>
-                  <select value={reparentTarget} onChange={e => setReparentTarget(e.target.value)}>
-                    <option value="">-- choose new parent/target --</option>
-                    {eligibleParents.map(n => (
-                      <option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>
-                    ))}
-                  </select>
-                  <div className="toolbar">
-                    <button className="secondary" onClick={doReattach} disabled={!reparentTarget}>Reattach</button>
-                  </div>
-                </>
-              )}
-
               <div className="toolbar">
                 <button onClick={saveEdit}>Save</button>
                 <button className="secondary" onClick={deleteSelected}>Delete</button>
@@ -630,86 +543,33 @@ export default function App() {
           )}
         </fieldset>
 
-        <fieldset className="collapsible">
-          <legend className="collapsible-title" onClick={() => setParticipantsOpen(v => !v)} style={{ cursor: 'pointer' }}>
-            {participantsOpen ? '▼' : '▶'} Participants
-          </legend>
-          {participantsOpen && (
-            <div className="row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8 }}>
-              {store.participants.map(p => (
-                <div key={p.id} className="row" style={{ gap: 8 }}>
-                  <div style={{ width: 32, textAlign: 'center', fontWeight: 800 }}>{p.id}</div>
-                  <input value={p.name} onChange={e => store.updateParticipant(p.id, e.target.value)} />
-                </div>
-              ))}
-              <div className="small">These names appear on the statement badges and in selectors.</div>
-            </div>
-          )}
-        </fieldset>
-
-        <fieldset>
-          <legend>Legend</legend>
-          <div className="legend-grid">
-            <div className="legend-title">Speakers (top & right borders)</div>
-            <div className="legend-row">
-              {store.participants.map((p, i, arr) => (
-                <div key={p.id} className="legend-item">
-                  <span className="legend-swatch" style={{ background: participantColor(p.id, arr.map(pp => pp.id)) }} />
-                  <span>{p.name}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="legend-title">Statement Types (bottom & left borders)</div>
-            <div className="legend-row">
-              {['Thesis','Argument','Argument Summary','Counter','Evidence','Agreement'].map(k => (
-                <div key={k} className="legend-item pattern" data-kind={k}>
-                  <span className="legend-swatch" style={{ background: kindColor(k) }} />
-                  <span>{k}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="legend-title">Line Colors</div>
-            <div className="legend-row">
-              <div className="legend-item"><span className="legend-line" style={{ background: '#1d4ed8' }}></span><span>Supports</span></div>
-              <div className="legend-item"><span className="legend-line" style={{ background: '#b45309' }}></span><span>Evidence of</span></div>
-              <div className="legend-item"><span className="legend-line" style={{ background: '#be185d' }}></span><span>Counter</span></div>
-              <div className="legend-item"><span className="legend-line" style={{ background: '#0e7490' }}></span><span>Agrees</span></div>
-            </div>
-          </div>
-          <div className="small" style={{ marginTop: 8 }}>
-            Tip: for colorblind-friendly reading, statement types also have subtle patterns in the legend.
-          </div>
-        </fieldset>
-
       </div>
 
-      <div className="rf-outer">
-        <div className="rf-wrapper">
-          <ReactFlow
-            style={{ width: '100%', height: '100%' }}
-            nodes={renderNodes}
-            edges={renderEdges}
-            onNodesChange={handleNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            fitView
-            minZoom={0.02}
-            translateExtent={extent}
-            nodeExtent={extent}
-            onNodeClick={onNodeClick}
-            onNodeDoubleClick={onNodeDoubleClick}
-            onPaneClick={onPaneClick}
-            onEdgeClick={onEdgeClick}
-            onEdgeMouseEnter={onEdgeMouseEnter}
-            onEdgeMouseLeave={onEdgeMouseLeave}
-          >
-            <Background />
-          </ReactFlow>
-        </div>
+      <div className="rf-wrapper">
+        <ReactFlow
+          nodes={renderNodes}
+          edges={renderEdges}
+          onNodesChange={handleNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          fitView
+          minZoom={0.02}
+          translateExtent={extent}
+          nodeExtent={extent}
+          onNodeClick={onNodeClick}
+          onNodeDoubleClick={onNodeDoubleClick}
+          onPaneClick={onPaneClick}
+          onEdgeClick={onEdgeClick}
+          onEdgeMouseEnter={onEdgeMouseEnter}
+          onEdgeMouseLeave={onEdgeMouseLeave}
+        >
+          <MiniMap />
+          <ClickableMiniMap nodes={renderNodes} />
+          <Controls />
+          <Background />
+        </ReactFlow>
       </div>
     </div>
   )

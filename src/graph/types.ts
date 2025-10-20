@@ -1,19 +1,21 @@
-import type { Edge, Node } from 'reactflow'
+import type { Node, Edge } from 'reactflow'
 
-export type NodeKind = 'Thesis' | 'Argument' | 'Counter' | 'Evidence' | 'Agreement'
-export type EdgeKind = 'supports' | 'attacks' | 'evidence-of' | 'agrees-with'
+export type StatementKind =
+  | 'Thesis'
+  | 'Argument'
+  | 'Argument Summary'
+  | 'Counter'
+  | 'Evidence'
+  | 'Agreement'
 
-export type NodeData = {
-  kind: NodeKind
-  participantId: string
+export type DebateData = {
+  id: string
   title: string
   body?: string
-  relevance?: number
+  kind: StatementKind
+  participantId: string
   collapsed?: boolean
-  // UI-only (not persisted) fields
-  hit?: boolean
-  searchTerms?: string[]
 }
 
-export type DebateNode = Node<NodeData>
-export type DebateEdge = Edge<{ kind: EdgeKind }>
+export type DebateNode = Node<DebateData>
+export type DebateEdge = Edge & { data?: { kind: 'supports'|'evidence-of'|'attacks'|'agrees-with' } }

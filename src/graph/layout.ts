@@ -1,192 +1,171 @@
-import ELK from 'elkjs/lib/elk.bundled.js'
-import type { DebateNode, DebateEdge } from './types'
+import type { Node, Edge } from 'reactflow'
 
-const elk = new ELK()
+type Pos = { x: number, y: number }
+type DebateNode = Node & { data: any }
+type DebateEdge = Edge & { data?: any }
 
-export const NODE_W = 260
-export const NODE_H_EXPANDED = 120
-export const NODE_H_COLLAPSED = 56
+const NODE_W = 320
+const NODE_H = 120
+const X_GAP = 60
+const Y_GAP = 180
 
-const MAX_ROW_WIDTH = 900
-const H_GAP = 40
-const ROW_Y_OFFSET = 140
-const LAYER_Y_SPACING = 220
+function kindOrder(kind: string): number {
+  switch (kind) {
+    case 'Evidence': return 0
+    case 'Agreement': return 1
+    case 'Argument': return 2
+    case 'Counter': return 3
+    case 'Thesis': return -1
+    case 'Argument Summary': return 0 // handled specially in placement
+    default: return 9
+  }
+}
 
-const EVIDENCE_STAGGER = 150
-
-type Kind = 'supports' | 'attacks' | 'evidence-of' | 'agrees-with'
-
-export async function elkLayout(nodes: DebateNode[], edges: DebateEdge[]) {
-  const layoutEdges = edges.map((e, i) => {
-    const kind = (e.data as any)?.kind as Kind | undefined
-    if (kind === 'attacks') {
-      // Treat target as parent, counter as child for layering
-      return { id: e.id ?? `e${i}`, sources: [e.target], targets: [e.source] }
+function pairsFromEdges(edges: DebateEdge[]): Array<[string, string]> {
+  const pairs: Array<[string, string]> = []
+  for (const e of edges) {
+    const kind = (e.data && e.data.kind) || ''
+    if (kind === 'supports') {
+      pairs.push([e.source, e.target])
+    } else if (kind === 'evidence-of' || kind === 'agrees-with' || kind === 'attacks') {
+      pairs.push([e.target, e.source])
     }
-    if (kind === 'evidence-of' || kind === 'agrees-with') {
-      // Target (arg/counter) is parent; evidence/agreement is child
-      return { id: e.id ?? `e${i}`, sources: [e.target], targets: [e.source] }
-    }
-    return { id: e.id ?? `e${i}`, sources: [e.source], targets: [e.target] }
-  })
+  }
+  return pairs
+}
 
-  const childEntries = nodes.map(n => ({
-    id: n.id,
-    width: NODE_W,
-    height: n.data.collapsed ? NODE_H_COLLAPSED : NODE_H_EXPANDED,
-    layoutOptions: (n.data.kind === 'Thesis')
-      ? { 'org.eclipse.elk.layered.layering.layerConstraint': 'FIRST' }
-      : {}
-  }))
+export function computeLayout(nodes: DebateNode[], edges: DebateEdge[]): Map<string, Pos> {
+  const idToNode = new Map<string, DebateNode>()
+  nodes.forEach(n => idToNode.set(n.id, n))
 
-  const graph: any = {
-    id: 'root',
-    layoutOptions: {
-      'elk.algorithm': 'layered',
-      'elk.direction': 'DOWN',
-      'elk.layered.spacing.nodeNodeBetweenLayers': String(LAYER_Y_SPACING),
-      'elk.spacing.nodeNode': '60',
-      'elk.edgeRouting': 'ORTHOGONAL',
-      'elk.layered.nodePlacement.bk.fixedAlignment': 'LEFTUP',
-      'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
-      'elk.layered.mergeEdges': 'true'
-    },
-    children: childEntries,
-    edges: layoutEdges
+  const children = new Map<string, string[]>()
+  const parentOf = new Map<string, string>()
+  for (const [p, c] of pairsFromEdges(edges)) {
+    if (!children.has(p)) children.set(p, [])
+    if (!parentOf.has(c)) { children.get(p)!.push(c); parentOf.set(c, p) }
   }
 
-  const res = await elk.layout(graph)
-
-  const placed = new Map<string, { x: number; y: number; h: number }>()
-  ;(res.children ?? []).forEach((c: any) => {
-    placed.set(c.id, { x: c.x ?? 0, y: c.y ?? 0, h: c.height ?? (NODE_H_EXPANDED) })
+  const roots = nodes.filter(n => !parentOf.has(n.id) || n.data?.kind === 'Thesis')
+  roots.sort((a, b) => {
+    const ak = a.data?.kind === 'Thesis' ? 0 : 1
+    const bk = b.data?.kind === 'Thesis' ? 0 : 1
+    if (ak !== bk) return ak - bk
+    return (a.data?.title || '').localeCompare(b.data?.title || '')
   })
 
-  const nodeById = new Map(nodes.map(n => [n.id, n]))
-  const edgesBySource = new Map<string, DebateEdge[]>()
-  const edgesByTarget = new Map<string, DebateEdge[]>()
-  edges.forEach(e => {
-    if (!edgesBySource.has(e.source)) edgesBySource.set(e.source, [])
-    if (!edgesByTarget.has(e.target)) edgesByTarget.set(e.target, [])
-    edgesBySource.get(e.source)!.push(e)
-    edgesByTarget.get(e.target)!.push(e)
-  })
-
-  const sortByX = (ids: string[]) =>
-    ids.sort((a, b) => (placed.get(a)!.x - placed.get(b)!.x))
-
-  const baseYForChildren = (parentId: string) => {
-    const p = placed.get(parentId)!
-    const parentH = p.h ?? (nodeById.get(parentId)?.data.collapsed ? NODE_H_COLLAPSED : NODE_H_EXPANDED)
-    return p.y + parentH + 60
-  }
-
-  const singleRowUnderParent = (parentId: string, childIds: string[], extraYOffset = 0) => {
-    if (childIds.length === 0) return
-    sortByX(childIds)
-    const parentPos = placed.get(parentId) ?? { x: 0, y: 0, h: NODE_H_EXPANDED }
-    const parentCenterX = parentPos.x + NODE_W / 2
-    const baseY = baseYForChildren(parentId)
-    const rowWidth = childIds.length * NODE_W + (childIds.length - 1) * H_GAP
-    let cursor = parentCenterX - rowWidth / 2
-    const y = baseY + extraYOffset
-    childIds.forEach(id => { placed.set(id, { x: cursor, y, h: placed.get(id)?.h ?? NODE_H_EXPANDED }); cursor += NODE_W + H_GAP })
-  }
-
-  const wrapSiblings = (parentId: string, childIds: string[], extraYOffset = 0) => {
-    if (childIds.length === 0) return
-    sortByX(childIds)
-
-    const rows: string[][] = [[]]
-    let currentWidth = 0
-    for (const id of childIds) {
-      const w = NODE_W + (rows[rows.length - 1].length > 0 ? H_GAP : 0)
-      if (rows[rows.length - 1].length > 0 && (currentWidth + NODE_W + H_GAP) > MAX_ROW_WIDTH) {
-        rows.push([id]); currentWidth = NODE_W
-      } else { rows[rows.length - 1].push(id); currentWidth += w }
-    }
-
-    const parentPos = placed.get(parentId) ?? { x: 0, y: 0, h: NODE_H_EXPANDED }
-    const parentCenterX = parentPos.x + NODE_W / 2
-    const baseY = baseYForChildren(parentId)
-
-    if (rows.length === 1) {
-      const rowIds = rows[0]
-      const rowWidth = rowIds.length * NODE_W + (rowIds.length - 1) * H_GAP
-      let cursor = parentCenterX - rowWidth / 2
-      const y = baseY + extraYOffset
-      rowIds.forEach(id => { placed.set(id, { x: cursor, y, h: placed.get(id)?.h ?? NODE_H_EXPANDED }); cursor += NODE_W + H_GAP })
-      return
-    }
-
-    rows.forEach((rowIds, rIndex) => {
-      const rowWidth = rowIds.length * NODE_W + (rowIds.length - 1) * H_GAP
-      let cursor = parentCenterX - rowWidth / 2
-      const y = baseY + extraYOffset + rIndex * ROW_Y_OFFSET
-      rowIds.forEach(id => { placed.set(id, { x: cursor, y, h: placed.get(id)?.h ?? NODE_H_EXPANDED }); cursor += NODE_W + H_GAP })
+  // sort children lists (except summary special-case at placement)
+  for (const [p, arr] of Array.from(children.entries())) {
+    arr.sort((aid, bid) => {
+      const a = idToNode.get(aid)!; const b = idToNode.get(bid)!
+      const ko = kindOrder(a.data?.kind) - kindOrder(b.data?.kind)
+      if (ko !== 0) return ko
+      return (a.data?.title || '').localeCompare(b.data?.title || '')
     })
   }
 
-  // Position Arguments: top-level (under Thesis) all in one row; nested args wrap
-  nodes.forEach(parent => {
-    const outgoing = edgesBySource.get(parent.id) ?? []
-    const argChildren = outgoing
-      .filter(e => (e.data as any)?.kind === 'supports')
-      .map(e => e.target)
-      .filter(id => nodeById.get(id)?.data.kind === 'Argument')
+  const layout = new Map<string, Pos>()
 
-    if (argChildren.length > 1) {
-      const parentKind = nodeById.get(parent.id)?.data.kind
-      if (parentKind === 'Thesis') {
-        singleRowUnderParent(parent.id, argChildren, 0)
-      } else {
-        wrapSiblings(parent.id, argChildren, 0)
+  function measureList(list: string[]): number {
+    if (list.length === 0) return 0
+    const widths = list.map(measure)
+    return widths.reduce((a,b)=>a+b,0) + X_GAP*(list.length-1)
+  }
+
+  function measure(id: string): number {
+    const chAll = (children.get(id) || []).slice()
+    const node = idToNode.get(id)!
+    let summary: string | undefined
+    if (node?.data?.kind === 'Thesis') {
+      summary = chAll.find(cid => idToNode.get(cid)?.data?.kind === 'Argument Summary')
+    }
+    const ch = summary ? chAll.filter(cid => cid !== summary) : chAll
+
+    if (ch.length === 0 && !summary) return NODE_W
+
+    if (summary) {
+      // split others half to left, half to right
+      const left = ch.slice(0, Math.ceil(ch.length / 2))
+      const right = ch.slice(Math.ceil(ch.length / 2))
+      const leftW = measureList(left)
+      const rightW = measureList(right)
+      let total = leftW + rightW + NODE_W
+      if (left.length) total += X_GAP
+      if (right.length) total += X_GAP
+      return Math.max(NODE_W, total)
+    } else {
+      const total = measureList(ch)
+      return Math.max(NODE_W, total)
+    }
+  }
+
+  function place(id: string, xLeft: number, depth: number) {
+    const w = measure(id)
+    const xCenter = xLeft + w / 2
+
+    const node = idToNode.get(id)!
+    const isSummary = node?.data?.kind === 'Argument Summary'
+    const yBase = depth * (NODE_H + Y_GAP)
+    const y = yBase + (isSummary ? -30 : 0)  // raise summaries a bit
+
+    layout.set(id, { x: xCenter - NODE_W / 2, y })
+
+    let chAll = (children.get(id) || []).slice()
+    let summary: string | undefined
+    if (node?.data?.kind === 'Thesis') {
+      summary = chAll.find(cid => idToNode.get(cid)?.data?.kind === 'Argument Summary')
+    }
+    let ch = summary ? chAll.filter(cid => cid !== summary) : chAll
+
+    if (!ch.length && !summary) return
+
+    if (summary) {
+      const left = ch.slice(0, Math.ceil(ch.length / 2))
+      const right = ch.slice(Math.ceil(ch.length / 2))
+
+      // center summary
+      const sx = xCenter - NODE_W / 2
+      place(summary, sx, depth + 1)
+
+      // lay out right children from summary's right edge
+      let rx = xCenter + NODE_W / 2 + (right.length ? X_GAP : 0)
+      for (const cid of right) {
+        const cw = measure(cid)
+        place(cid, rx, depth + 1)
+        rx += cw + X_GAP
+      }
+
+      // lay out left children from summary's left edge going outward
+      let lx = xCenter - NODE_W / 2 - (left.length ? X_GAP : 0)
+      for (let i = left.length - 1; i >= 0; i--) {
+        const cid = left[i]
+        const cw = measure(cid)
+        place(cid, lx - cw, depth + 1)
+        lx -= cw + X_GAP
+      }
+    } else {
+      // no summary: standard left-to-right
+      ch = ch || []
+      let cursor = xLeft
+      for (const cid of ch) {
+        const cw = measure(cid)
+        place(cid, cursor, depth + 1)
+        cursor += cw + X_GAP
       }
     }
-  })
+  }
 
-  // Evidence + Agreements grouped with staggering per adjacent parents
-  const evLikeTargets = nodes
-    .map(n => n.id)
-    .filter(id => {
-      const incoming = edgesByTarget.get(id) ?? []
-      return incoming.some(e => {
-        const k = (e.data as any)?.kind
-        return k === 'evidence-of' || k === 'agrees-with'
-      })
-    })
-    .sort((a, b) => (placed.get(a)!.x - placed.get(b)!.x))
+  let cursor = 0
+  for (const r of roots) {
+    const w = measure(r.id)
+    place(r.id, cursor, 0)
+    cursor += w + 2 * X_GAP
+  }
 
-  const offsetByTarget = new Map<string, number>()
-  evLikeTargets.forEach((tid, idx) => {
-    const extra = (idx % 2 === 0) ? 0 : EVIDENCE_STAGGER
-    offsetByTarget.set(tid, extra)
-  })
+  // place unconnected nodes if any
+  const placed = new Set(layout.keys())
+  for (const n of nodes) if (!placed.has(n.id)) {
+    place(n.id, cursor, 0); cursor += NODE_W + 2*X_GAP
+  }
 
-  nodes.forEach(target => {
-    const incoming = edgesByTarget.get(target.id) ?? []
-    const children = incoming
-      .filter(e => {
-        const k = (e.data as any)?.kind
-        return k === 'evidence-of' || k === 'agrees-with'
-      })
-      .map(e => e.source)
-      .filter(id => {
-        const kind = nodeById.get(id)?.data.kind
-        return kind === 'Evidence' || kind === 'Agreement'
-      })
-
-    if (children.length >= 1) {
-      const extra = offsetByTarget.get(target.id) ?? 0
-      wrapSiblings(target.id, children, extra)
-    }
-  })
-
-  const positioned: DebateNode[] = nodes.map(n => {
-    const pos = placed.get(n.id)
-    if (!pos) return n
-    return { ...n, position: { x: pos.x, y: pos.y } }
-  })
-
-  return { nodes: positioned, edges }
+  return layout
 }

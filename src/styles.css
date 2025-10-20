@@ -1,68 +1,85 @@
-* { box-sizing: border-box; }
-:root {
-  --bg: #0f172a;
-  --panel: #111827;
-  --ink: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #38bdf8;
-  --good: #22c55e;
-  --bad: #ef4444;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+:root{
+  --bg:#EDE3D5;
+  --panel:#F2E7D8;
+  --panel-border:#cabfae;
+  --panel-text:#2b2b2b;
+  --card:#FFF7E6;
+  --muted:#5b6473;
+  --primary:#2563eb;
+  --primary-contrast:#1f2937;
+  --shadow:0 8px 22px rgba(0,0,0,0.16);
 }
-html, body, #root { height: 100%; margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; }
-.app { display: grid; grid-template-columns: 320px 1fr; height: 100%; }
-.sidebar { background: var(--panel); border-right: 1px solid #1f2937; padding: 12px 12px 24px; overflow: auto; }
-.sidebar h1 { margin: 0 0 12px 0; font-size: 18px; letter-spacing: .3px; }
-fieldset { border: 1px solid #1f2937; border-radius: 10px; padding: 12px; margin: 10px 0 16px; }
-legend { color: var(--muted); padding: 0 6px; }
-label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 6px; }
-input, select, textarea { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #1f2937; background: #0b1220; color: var(--ink); }
-textarea { min-height: 70px; resize: vertical; }
-button { background: var(--accent); color: #081018; border: 0; padding: 8px 10px; border-radius: 10px; cursor: pointer; font-weight: 600; }
-button.secondary { background: #1f2937; color: var(--ink); }
-.row { display: flex; gap: 8px; align-items: center; }
+
+html, body, #root { height: 100%; margin: 0; color: var(--panel-text); font-family: 'Inter', ui-sans-serif, system-ui; background: var(--bg); }
+.app { display: grid; grid-template-columns: 360px minmax(0, 1fr); height: 100%; min-height: 0; }
+
+.sidebar { overflow: auto; padding: 14px; border-right: 1px solid var(--panel-border); background: var(--panel); color: var(--panel-text); }
+.sidebar fieldset { border: 1px solid var(--panel-border); padding: 12px; margin-bottom: 14px; border-radius: 12px; background: rgba(255,255,255,0.6); }
+.sidebar legend { font-weight: 800; padding: 0 6px; color: #1f2937; letter-spacing: .3px; text-transform: uppercase; font-size: 12px; }
+.collapsible-title { user-select: none; }
+.toolbar { display:flex; gap:10px; flex-wrap: wrap; margin-top: 10px; }
+
+button { background: var(--primary); color: #fff; border: 0; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: 700; letter-spacing: .2px; box-shadow: 0 6px 18px rgba(37,99,235,.2); }
+button.secondary { background: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; box-shadow: none; }
+
 .small { font-size: 12px; color: var(--muted); }
-hr.s { border: 0; border-top: 1px solid #1f2937; margin: 10px 0; }
+.row { display:flex; gap:10px; align-items: center; }
 
-.badge { font-size: 10px; padding: 2px 6px; border-radius: 999px; font-weight: 700; letter-spacing: .3px; }
-.badge.thesis { background: #0ea5e9; color: #001018; }
-.badge.argument { background: #ffffff; color: #081018; }
-.badge.counter { background: #ef4444; color: #2a0000; }
-.badge.evidence { background: #f59e0b; color: #1a0d00; }
-.badge.agreement { background: #06b6d4; color: #00151a; }
+input, select, textarea { width: 100%; box-sizing: border-box; padding: 8px 10px; border-radius: 10px; border: 1px solid #c7b9a4; background: #fff; color: #0f172a; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: #9ca3af; box-shadow: 0 0 0 4px rgba(156,163,175,.25); }
+textarea { min-height: 92px; }
 
-.node-card { background: #0b1220; border: 1px solid #1f2937; color: var(--ink); padding: 10px; border-radius: 12px; min-width: 240px; max-width: 320px; box-shadow: 0 4px 20px rgba(0,0,0,.25); cursor: pointer; }
-.node-card h3 { margin: 4px 0 6px; font-size: 14px; }
-.node-card p { margin: 0; font-size: 12px; color: var(--muted); }
-.node-meta { display: flex; gap: 6px; align-items: center; }
-.node-meta .author { font-size: 11px; color: var(--muted); }
-.rf-wrapper { height: 100%; }
-.toolbar { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-
-.node-card.thesis { border-left: 6px solid #0ea5e9; }
-.node-card.argument { border-left: 6px solid #ffffff; }
-.node-card.counter { border-left: 6px solid #ef4444; }
-.node-card.evidence { border-left: 6px solid #f59e0b; }
-.node-card.agreement { border-left: 6px solid #06b6d4; }
-
-/* Search highlighting */
-mark { background: #fef08a; color: #111827; padding: 0 2px; border-radius: 3px; }
-.node-card.hit { outline: 2px solid #fef08a; box-shadow: 0 0 0 3px rgba(254, 240, 138, .25), 0 6px 24px rgba(254, 240, 138, .15); }
-
-/* Clickable MiniMap wrapper for capturing clicks */
-.minimap-wrap {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 200px;
-  height: 140px;
-  border: 1px solid #0ea5e9;
-  border-radius: 8px;
-  overflow: hidden;
-  background: rgba(8,16,24,.35);
-  backdrop-filter: blur(2px);
-  z-index: 10;
+.rf-outer { min-height: 0; display: flex; flex-direction: column; }
+.rf-wrapper {
+  position: relative; flex: 1 1 auto; height: 100%; min-height: 0; min-width: 0;
+  background:
+    radial-gradient(1200px 800px at 70% 30%, rgba(120,85,60,0.10), rgba(0,0,0,0) 60%),
+    linear-gradient(transparent calc(100% - 1px), rgba(65,40,20,0.06) 1px),
+    linear-gradient(90deg, transparent calc(100% - 1px), rgba(65,40,20,0.06) 1px);
+  background-size: 100% 100%, 56px 56px, 56px 56px;
+  background-position: center, center, center;
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.08);
 }
-/* Ensure the default MiniMap also exists but our wrapper takes precedence visually */
-.react-flow__minimap {
-  opacity: 0.25; /* keep the default one faint (we render a second inside our wrapper) */
+
+/* Node cards */
+.node-card { width: 320px; max-width: 360px; background: var(--card); border-radius: 16px; padding: 12px 14px; border: 2px solid rgba(0,0,0,0.06); box-shadow: var(--shadow); transition: box-shadow .12s ease, outline-width .12s ease, transform .12s ease; }
+.node-card h3 { margin: 6px 0 6px; font-size: 17px; line-height: 1.2; color: #0f172a; }
+.node-card h3.summary { font-size: 22px; line-height: 1.2; font-weight: 800; } /* larger for Argument Summary */
+.node-card p { margin: 0; font-size: 13px; color: #374151; }
+.node-meta { display:flex; align-items:center; gap:10px; font-size:12px; }
+
+.badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #0f172a; }
+.badge.thesis { background: #DBEAFE; border-color:#93c5fd; }
+.badge.argument { background: #EDE9FE; border-color:#c4b5fd; }
+.badge.summary { background: #D1FAE5; border-color:#86efac; } /* Argument Summary */
+.badge.counter { background: #FEE2E2; border-color:#fecaca; }
+.badge.evidence { background: #FEF3C7; border-color:#fde68a; }
+.badge.agreement { background: #CFFAFE; border-color:#a5f3fc; }
+
+mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
+
+.speaker-badge { display: inline-block; font-size: 11px; padding: 3px 9px; border-radius: 999px; font-weight: 800; color: #0b1220; border: 1px solid rgba(0,0,0,.1); background: #fefefe; }
+
+.edge-label { background: rgba(31,41,55,.9); color: #f1f5f9; padding: 4px 8px; border-radius: 8px; font-size: 12px; border: 1px solid #475569; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+
+/* Much more obvious selection highlight from edges */
+.node-card.edge-on {
+  outline: 6px solid #22c55e;
+  box-shadow: 0 0 0 8px rgba(34,197,94,.25),
+              0 18px 32px rgba(0,0,0,.25), var(--shadow);
+  transform: translateZ(0);
 }
+
+/* Legend */
+.legend-grid { display: grid; gap: 8px; }
+.legend-title { font-weight: 800; color: #1f2937; margin-top: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.legend-item { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,.08); padding: 6px 8px; border-radius: 10px; }
+.legend-swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); box-shadow: inset 0 0 0 2px rgba(255,255,255,.35); }
+.legend-line { width: 36px; height: 6px; border-radius: 999px; box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset; background: #475569; }
+
+/* Edge base + stronger active glow */
+.react-flow__edge-path { stroke-width: 5 !important; }
+.edge-path.active { filter: drop-shadow(0 0 1.2rem rgba(34,197,94,.45)); }
