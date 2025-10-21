@@ -1,0 +1,21 @@
+{
+  "lastSelectedProfileForWorkspace": {
+    ":::personal": "local",
+    "file:///c%3A/Users/Comp/DeLoAi/debapp5:::personal": "local"
+  },
+  "lastSelectedOrgIdForWorkspace": {
+    "": "personal",
+    "file:///c%3A/Users/Comp/DeLoAi/debapp5": "personal"
+  },
+  "selectedModelsByProfileId": {
+    "local": {
+      "chat": null,
+      "edit": null,
+      "apply": null,
+      "embed": null,
+      "autocomplete": null,
+      "rerank": null,
+      "summarize": null
+    }
+  }
+}
