@@ -13,6 +13,8 @@ type Data = {
   edgeActive?: boolean
   dimmed?: boolean
   searchTerms?: string[]
+  strengthType?: 'Type 1' | 'Type 2' | 'Type 3' | 'Type 4'
+  firstMention?: string            // NEW: optional timestamp shown on card
 }
 
 const PALETTE = [
@@ -117,6 +119,15 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
         {/* type badge first (left), then speaker */}
         <span className={kindBadgeClass(data.kind)}>{data.kind}</span>
         <span className="speaker-badge" style={{ background: speakerCol }}>{speakerName}</span>
+        
+        {(data.kind === 'Argument' || data.kind === 'Counter' || data.kind === 'Evidence') && data.strengthType && (
+          <span
+            className={`strength-badge ${'strength-' + data.strengthType.replace(/\s+/g,'').toLowerCase()}`}
+            title={data.strengthType}
+          >
+            {data.strengthType}
+          </span>
+        )}
         {data.collapsed && <span className="small" style={{ marginLeft: 'auto', opacity: .7 }}>(collapsed)</span>}
         {data.hit && <span className="small" style={{ marginLeft: 'auto', color: '#b45309', fontWeight: 700 }}>match</span>}
       </div>
@@ -124,7 +135,15 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
       <h3 className={data.kind === 'Argument Summary' ? 'summary' : undefined}>
         {highlight(data.title || 'Untitled', data.searchTerms)}
       </h3>
-      {data.body && <p>{highlight(data.body, data.searchTerms)}</p>}
+
+      {/* NEW: first mention pill (optional) */}
+      {data.firstMention && (
+        <div className="first-mention" title="First time this statement was mentioned">
+          First mention: {data.firstMention}
+        </div>
+      )}
+
+      {data.body && <p className="body-text" style={{ whiteSpace: 'pre-line' }}>{highlight(data.body, data.searchTerms)}</p>}
     </div>
   )
 }

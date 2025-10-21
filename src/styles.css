@@ -47,7 +47,7 @@ textarea { min-height: 92px; }
 .node-card { width: 320px; max-width: 360px; background: var(--card); border-radius: 16px; padding: 12px 14px; border: 2px solid rgba(0,0,0,0.06); box-shadow: var(--shadow); transition: box-shadow .12s ease, outline-width .12s ease, transform .12s ease; }
 .node-card h3 { margin: 6px 0 6px; font-size: 17px; line-height: 1.2; color: #0f172a; }
 .node-card h3.summary { font-size: 22px; line-height: 1.2; font-weight: 800; } /* larger for Argument Summary */
-.node-card p { margin: 0; font-size: 13px; color: #374151; }
+.node-card p { margin: 0; font-size: 13px; color: #374151; white-space: pre-line;}
 .node-meta { display:flex; align-items:center; gap:10px; font-size:12px; }
 
 .badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #0f172a; }
@@ -83,3 +83,38 @@ mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
 /* Edge base + stronger active glow */
 .react-flow__edge-path { stroke-width: 5 !important; }
 .edge-path.active { filter: drop-shadow(0 0 1.2rem rgba(34,197,94,.45)); }
+
+/* === Strength Type pill styles (Type 1 / 2 / 3) === */
+.strength-badge{
+  display:inline-block;
+  font-size:11px;
+  font-weight:800;
+  padding:3px 9px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.08);
+  letter-spacing:.25px;
+  color:#0f172a;
+  background:#f8fafc;
+}
+.strength-type1{ background:#ecfdf5; border-color:#a7f3d0; color:#065f46; }
+.strength-type2{ background:#eff6ff; border-color:#bfdbfe; color:#1e40af; }
+.strength-type3{ background:#f8fafc; border-color:#cbd5e1; color:#334155; }
+
+/* Type 4: no meaningful support */
+.strength-type4{
+  background: repeating-linear-gradient(135deg,#f3f4f6, #f3f4f6 6px,#e5e7eb 6px,#e5e7eb 12px);
+  color:#374151;
+  border-color:#9ca3af;
+}
+
+/* pill for first mention */
+.first-mention{
+  margin-top: 6px;
+  font-size: 11px;
+  color: #334155;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  display: inline-block;
+  padding: 2px 8px;
+}

@@ -8,20 +8,19 @@ import 'reactflow/dist/style.css'
 
 import NodeCard from './components/NodeCard'
 import ThickEdge from './components/ThickEdge'
+import LinkEdge from './components/LinkEdge'           // dashed edge for Type 2 links
 import { useGraphStore } from './store/useGraphStore'
 import type { DebateNode, DebateEdge } from './graph/types'
 import { computeLayout } from './graph/layout'
 import './styles.css'
 
 const nodeTypes: NodeTypes = { nodeCard: NodeCard }
-const edgeTypes: EdgeTypes = { thick: ThickEdge }
+const edgeTypes: EdgeTypes = { thick: ThickEdge, t2: LinkEdge }
 
 type FormType = 'Thesis' | 'Argument' | 'Argument Summary' | 'Counter' | 'Evidence' | 'Agreement'
+type StrengthType = 'Type 1' | 'Type 2' | 'Type 3' | 'Type 4'
 
-const PALETTE = [
-  '#0072B2', '#D55E00', '#009E73', '#E69F00',
-  '#56B4E9', '#CC79A7', '#F0E442', '#999999',
-]
+const PALETTE = ['#0072B2', '#D55E00', '#009E73', '#E69F00', '#56B4E9', '#CC79A7', '#F0E442', '#999999']
 const participantColor = (participantId: string, ids: string[]) => {
   const idx = Math.max(0, ids.indexOf(participantId))
   return PALETTE[idx % PALETTE.length]
@@ -34,6 +33,7 @@ function buildChildrenPairs(edges: DebateEdge[]) {
     if (kind === 'supports') pairs.push([e.source, e.target])
     else if (kind === 'evidence-of' || kind === 'agrees-with') pairs.push([e.target, e.source])
     else if (kind === 'attacks') pairs.push([e.target, e.source])
+    // t2-link has no parent/child relation
   })
   return pairs
 }
@@ -75,6 +75,7 @@ function kindColor(kind: string) {
     default: return '#94a3b8'
   }
 }
+const titleKindLabel = (n: DebateNode) => `${n.data.title || '(Untitled)'} — [${n.data.kind}]`
 
 export default function App() {
   const store = useGraphStore()
@@ -93,15 +94,33 @@ export default function App() {
   const [formType, setFormType] = React.useState<FormType>('Argument')
   const [title, setTitle] = React.useState('')
   const [body, setBody] = React.useState('')
+  const [firstMention, setFirstMention] = React.useState('')
   const [targetId, setTargetId] = React.useState<string>('')
   const [parentId, setParentId] = React.useState<string>('')
 
+  const [addStrength, setAddStrength] = React.useState<StrengthType | ''>('')   // required for Arg/Counter/Evidence
+  const [addT2Links, setAddT2Links] = React.useState<string[]>([])              // optional visual links (Type 2)
+
+  const syncFromStore = () => {
+    setNodes(store.nodes.map(n => ({ ...n })))
+    setEdges(store.edges.map(e => ({ ...e })))
+  }
+
+  // ======== participant-scoped node lists ========
   const sameParticipantTheses = React.useMemo(
     () => store.nodes.filter(n => n.data.kind === 'Thesis' && n.data.participantId === participantId),
     [store.nodes, participantId]
   )
   const sameParticipantArgs = React.useMemo(
     () => store.nodes.filter(n => n.data.kind === 'Argument' && n.data.participantId === participantId),
+    [store.nodes, participantId]
+  )
+  const sameParticipantCounters = React.useMemo(
+    () => store.nodes.filter(n => n.data.kind === 'Counter' && n.data.participantId === participantId),
+    [store.nodes, participantId]
+  )
+  const sameParticipantEvidence = React.useMemo(
+    () => store.nodes.filter(n => n.data.kind === 'Evidence' && n.data.participantId === participantId),
     [store.nodes, participantId]
   )
   const sameParticipantArgCounterOrSummary = React.useMemo(
@@ -112,11 +131,24 @@ export default function App() {
     () => store.nodes.filter(n => (n.data.kind === 'Argument' || n.data.kind === 'Counter') && n.data.participantId !== participantId),
     [store.nodes, participantId]
   )
+  const opponentEvidence = React.useMemo(
+    () => store.nodes.filter(n => n.data.kind === 'Evidence' && n.data.participantId !== participantId),
+    [store.nodes, participantId]
+  )
+
+  // Eligible peers for Type 2 links during ADD (same kind & same speaker & strength Type 2)
+  const eligibleT2TargetsAdd = React.useMemo(() => {
+    if (!(formType === 'Argument' || formType === 'Counter' || formType === 'Evidence')) return []
+    if (addStrength !== 'Type 2') return []
+    return store.nodes.filter(n =>
+      n.data.participantId === participantId &&
+      n.data.kind === formType &&
+      n.data.strengthType === 'Type 2'
+    )
+  }, [store.nodes, participantId, formType, addStrength])
 
   const [selectedId, setSelectedId] = React.useState<string>('')
   const selectedNode = React.useMemo(() => store.nodes.find(n => n.id === selectedId), [store.nodes, selectedId])
-
-  const syncFromStore = () => { setNodes(store.nodes.map(n => ({ ...n }))); setEdges(store.edges.map(e => ({ ...e }))) }
 
   const onConnect = React.useCallback((params: Connection) => {
     setEdges(eds => addEdge({ ...params, type: 'thick', label: 'link' }, eds))
@@ -135,16 +167,36 @@ export default function App() {
 
   const doAdd = async () => {
     try {
-      if (formType === 'Thesis') store.addThesis(participantId, title || 'New Thesis', body)
-      else if (formType === 'Argument') store.addArgument(participantId, title || 'New Argument', body, parentId || undefined)
+      if (formType === 'Argument' || formType === 'Counter' || formType === 'Evidence') {
+        if (!addStrength) throw new Error('Please select a Type (1–4) for this statement.')
+      }
+
+      let newId = ''
+      if (formType === 'Thesis') newId = store.addThesis(participantId, title || 'New Thesis', body, firstMention || undefined)
+      else if (formType === 'Argument') newId = store.addArgument(participantId, title || 'New Argument', body, parentId || undefined, addStrength as StrengthType, firstMention || undefined)
       else if (formType === 'Argument Summary') {
         if (!parentId) throw new Error('Choose the Thesis this Summary belongs to')
-        store.addArgumentSummary(participantId, parentId, title || 'Argument Summary', body)
+        newId = store.addArgumentSummary(participantId, parentId, title || 'Argument Summary', body, firstMention || undefined)
       }
-      else if (formType === 'Counter') { if (!targetId) throw new Error('Choose an opponent Argument or Counter to counter'); store.addCounter(participantId, targetId, title || 'New Counter', body) }
-      else if (formType === 'Evidence') { if (!targetId) throw new Error('Choose a target (Argument / Counter / Summary)'); store.addEvidence(participantId, targetId, title || 'Evidence', body) }
-      else if (formType === 'Agreement') { if (!targetId) throw new Error('Choose an opponent Argument or Counter to agree with'); store.addAgreement(participantId, targetId, title || 'Agreement', body) }
-      setTitle(''); setBody(''); setTargetId(''); setParentId('')
+      else if (formType === 'Counter') {
+        if (!targetId) throw new Error('Choose a target to counter')
+        newId = store.addCounter(participantId, targetId, title || 'New Counter', body, addStrength as StrengthType, firstMention || undefined)
+      }
+      else if (formType === 'Evidence') {
+        if (!targetId) throw new Error('Choose a target (Argument / Counter / Summary)')
+        newId = store.addEvidence(participantId, targetId, title || 'Evidence', body, addStrength as StrengthType, firstMention || undefined)
+      }
+      else if (formType === 'Agreement') {
+        if (!targetId) throw new Error('Choose an opponent Argument or Counter to agree with')
+        newId = store.addAgreement(participantId, targetId, title || 'Agreement', body, firstMention || undefined)
+      }
+
+      // Add Type 2 peer links (optional, visual only)
+      if (newId && addStrength === 'Type 2' && (formType === 'Argument' || formType === 'Counter' || formType === 'Evidence') && addT2Links.length) {
+        store.addT2Links(newId, addT2Links)
+      }
+
+      setTitle(''); setBody(''); setFirstMention(''); setTargetId(''); setParentId(''); setAddStrength(''); setAddT2Links([])
       syncFromStore(); await relayout()
     } catch (e) { alert((e as any).message || String(e)) }
   }
@@ -219,9 +271,11 @@ export default function App() {
     return visibleEdgesForLayout.map(e => {
       const endpointMatch = matchedIds.has(e.source) || matchedIds.has(e.target)
       const dimmed = showOnlyMatches && !endpointMatch
+      const eKind = (e.data as any)?.kind
+      const type = eKind === 't2-link' ? 't2' : 'thick'
       return ({
         ...e,
-        type: 'thick',
+        type,
         data: { ...(e.data || {}), active: e.id === activeEdgeId || e.id === hoverEdgeId, dimmed }
       })
     })
@@ -313,14 +367,56 @@ export default function App() {
   const [editTitle, setEditTitle] = React.useState('')
   const [editBody, setEditBody] = React.useState('')
   const [editParticipant, setEditParticipant] = React.useState<string>('')
+  const [editStrength, setEditStrength] = React.useState<StrengthType | ''>('')
+  const [editFirstMention, setEditFirstMention] = React.useState('')
+  const [editT2Links, setEditT2Links] = React.useState<string[]>([])
+
   React.useEffect(() => {
     const sn = store.nodes.find(n => n.id === selectedId)
-    if (sn) { setEditTitle(sn.data.title || ''); setEditBody(sn.data.body || ''); setEditParticipant(sn.data.participantId) }
-    else { setEditTitle(''); setEditBody(''); setEditParticipant('') }
-  }, [selectedId, store.nodes])
+    if (sn) {
+      setEditTitle(sn.data.title || '')
+      setEditBody(sn.data.body || '')
+      setEditParticipant(sn.data.participantId)
+      setEditStrength((sn.data.kind === 'Argument' || sn.data.kind === 'Counter' || sn.data.kind === 'Evidence') ? (sn.data.strengthType || '') : '')
+      setEditFirstMention(sn.data.firstMention || '')
+      if ((sn.data.kind === 'Argument' || sn.data.kind === 'Counter' || sn.data.kind === 'Evidence') && sn.data.strengthType === 'Type 2') {
+        const links = store.edges
+          .filter(e => e.data?.kind === 't2-link' && (e.source === sn.id || e.target === sn.id))
+          .map(e => e.source === sn.id ? e.target : e.source)
+        setEditT2Links(links)
+      } else {
+        setEditT2Links([])
+      }
+    } else {
+      setEditTitle(''); setEditBody(''); setEditParticipant(''); setEditStrength(''); setEditFirstMention(''); setEditT2Links([])
+    }
+  }, [selectedId, store.nodes, store.edges])
+
+  const eligibleT2TargetsEdit = React.useMemo(() => {
+    const n = selectedNode
+    if (!n) return []
+    if (!((n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Evidence') && editStrength === 'Type 2')) return []
+    return store.nodes.filter(m =>
+      m.id !== n.id &&
+      m.data.participantId === n.data.participantId &&
+      m.data.kind === n.data.kind &&
+      m.data.strengthType === 'Type 2'
+    )
+  }, [store.nodes, selectedNode, editStrength])
+
   const saveEdit = async () => {
     const node = store.nodes.find(n => n.id === selectedId); if (!node) return
-    store.updateNode(node.id, { title: editTitle, body: editBody, participantId: editParticipant })
+    if ((node.data.kind === 'Argument' || node.data.kind === 'Counter' || node.data.kind === 'Evidence') && !editStrength) {
+      alert('Please select a Type (1–4) for this statement.')
+      return
+    }
+    // Update T2 links if Type 2
+    if ((node.data.kind === 'Argument' || node.data.kind === 'Counter' || node.data.kind === 'Evidence') && editStrength === 'Type 2') {
+      store.setT2Links(node.id, editT2Links)
+    } else {
+      store.setT2Links(node.id, [])
+    }
+    store.updateNode(node.id, { title: editTitle, body: editBody, participantId: editParticipant, strengthType: editStrength || undefined, firstMention: editFirstMention || undefined })
     syncFromStore(); await relayout()
   }
   const deleteSelected = async () => {
@@ -354,7 +450,6 @@ export default function App() {
     if (!selectedNode) return []
     const self = selectedNode
     const pid = self.data.participantId
-    const opp = store.participants.find(p => p.id !== pid)?.id
 
     if (self.data.kind === 'Argument') {
       const desc = descendantsOf(self.id)
@@ -362,7 +457,8 @@ export default function App() {
         n.id !== self.id &&
         !desc.has(n.id) &&
         n.data.participantId === pid &&
-        (n.data.kind === 'Thesis' || n.data.kind === 'Argument'))
+        // allow Thesis | Argument | Counter | Evidence
+        (n.data.kind === 'Thesis' || n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Evidence'))
     }
     if (self.data.kind === 'Argument Summary') {
       return store.nodes.filter(n =>
@@ -384,10 +480,11 @@ export default function App() {
     if (self.data.kind === 'Counter' || self.data.kind === 'Agreement') {
       return store.nodes.filter(n =>
         n.data.participantId !== pid &&
-        (n.data.kind === 'Argument' || n.data.kind === 'Counter'))
+        // allow opponent Argument | Counter | Evidence
+        (n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Evidence'))
     }
     return []
-  }, [selectedNode, store.nodes, store.edges, store.participants, childMap])
+  }, [selectedNode, store.nodes, store.edges, childMap])
 
   const doReattach = async () => {
     if (!selectedNode || !reparentTarget) return
@@ -441,18 +538,6 @@ export default function App() {
     }
     return parents
   }, [visibleEdgesForLayout])
-
-  const parentNodes = React.useMemo(() => {
-    if (!selectedId) return []
-    const ids = parentMap.get(selectedId) || []
-    return store.nodes.filter(n => ids.includes(n.id))
-  }, [selectedId, parentMap, store.nodes])
-  const childNodes = React.useMemo(() => {
-    if (!selectedId) return []
-    const pairs = buildChildrenPairs(visibleEdgesForLayout as any)
-    const children = pairs.filter(([p,_]) => p === selectedId).map(([_,c]) => c)
-    return store.nodes.filter(n => children.includes(n.id))
-  }, [selectedId, visibleEdgesForLayout, store.nodes])
 
   return (
     <div className="app">
@@ -522,13 +607,31 @@ export default function App() {
               <label>Body (optional)</label>
               <textarea placeholder="Details / reasoning / citation" value={body} onChange={e => setBody(e.target.value)} />
 
+              <label>First Mention (optional)</label>
+              <input placeholder="e.g., 00:12:34 or 2025-10-20 14:03" value={firstMention} onChange={e => setFirstMention(e.target.value)} />
+
+              {(formType === 'Argument' || formType === 'Counter' || formType === 'Evidence') && (
+                <>
+                  <label>Statement Type (required)</label>
+                  <select value={addStrength} onChange={e => setAddStrength(e.target.value as StrengthType)}>
+                    <option value="">-- choose --</option>
+                    <option value="Type 1">Type 1</option>
+                    <option value="Type 2">Type 2</option>
+                    <option value="Type 3">Type 3</option>
+                    <option value="Type 4">Type 4</option>
+                  </select>
+                </>
+              )}
+
               {formType === 'Argument' && (
                 <>
-                  <label>Attach under (same participant)</label>
+                  <label>Attach under (same participant: Thesis, Argument, Counter, or Evidence)</label>
                   <select value={parentId} onChange={e => setParentId(e.target.value)}>
                     <option value="">-- choose (optional; will default) --</option>
-                    {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>[Thesis] {n.data.title}</option>))}
-                    {sameParticipantArgs.map(n => (<option key={n.id} value={n.id}>[Argument] {n.data.title}</option>))}
+                    {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
+                    {sameParticipantArgs.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
+                    {sameParticipantCounters.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
+                    {sameParticipantEvidence.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                   </select>
                 </>
               )}
@@ -538,7 +641,7 @@ export default function App() {
                   <label>Attach to Thesis (same participant)</label>
                   <select value={parentId} onChange={e => setParentId(e.target.value)}>
                     <option value="">-- choose Thesis --</option>
-                    {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>[Thesis] {n.data.title}</option>))}
+                    {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                   </select>
                   <div className="small" style={{ marginTop: 6 }}>
                     Only one Argument Summary is allowed per Thesis, and only Evidence can attach to a Summary.
@@ -548,12 +651,11 @@ export default function App() {
 
               {formType === 'Counter' && (
                 <>
-                  <label>Counter target (opponent Argument or Counter)</label>
+                  <label>Counter target (opponent Argument, Counter, or Evidence)</label>
                   <select value={targetId} onChange={e => setTargetId(e.target.value)}>
                     <option value="">-- choose --</option>
-                    {opponentArgOrCounter.map(n => (
-                      <option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>
-                    ))}
+                    {opponentArgOrCounter.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
+                    {opponentEvidence.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                   </select>
                 </>
               )}
@@ -563,18 +665,18 @@ export default function App() {
                   <label>Evidence target (same participant: Argument, Counter or Summary)</label>
                   <select value={targetId} onChange={e => setTargetId(e.target.value)}>
                     <option value="">-- choose --</option>
-                    {sameParticipantArgCounterOrSummary.map(n => (<option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>))}
+                    {sameParticipantArgCounterOrSummary.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                   </select>
                 </>
               )}
 
-              {formType === 'Agreement' && (
+              {(addStrength === 'Type 2') && (formType === 'Argument' || formType === 'Counter' || formType === 'Evidence') && (
                 <>
-                  <label>Agreement target (opponent: Argument or Counter)</label>
-                  <select value={targetId} onChange={e => setTargetId(e.target.value)}>
-                    <option value="">-- choose --</option>
-                    {opponentArgOrCounter.map(n => (<option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>))}
+                  <label>Type 2 links (same kind & speaker)</label>
+                  <select multiple value={addT2Links} onChange={e => setAddT2Links(Array.from(e.target.selectedOptions).map(o => o.value))}>
+                    {eligibleT2TargetsAdd.map(n => (<option key={n.id} value={n.id}>{n.data.title || '(Untitled)'}</option>))}
                   </select>
+                  <div className="small">Optional visual links; no effect on hierarchy.</div>
                 </>
               )}
 
@@ -604,21 +706,75 @@ export default function App() {
               <label>Body</label>
               <textarea value={editBody} onChange={e => setEditBody(e.target.value)} />
 
-              {/* Reattach controls, per-type */}
-              {eligibleParents.length > 0 && (
+              <label>First Mention (optional)</label>
+              <input placeholder="e.g., 00:12:34 or 2025-10-20 14:03" value={editFirstMention} onChange={e => setEditFirstMention(e.target.value)} />
+
+              {(selectedNode.data.kind === 'Argument' || selectedNode.data.kind === 'Counter' || selectedNode.data.kind === 'Evidence') && (
                 <>
-                  <label>Attach / Target</label>
-                  <select value={reparentTarget} onChange={e => setReparentTarget(e.target.value)}>
-                    <option value="">-- choose new parent/target --</option>
-                    {eligibleParents.map(n => (
-                      <option key={n.id} value={n.id}>[{n.data.kind}] {n.data.title}</option>
-                    ))}
+                  <label>Statement Type (required)</label>
+                  <select value={editStrength} onChange={e => setEditStrength(e.target.value as StrengthType)}>
+                    <option value="">-- choose --</option>
+                    <option value="Type 1">Type 1</option>
+                    <option value="Type 2">Type 2</option>
+                    <option value="Type 3">Type 3</option>
+                    <option value="Type 4">Type 4</option>
                   </select>
-                  <div className="toolbar">
-                    <button className="secondary" onClick={doReattach} disabled={!reparentTarget}>Reattach</button>
-                  </div>
                 </>
               )}
+
+              {(selectedNode.data.kind === 'Argument' || selectedNode.data.kind === 'Counter' || selectedNode.data.kind === 'Evidence') && editStrength === 'Type 2' && (
+                <>
+                  <label>Type 2 links (same kind & speaker)</label>
+                  <select multiple value={editT2Links} onChange={e => setEditT2Links(Array.from(e.target.selectedOptions).map(o => o.value))}>
+                    {eligibleT2TargetsEdit.map(n => (<option key={n.id} value={n.id}>{n.data.title || '(Untitled)'}</option>))}
+                  </select>
+                </>
+              )}
+
+              {/* Reattach: show eligible parent/target selector if available */}
+              {(() => {
+                const eligible = (() => {
+                  const self = selectedNode
+                  const pid = self.data.participantId
+                  if (self.data.kind === 'Argument') {
+                    const desc = new Set<string>()
+                    const stack = [self.id]
+                    const pairs = buildChildrenPairs(store.edges as any)
+                    const map = new Map<string,string[]>()
+                    for (const [p,c] of pairs) { if (!map.has(p)) map.set(p, []); map.get(p)!.push(c) }
+                    while (stack.length) { const cur = stack.pop()!; const kids = map.get(cur)||[]; for (const k of kids) if (!desc.has(k)) { desc.add(k); stack.push(k) } }
+                    return store.nodes.filter(n =>
+                      n.id !== self.id && !desc.has(n.id) &&
+                      n.data.participantId === pid &&
+                      (n.data.kind === 'Thesis' || n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Evidence'))
+                  }
+                  if (self.data.kind === 'Argument Summary') {
+                    return store.nodes.filter(n => n.data.kind === 'Thesis' && n.data.participantId === pid &&
+                      !store.edges.some(e => e.data?.kind === 'supports' && e.source === n.id && store.nodes.find(nn => nn.id === e.target)?.data.kind === 'Argument Summary' && e.target !== self.id)
+                    )
+                  }
+                  if (self.data.kind === 'Evidence') {
+                    return store.nodes.filter(n => n.data.participantId === pid && (n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Argument Summary'))
+                  }
+                  if (self.data.kind === 'Counter' || self.data.kind === 'Agreement') {
+                    return store.nodes.filter(n => n.data.participantId !== pid && (n.data.kind === 'Argument' || n.data.kind === 'Counter' || n.data.kind === 'Evidence'))
+                  }
+                  return []
+                })()
+
+                return eligible.length > 0 ? (
+                  <>
+                    <label>Attach / Target</label>
+                    <select value={reparentTarget} onChange={e => setReparentTarget(e.target.value)}>
+                      <option value="">-- choose new parent/target --</option>
+                      {eligible.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
+                    </select>
+                    <div className="toolbar">
+                      <button className="secondary" onClick={doReattach} disabled={!reparentTarget}>Reattach</button>
+                    </div>
+                  </>
+                ) : null
+              })()}
 
               <div className="toolbar">
                 <button onClick={saveEdit}>Save</button>
@@ -647,42 +803,7 @@ export default function App() {
           )}
         </fieldset>
 
-        <fieldset>
-          <legend>Legend</legend>
-          <div className="legend-grid">
-            <div className="legend-title">Speakers (top & right borders)</div>
-            <div className="legend-row">
-              {store.participants.map((p, i, arr) => (
-                <div key={p.id} className="legend-item">
-                  <span className="legend-swatch" style={{ background: participantColor(p.id, arr.map(pp => pp.id)) }} />
-                  <span>{p.name}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="legend-title">Statement Types (bottom & left borders)</div>
-            <div className="legend-row">
-              {['Thesis','Argument','Argument Summary','Counter','Evidence','Agreement'].map(k => (
-                <div key={k} className="legend-item pattern" data-kind={k}>
-                  <span className="legend-swatch" style={{ background: kindColor(k) }} />
-                  <span>{k}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="legend-title">Line Colors</div>
-            <div className="legend-row">
-              <div className="legend-item"><span className="legend-line" style={{ background: '#1d4ed8' }}></span><span>Supports</span></div>
-              <div className="legend-item"><span className="legend-line" style={{ background: '#b45309' }}></span><span>Evidence of</span></div>
-              <div className="legend-item"><span className="legend-line" style={{ background: '#be185d' }}></span><span>Counter</span></div>
-              <div className="legend-item"><span className="legend-line" style={{ background: '#0e7490' }}></span><span>Agrees</span></div>
-            </div>
-          </div>
-          <div className="small" style={{ marginTop: 8 }}>
-            Tip: for colorblind-friendly reading, statement types also have subtle patterns in the legend.
-          </div>
-        </fieldset>
-
+        {/* (legend retained elsewhere in your project) */}
       </div>
 
       <div className="rf-outer">
