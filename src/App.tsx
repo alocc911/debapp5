@@ -1016,12 +1016,12 @@ export default function App() {
             ))}
 
             <div className="legend__item" style={{ marginTop: 6 }}>
-              <div className="legend__swatch" style={{ background: '#eff6ff', borderRadius: 8, border: '1px solid #bfdbfe' }} />
-              <div className="legend__label">Type 2 — If this, and the stated othe argument are true, than the main claim is true (dashed link)</div>
-            </div>
-            <div className="legend__item">
               <div className="legend__swatch" style={{ background: '#ecfdf5', borderRadius: 8, border: '1px solid #a7f3d0' }} />
               <div className="legend__label">Type 1 - If this is true, than the main claim is true</div>
+            </div>
+            <div className="legend__item">
+              <div className="legend__swatch" style={{ background: '#eff6ff', borderRadius: 8, border: '1px solid #bfdbfe' }} />
+              <div className="legend__label">Type 2 — If this, and the specifically described other argument is true, than the main claim is true (dashed link connects to other argument)</div>
             </div>
             <div className="legend__item">
               <div className="legend__swatch" style={{ background: '#f8fafc', borderRadius: 8, border: '1px solid #cbd5e1' }} />
@@ -1029,7 +1029,7 @@ export default function App() {
             </div>
             <div className="legend__item">
               <div className="legend__swatch" style={{ background: 'repeating-linear-gradient(135deg,#f3f4f6, #f3f4f6 6px,#e5e7eb 6px,#e5e7eb 12px)', borderRadius: 8, border: '1px solid #9ca3af' }} />
-              <div className="legend__label">Type 4 — no meaningful support</div>
+              <div className="legend__label">Type 4 — This adds no meaningful support</div>
             </div>
           </div>
         </div>
