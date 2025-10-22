@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactFlow, {
   Background,
-  useNodesState, useEdgesState, addEdge, Connection, NodeTypes, NodeMouseHandler,
-  applyNodeChanges, NodeChange, EdgeTypes, OnEdgeClick, OnEdgeMouseEnter, OnEdgeMouseLeave
+  useNodesState, useEdgesState, addEdge, Connection, NodeTypes,
+  applyNodeChanges, NodeChange, EdgeTypes
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 
@@ -79,8 +79,14 @@ const titleKindLabel = (n: DebateNode) => `${n.data.title || '(Untitled)'} — [
 
 export default function App() {
   const store = useGraphStore()
-  const [nodes, setNodes] = useNodesState<DebateNode>(store.nodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState<DebateEdge>(store.edges)
+
+  // Add this with other state declarations near the top of the component
+  const [attachmentSelectionActive, setAttachmentSelectionActive] = React.useState(false)
+  const [filtersOpen, setFiltersOpen] = React.useState(false)
+
+  // loosen the reactflow state generics to avoid mismatched types from the store
+  const [nodes, setNodes] = useNodesState<any>(store.nodes)
+  const [edges, setEdges, onEdgesChange] = useEdgesState<any>(store.edges)
 
   const [query, setQuery] = React.useState('')
   const [showOnlyMatches, setShowOnlyMatches] = React.useState(false)
@@ -147,23 +153,80 @@ export default function App() {
     )
   }, [store.nodes, participantId, formType, addStrength])
 
-  const [selectedId, setSelectedId] = React.useState<string>('')
+  // --- computed eligible id lists for Add-panel dropdown highlighting ---
+  const eligibleAddParentIds = React.useMemo(() => {
+    // for adding an Argument: same participant Thesis|Argument|Counter|Evidence
+    return [
+      ...sameParticipantTheses,
+      ...sameParticipantArgs,
+      ...sameParticipantCounters,
+      ...sameParticipantEvidence
+    ].map(n => n.id)
+  }, [sameParticipantTheses, sameParticipantArgs, sameParticipantCounters, sameParticipantEvidence])
+
+  const eligibleAddSummaryIds = React.useMemo(() => sameParticipantTheses.map(n => n.id), [sameParticipantTheses])
+  const eligibleAddCounterTargetIds = React.useMemo(() => [...opponentArgOrCounter, ...opponentEvidence].map(n => n.id), [opponentArgOrCounter, opponentEvidence])
+  const eligibleAddEvidenceTargetIds = React.useMemo(() => sameParticipantArgCounterOrSummary.map(n => n.id), [sameParticipantArgCounterOrSummary])
+ const [addOpen, setAddOpen] = React.useState(false)
+
+  // clear highlights when Add panel closes
+  React.useEffect(() => {
+    if (!addOpen) useGraphStore.getState().setEligibleAttachTargets([])
+  }, [addOpen])
+
+  // replace local selectedId state with store-backed selectedNodeId
+  // const [selectedId, setSelectedId] = React.useState<string>('')
+  // const selectedId = store.selectedNodeId
+  // const setSelectedId = (id: string) => store.setSelectedNodeId(id)
+  // subscribe to selected node id and its setter
+  const selectedId = useGraphStore(s => s.selectedNodeId)
+  const setSelectedId = useGraphStore(s => s.setSelectedNodeId)
+
   const selectedNode = React.useMemo(() => store.nodes.find(n => n.id === selectedId), [store.nodes, selectedId])
 
   const onConnect = React.useCallback((params: Connection) => {
     setEdges(eds => addEdge({ ...params, type: 'thick', label: 'link' }, eds))
   }, [setEdges])
 
-  const onNodeClick: NodeMouseHandler = (_, n) => setSelectedId(n.id)
-  const onPaneClick = () => { setSelectedId(''); setActiveEdgeId('') }
-
-  const onNodeDoubleClick: NodeMouseHandler = async (_, n) => {
-    const node = store.nodes.find(x => x.id === n.id)
-    if (!node) return
-    store.updateNode(n.id, { collapsed: !node.data.collapsed })
-    syncFromStore()
-    await relayout()
+  const onNodeClick = (_evt: any, n: any) => {
+    if (attachmentSelectionActive && store.eligibleAttachTargets.includes(n.id)) {
+      if (formType === 'Argument' || formType === 'Argument Summary') {
+        setParentId(n.id);
+      } else if (formType === 'Counter' || formType === 'Evidence') {
+        setTargetId(n.id);
+      } else if (selectedNode) { // This is for reattachment in edit mode
+        setReparentTarget(n.id);
+      }
+      setAttachmentSelectionActive(false); // Clear selection mode after choosing
+      return;
+    }
+    setSelectedId(n.id);
   }
+  const onPaneClick = () => { 
+    setSelectedId(''); 
+    setActiveEdgeId('');
+    setAttachmentSelectionActive(false);
+    store.setLinkHighlight(null);
+  }
+
+  const [activeEdgeId, setActiveEdgeId] = React.useState<string>('')
+  const [hoverEdgeId, setHoverEdgeId] = React.useState<string>('')
+  
+  const onEdgeClick = (_evt: any, edge: any) => {
+    // Check if target node is self-collapsed first
+    const targetNode = store.nodes.find(n => n.id === edge.target);
+    if (targetNode?.data.selfCollapsed) {
+      store.updateNode(edge.target, {
+        collapsed: false,
+        selfCollapsed: false
+      });
+    } else {
+      setActiveEdgeId(edge.id);
+    }
+  }
+
+  const onEdgeMouseEnter = (_evt: any, edge: any) => setHoverEdgeId(edge.id)
+  const onEdgeMouseLeave = (_evt?: any) => setHoverEdgeId('')
 
   const doAdd = async () => {
     try {
@@ -239,12 +302,6 @@ export default function App() {
     })
   }, [edges, hiddenDueToCollapse])
 
-  const [activeEdgeId, setActiveEdgeId] = React.useState<string>('')
-  const [hoverEdgeId, setHoverEdgeId] = React.useState<string>('')
-  const onEdgeClick: OnEdgeClick = (_, edge) => setActiveEdgeId(edge.id)
-  const onEdgeMouseEnter: OnEdgeMouseEnter = (_, edge) => setHoverEdgeId(edge.id)
-  const onEdgeMouseLeave: OnEdgeMouseLeave = () => setHoverEdgeId('')
-
   const activeEdge = React.useMemo(
     () => visibleEdgesForLayout.find(e => e.id === activeEdgeId) || visibleEdgesForLayout.find(e => e.id === hoverEdgeId),
     [visibleEdgesForLayout, activeEdgeId, hoverEdgeId]
@@ -255,6 +312,9 @@ export default function App() {
   }, [activeEdge])
 
   const renderNodes = React.useMemo(() => {
+    const linkHighlight = store.linkHighlight;
+    const { participants: activeParticipants, kinds: activeKinds } = store.filters;
+    
     return visibleNodesForLayout.map(n => ({
       ...n,
       data: {
@@ -262,10 +322,19 @@ export default function App() {
         hit: matchedIds.has(n.id),
         edgeActive: activeNodeIds.has(n.id),
         searchTerms,
-        dimmed: showOnlyMatches && !matchedIds.has(n.id)
+        dimmed: (showOnlyMatches && !matchedIds.has(n.id)) || 
+                (attachmentSelectionActive && store.eligibleAttachTargets.length > 0 && 
+                 !store.eligibleAttachTargets.includes(n.id) && 
+                 n.id !== selectedId) ||
+                (linkHighlight && n.id !== linkHighlight.sourceId && n.id !== linkHighlight.targetId) ||
+                // Add filter conditions:
+                (activeParticipants.size > 0 && !activeParticipants.has(n.data.participantId)) ||
+                (activeKinds.size > 0 && !activeKinds.has(n.data.kind))
       }
     }))
-  }, [visibleNodesForLayout, matchedIds, searchTerms, activeNodeIds, showOnlyMatches])
+  }, [visibleNodesForLayout, matchedIds, searchTerms, activeNodeIds, 
+      showOnlyMatches, store.eligibleAttachTargets, selectedId, attachmentSelectionActive,
+      store.linkHighlight, store.filters]) // Add filters dependency
 
   const renderEdges = React.useMemo(() => {
     return visibleEdgesForLayout.map(e => {
@@ -445,7 +514,15 @@ export default function App() {
     return seen
   }
 
-  const [reparentTarget, setReparentTarget] = React.useState<string>('')
+  // Replace local reparentTarget state with store-backed value
+  // const [reparentTarget, setReparentTarget] = React.useState<string>('')
+  // const reparentTarget = store.reparentTargetId
+  // const setReparentTarget = (id: string) => store.setReparentTargetId(id)
+  // subscribe to reparent target id and its setter
+  const reparentTarget = useGraphStore(s => s.reparentTargetId)
+  const setReparentTarget = useGraphStore(s => s.setReparentTargetId)
+
+  // existing computation of eligibleParents (unchanged)...
   const eligibleParents = React.useMemo(() => {
     if (!selectedNode) return []
     const self = selectedNode
@@ -486,6 +563,18 @@ export default function App() {
     return []
   }, [selectedNode, store.nodes, store.edges, childMap])
 
+  // Sync eligibleParents (ids) into the store so NodeCard can highlight them
+  React.useEffect(() => {
+    // use selectors for setters so component updates reliably when those store values change
+    const setEligible = useGraphStore.getState().setEligibleAttachTargets
+    const clearReparent = useGraphStore.getState().setReparentTargetId
+    setEligible(eligibleParents.map(n => n.id))
+    // if current reparentTarget isn't in eligible list, clear it
+    if (reparentTarget && !eligibleParents.find(n => n.id === reparentTarget)) {
+      clearReparent('')
+    }
+  }, [eligibleParents.map(n => n.id).join('|'), reparentTarget]) // keep effect triggered when eligible set or selected target changes
+
   const doReattach = async () => {
     if (!selectedNode || !reparentTarget) return
     const kind = selectedNode.data.kind
@@ -502,7 +591,10 @@ export default function App() {
         alert('This statement type cannot be reattached.')
         return
       }
-      setReparentTarget('')
+      // Clear both the reparent target and the selection mode
+      const clearReparent = useGraphStore.getState().setReparentTargetId
+      clearReparent('')
+      setAttachmentSelectionActive(false)
       syncFromStore(); await relayout()
     } catch (e) {
       alert((e as any).message || String(e))
@@ -526,7 +618,7 @@ export default function App() {
     catch (e) { alert('Failed to load file: ' + ((e as any)?.message || String(e))) }
   }
 
-  const [addOpen, setAddOpen] = React.useState(false)
+ 
   const [participantsOpen, setParticipantsOpen] = React.useState(false)
 
   const parentMap = React.useMemo(() => {
@@ -626,7 +718,18 @@ export default function App() {
               {formType === 'Argument' && (
                 <>
                   <label>Attach under (same participant: Thesis, Argument, Counter, or Evidence)</label>
-                  <select value={parentId} onChange={e => setParentId(e.target.value)}>
+                  <select
+                    value={parentId}
+                    onChange={e => setParentId(e.target.value)}
+                    onFocus={() => {
+                      store.setEligibleAttachTargets(eligibleAddParentIds)
+                      setAttachmentSelectionActive(true)
+                    }}
+                    onBlur={() => {
+                      // Don't clear eligibleAttachTargets or attachmentSelectionActive on blur
+                      // Let it persist until selection is made or cancelled
+                    }}
+                  >
                     <option value="">-- choose (optional; will default) --</option>
                     {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                     {sameParticipantArgs.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
@@ -639,7 +742,18 @@ export default function App() {
               {formType === 'Argument Summary' && (
                 <>
                   <label>Attach to Thesis (same participant)</label>
-                  <select value={parentId} onChange={e => setParentId(e.target.value)}>
+                  <select
+                    value={parentId}
+                    onChange={e => setParentId(e.target.value)}
+                    onFocus={() => {
+                      store.setEligibleAttachTargets(eligibleAddSummaryIds)
+                      setAttachmentSelectionActive(true)
+                    }}
+                    onBlur={() => {
+                      // Don't clear eligibleAttachTargets or attachmentSelectionActive on blur
+                      // Let it persist until selection is made or cancelled
+                    }}
+                  >
                     <option value="">-- choose Thesis --</option>
                     {sameParticipantTheses.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                   </select>
@@ -652,7 +766,18 @@ export default function App() {
               {formType === 'Counter' && (
                 <>
                   <label>Counter target (opponent Argument, Counter, or Evidence)</label>
-                  <select value={targetId} onChange={e => setTargetId(e.target.value)}>
+                  <select
+                    value={targetId}
+                    onChange={e => setTargetId(e.target.value)}
+                    onFocus={() => {
+                      store.setEligibleAttachTargets(eligibleAddCounterTargetIds)
+                      setAttachmentSelectionActive(true)
+                    }}
+                    onBlur={() => {
+                      // Don't clear eligibleAttachTargets or attachmentSelectionActive on blur
+                      // Let it persist until selection is made or cancelled
+                    }}
+                  >
                     <option value="">-- choose --</option>
                     {opponentArgOrCounter.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                     {opponentEvidence.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
@@ -663,7 +788,18 @@ export default function App() {
               {formType === 'Evidence' && (
                 <>
                   <label>Evidence target (same participant: Argument, Counter or Summary)</label>
-                  <select value={targetId} onChange={e => setTargetId(e.target.value)}>
+                  <select
+                    value={targetId}
+                    onChange={e => setTargetId(e.target.value)}
+                    onFocus={() => {
+                      store.setEligibleAttachTargets(eligibleAddEvidenceTargetIds)
+                      setAttachmentSelectionActive(true)
+                    }}
+                    onBlur={() => {
+                      // Don't clear eligibleAttachTargets or attachmentSelectionActive on blur
+                      // Let it persist until selection is made or cancelled
+                    }}
+                  >
                     <option value="">-- choose --</option>
                     {sameParticipantArgCounterOrSummary.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                   </select>
@@ -673,7 +809,19 @@ export default function App() {
               {(addStrength === 'Type 2') && (formType === 'Argument' || formType === 'Counter' || formType === 'Evidence') && (
                 <>
                   <label>Type 2 links (same kind & speaker)</label>
-                  <select multiple value={addT2Links} onChange={e => setAddT2Links(Array.from(e.target.selectedOptions).map(o => o.value))}>
+                  <select
+                    multiple
+                    value={addT2Links}
+                    onChange={e => setAddT2Links(Array.from(e.target.selectedOptions).map(o => o.value))}
+                    onFocus={() => {
+                      store.setEligibleAttachTargets(eligibleT2TargetsAdd.map(n => n.id))
+                      setAttachmentSelectionActive(true)
+                    }}
+                    onBlur={() => {
+                      // Don't clear eligibleAttachTargets or attachmentSelectionActive on blur
+                      // Let it persist until selection is made or cancelled
+                    }}
+                  >
                     {eligibleT2TargetsAdd.map(n => (<option key={n.id} value={n.id}>{n.data.title || '(Untitled)'}</option>))}
                   </select>
                   <div className="small">Optional visual links; no effect on hierarchy.</div>
@@ -765,7 +913,14 @@ export default function App() {
                 return eligible.length > 0 ? (
                   <>
                     <label>Attach / Target</label>
-                    <select value={reparentTarget} onChange={e => setReparentTarget(e.target.value)}>
+                    <select
+                      value={reparentTarget}
+                      onChange={e => setReparentTarget(e.target.value)}
+                      onFocus={() => {
+                        store.setEligibleAttachTargets(eligible.map(n => n.id))
+                        setAttachmentSelectionActive(true)
+                      }}
+                    >
                       <option value="">-- choose new parent/target --</option>
                       {eligible.map(n => (<option key={n.id} value={n.id}>{titleKindLabel(n)}</option>))}
                     </select>
@@ -803,6 +958,82 @@ export default function App() {
           )}
         </fieldset>
 
+        {/* Add after other fieldsets but before Legend */}
+        <fieldset className="collapsible">
+          <legend className="collapsible-title" onClick={() => setFiltersOpen(v => !v)} style={{ cursor: 'pointer' }}>
+            {filtersOpen ? '▼' : '▶'} Filters
+          </legend>
+          {filtersOpen && (
+            <div className="filters">
+              <div className="filter-section">
+                <div className="filter-heading">Show only these participants:</div>
+                {store.participants.map(p => (
+                  <label key={p.id} className="filter-item">
+                    <input
+                      type="checkbox"
+                      checked={store.filters.participants.has(p.id)}
+                      onChange={e => store.setParticipantFilter(p.id, e.target.checked)}
+                    />
+                    {p.name}
+                  </label>
+                ))}
+              </div>
+
+              <div className="filter-section" style={{ marginTop: 12 }}>
+                <div className="filter-heading">Show only these types:</div>
+                {['Argument', 'Counter', 'Evidence', 'Agreement'].map(kind => (
+                  <label key={kind} className="filter-item">
+                    <input
+                      type="checkbox"
+                      checked={store.filters.kinds.has(kind as StatementKind)}
+                      onChange={e => store.setKindFilter(kind as StatementKind, e.target.checked)}
+                    />
+                    {kind}
+                  </label>
+                ))}
+              </div>
+
+              {(store.filters.participants.size > 0 || store.filters.kinds.size > 0) && (
+                <div className="toolbar">
+                  <button className="secondary" onClick={() => store.clearFilters()}>
+                    Clear Filters
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </fieldset>
+
+        {/* Legend: added at bottom of sidebar */}
+        <div className="legend" aria-hidden={false}>
+          <div className="legend__title">Legend — colors</div>
+          <div className="legend__list">
+            {['Thesis','Argument','Argument Summary','Counter','Evidence','Agreement'].map(k => (
+              <div key={k} className="legend__item">
+                <div className="legend__swatch" style={{ background: kindColor(k) }} />
+                <div className="legend__label">{k}</div>
+              </div>
+            ))}
+
+            <div className="legend__item" style={{ marginTop: 6 }}>
+              <div className="legend__swatch" style={{ background: '#eff6ff', borderRadius: 8, border: '1px solid #bfdbfe' }} />
+              <div className="legend__label">Type 2 — If this, and the stated othe argument are true, than the main claim is true (dashed link)</div>
+            </div>
+            <div className="legend__item">
+              <div className="legend__swatch" style={{ background: '#ecfdf5', borderRadius: 8, border: '1px solid #a7f3d0' }} />
+              <div className="legend__label">Type 1 - If this is true, than the main claim is true</div>
+            </div>
+            <div className="legend__item">
+              <div className="legend__swatch" style={{ background: '#f8fafc', borderRadius: 8, border: '1px solid #cbd5e1' }} />
+              <div className="legend__label">Type 3 - This only adds general support</div>
+            </div>
+            <div className="legend__item">
+              <div className="legend__swatch" style={{ background: 'repeating-linear-gradient(135deg,#f3f4f6, #f3f4f6 6px,#e5e7eb 6px,#e5e7eb 12px)', borderRadius: 8, border: '1px solid #9ca3af' }} />
+              <div className="legend__label">Type 4 — no meaningful support</div>
+            </div>
+          </div>
+        </div>
+
         {/* (legend retained elsewhere in your project) */}
       </div>
 
@@ -822,7 +1053,6 @@ export default function App() {
             translateExtent={extent}
             nodeExtent={extent}
             onNodeClick={onNodeClick}
-            onNodeDoubleClick={onNodeDoubleClick}
             onPaneClick={onPaneClick}
             onEdgeClick={onEdgeClick}
             onEdgeMouseEnter={onEdgeMouseEnter}

@@ -169,3 +169,5 @@ export function computeLayout(nodes: DebateNode[], edges: DebateEdge[]): Map<str
 
   return layout
 }
+
+export const LEGEND_KIND_ORDER = ['Thesis','Argument','Argument Summary','Counter','Evidence','Agreement']

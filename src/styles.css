@@ -15,7 +15,15 @@
 html, body, #root { height: 100%; margin: 0; color: var(--panel-text); font-family: 'Inter', ui-sans-serif, system-ui; background: var(--bg); }
 .app { display: grid; grid-template-columns: 360px minmax(0, 1fr); height: 100%; min-height: 0; }
 
-.sidebar { overflow: auto; padding: 14px; border-right: 1px solid var(--panel-border); background: var(--panel); color: var(--panel-text); }
+.sidebar {
+  overflow: auto;
+  padding: 14px;
+  border-right: 1px solid var(--panel-border);
+  background: var(--panel);
+  color: var(--panel-text);
+  display: flex;            /* ensure children can be stacked vertically */
+  flex-direction: column;   /* push legend to the bottom using margin-top: auto */
+}
 .sidebar fieldset { border: 1px solid var(--panel-border); padding: 12px; margin-bottom: 14px; border-radius: 12px; background: rgba(255,255,255,0.6); }
 .sidebar legend { font-weight: 800; padding: 0 6px; color: #1f2937; letter-spacing: .3px; text-transform: uppercase; font-size: 12px; }
 .collapsible-title { user-select: none; }
@@ -72,6 +80,20 @@ mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
   transform: translateZ(0);
 }
 
+/* Highlight nodes that are valid targets for reattachment when the reattach UI is open */
+.node-card.eligible-target {
+  box-shadow: 0 8px 30px rgba(14,165,233,0.12), var(--shadow);
+  transform: translateY(-4px);
+  border-color: rgba(14,165,233,0.9);
+}
+
+/* Stronger visual when a node was picked as the reparent/target */
+.node-card.eligible-selected {
+  outline: 6px solid rgba(14,165,233,0.18);
+  box-shadow: 0 0 0 8px rgba(14,165,233,0.10), 0 18px 32px rgba(0,0,0,.25);
+  transform: translateZ(0);
+}
+
 /* Legend */
 .legend-grid { display: grid; gap: 8px; }
 .legend-title { font-weight: 800; color: #1f2937; margin-top: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; }
@@ -121,40 +143,156 @@ mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
 
 /* Legend styles */
 .legend {
-  padding: 12px 14px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  font-size: 13px;
-  color: var(--text-color, #111);
+  /* keeps the legend visually separated and pinned near the bottom */
+  margin-top: auto;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
 
-.legend__title {
-  margin: 0 0 8px 0;
-  font-size: 13px;
-  font-weight: 600;
-}
+.legend__title { margin: 0 0 8px 0; font-size: 13px; font-weight: 700; color: #1f2937; }
+.legend__list { display: grid; gap: 8px; }
+.legend__item { display:flex; gap:10px; align-items:center; }
+.legend__swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); flex: 0 0 18px; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.28); }
+.legend__label { font-size: 13px; color: #374151; }
 
-.legend__list {
-  list-style: none;
-  margin: 0;
+/* Add these styles */
+.node-link {
+  display: inline;
   padding: 0;
-  display: grid;
+  margin: 0;
+  border: none;
+  background: none;
+  color: #2563eb;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.node-link:hover {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.id-badge {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  font-family: ui-monospace, monospace;
+  letter-spacing: -0.5px;
+  margin-left: auto;
+}
+
+.id-badge:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+/* Add these styles */
+.filters {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
-.legend__item {
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.filter-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
 }
 
-.legend__swatch {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  flex: 0 0 14px;
+.filter-item input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
 }
 
-.legend__label {
-  line-height: 1;
+/* Add inline editing styles */
+.inline-edit-container {
+  position: relative;
+  margin: 4px 0;
+}
+
+.inline-edit-textarea {
+  padding: 8px;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.edit-buttons button {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+/* Collapse region styles */
+.collapse-region {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.collapse-region:hover {
+  opacity: 0.1;
+  background: #000;
+}
+
+.collapse-region.bottom {
+  bottom: 0;
+  border-radius: 0 0 16px 16px;
+}
+
+.node-card.self-collapsed {
+  opacity: 0.5;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+.node-card.self-collapsed + .react-flow__handle {
+  pointer-events: auto;
+}
+
+/* Make collapsed edges more visible */
+.react-flow__edge.collapsed-target {
+  cursor: pointer;
+}
+.react-flow__edge.collapsed-target path {
+  stroke-width: 8px !important;
+  stroke-opacity: 0.5;
 }

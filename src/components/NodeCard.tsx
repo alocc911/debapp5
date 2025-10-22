@@ -92,12 +92,58 @@ function highlight(text: string, terms?: string[]) {
   }
 }
 
+// Add this helper function after other functions but before the component
+function renderBody(text: string, terms?: string[], onLinkClick?: (id: string) => void) {
+  if (!text) return null;
+  const parts = text.split(/(\[\[[^\]]+\]\])/g);
+  
+  return parts.map((part, i) => {
+    if (part.startsWith('[[') && part.endsWith(']]')) {
+      const inner = part.slice(2, -2);
+      const [id, label] = inner.split('|');
+      return (
+        <button 
+          key={i}
+          className="node-link"
+          onClick={(e) => {
+            e.stopPropagation();
+            onLinkClick?.(id);
+          }}
+        >
+          {label || id}
+        </button>
+      );
+    }
+    return highlight(part, terms);
+  });
+}
+
 export default function NodeCard({ id, data }: NodeProps<Data>) {
   const store = useGraphStore()
+  // Add state for inline editing
+  const [isEditingBody, setIsEditingBody] = React.useState(false)
+  const [editBodyText, setEditBodyText] = React.useState(data.body || '')
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+  const bodyRef = React.useRef<HTMLParagraphElement>(null);
+  const [bodyHeight, setBodyHeight] = React.useState<number>(0);
+
+  // Add effect to capture initial body height
+  React.useEffect(() => {
+    if (bodyRef.current) {
+      setBodyHeight(bodyRef.current.offsetHeight);
+    }
+  }, [data.body]);
+
   const participants = store.participants
   const participantIds = participants.map(p => p.id)
   const participant = participants.find(p => p.id === data.participantId)
   const speakerName = participant?.name || data.participantId
+
+  // NEW: reattach highlight state from store
+  const eligibleTargets = store.eligibleAttachTargets || []
+  const reparentSelectedId = store.reparentTargetId || ''
+  const isEligible = eligibleTargets.includes(id)
+  const isAttachSelected = reparentSelectedId === id
 
   const speakerCol = participantColor(data.participantId, participantIds)
   const kindCol = kindColor(data.kind)
@@ -110,8 +156,80 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
     opacity: data.dimmed && !data.edgeActive ? 0.25 : 1
   }
 
+  // When this node is clicked while there is an active selection elsewhere and
+  // this node is eligible, interpret the click as "select this as reparent/target".
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (isEligible) {
+      e.stopPropagation()
+      e.preventDefault()
+      store.setReparentTargetId(id)
+
+      // Get the currently open dropdown and programmatically select this value
+      const activeForm = document.activeElement as HTMLSelectElement
+      if (activeForm?.tagName === 'SELECT') {
+        activeForm.value = id
+        // Trigger change event
+        activeForm.dispatchEvent(new Event('change', { bubbles: true }))
+        // Keep focus
+        setTimeout(() => activeForm.focus(), 0)
+      }
+      return
+    }
+    // otherwise let React Flow/App handle selection as usual
+  }
+
+  const handleLinkClick = (targetId: string) => {
+    store.setSelectedNodeId(targetId);
+    store.setLinkHighlight({ sourceId: id, targetId });
+  };
+
+  const copyLinkText = (id: string) => {
+    const template = `[[${id}|${data.title || 'Untitled'}]]`;
+    navigator.clipboard.writeText(template);
+  };
+
+  // Add effect to handle deselection
+  React.useEffect(() => {
+    if (isEditingBody && store.selectedNodeId !== id) {
+      handleBodySave();
+    }
+  }, [store.selectedNodeId]);
+
+  const handleBodyDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isEditingBody) {
+      setIsEditingBody(true);
+      setEditBodyText(data.body || '');
+      // Focus and select all text after render
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+          textareaRef.current.select();
+        }
+      }, 0);
+    }
+  };
+
+  const handleBodySave = () => {
+    store.updateNode(id, { body: editBodyText });
+    setIsEditingBody(false);
+  };
+
+  const handleBottomClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    store.updateNode(id, { 
+      collapsed: !data.collapsed,
+      selfCollapsed: false 
+    });
+  };
+
   return (
-    <div className={`node-card ${data.edgeActive ? 'edge-on' : ''} ${data.dimmed ? 'dimmed' : ''}`} style={borderStyle}>
+    <div
+      className={`node-card ${data.edgeActive ? 'edge-on' : ''} ${data.dimmed ? 'dimmed' : ''} 
+        ${isEligible ? 'eligible-target' : ''} ${isAttachSelected ? 'eligible-selected' : ''}`}
+      style={borderStyle}
+      onMouseDown={onMouseDown}
+    >
       <Handle type="target" position={Position.Top} style={{ opacity: .0, width: 10, height: 10 }} />
       <Handle type="source" position={Position.Bottom} style={{ opacity: .0, width: 10, height: 10 }} />
 
@@ -130,6 +248,20 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
         )}
         {data.collapsed && <span className="small" style={{ marginLeft: 'auto', opacity: .7 }}>(collapsed)</span>}
         {data.hit && <span className="small" style={{ marginLeft: 'auto', color: '#b45309', fontWeight: 700 }}>match</span>}
+        {/* Add nodeId display after badges */}
+        {store.selectedNodeId === id && (
+          <span 
+            className="id-badge" 
+            onClick={(e) => {
+              e.stopPropagation();
+              copyLinkText(id);
+            }}
+            title="Click to copy link template"
+            style={{ cursor: 'pointer' }}
+          >
+            Copy Link
+          </span>
+        )}
       </div>
 
       <h3 className={data.kind === 'Argument Summary' ? 'summary' : undefined}>
@@ -143,7 +275,63 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
         </div>
       )}
 
-      {data.body && <p className="body-text" style={{ whiteSpace: 'pre-line' }}>{highlight(data.body, data.searchTerms)}</p>}
+      {data.body && !isEditingBody && (
+        <p 
+          ref={bodyRef}
+          className="body-text" 
+          style={{ 
+            whiteSpace: 'pre-line',
+            minHeight: '80px',
+            maxHeight: '300px',
+            overflowY: 'auto'
+          }}
+          onDoubleClick={handleBodyDoubleClick}
+        >
+          {renderBody(data.body, data.searchTerms, handleLinkClick)}
+        </p>
+      )}
+      
+      {isEditingBody && (
+        <div className="inline-edit-container">
+          <textarea
+            ref={textareaRef}
+            value={editBodyText}
+            onChange={e => setEditBodyText(e.target.value)}
+            className="inline-edit-textarea"
+            style={{
+              height: Math.max(bodyHeight, 80),
+              maxHeight: '300px',
+              width: '100%',
+              resize: 'none',
+              overflowY: 'auto'
+            }}
+            onKeyDown={e => {
+              if (e.key === 'Escape') {
+                setIsEditingBody(false);
+                setEditBodyText(data.body || '');
+              }
+            }}
+          />
+          <div className="edit-buttons">
+            <button 
+              className="secondary"
+              onClick={() => {
+                setIsEditingBody(false);
+                setEditBodyText(data.body || '');
+              }}
+            >
+              Cancel
+            </button>
+            <button onClick={handleBodySave}>Save</button>
+          </div>
+        </div>
+      )}
+
+      <div 
+        className="collapse-region bottom"
+        onClick={handleBottomClick}
+        title="Click to collapse/expand children"
+      />
     </div>
   )
 }

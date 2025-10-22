@@ -30,6 +30,30 @@ type Store = Snapshot & {
 
   addT2Links: (sourceId: string, targets: string[]) => void
   setT2Links: (sourceId: string, targets: string[]) => void
+
+  // UI helpers for reattach-by-click
+  selectedNodeId: string
+  setSelectedNodeId: (id: string) => void
+  reparentTargetId: string
+  setReparentTargetId: (id: string) => void
+  eligibleAttachTargets: string[]
+  setEligibleAttachTargets: (ids: string[]) => void
+
+  // Add these new properties:
+  linkHighlight: { sourceId: string, targetId: string } | null;
+  setLinkHighlight: (highlight: { sourceId: string, targetId: string } | null) => void;
+
+  // Add these new properties:
+  filters: {
+    participants: Set<string>;
+    kinds: Set<StatementKind>;
+  };
+  setParticipantFilter: (id: string, active: boolean) => void;
+  setKindFilter: (kind: StatementKind, active: boolean) => void;
+  clearFilters: () => void;
+
+  // Convenience: return the current participants + kind list for UIs
+  getLegendKinds: () => string[]
 }
 
 function node(kind: StatementKind, participantId: string, title: string, body?: string, strengthType?: StrengthType, firstMention?: string): DebateNode {
@@ -37,7 +61,17 @@ function node(kind: StatementKind, participantId: string, title: string, body?: 
     id: nid(),
     type: 'nodeCard',
     position: { x: 0, y: 0 },
-    data: { id: '', title, body, kind, participantId, collapsed: false, strengthType, firstMention } as DebateData
+    data: { 
+      id: '', 
+      title, 
+      body, 
+      kind, 
+      participantId, 
+      collapsed: false,
+      selfCollapsed: false, // Add this field
+      strengthType, 
+      firstMention 
+    } as DebateData
   }
 }
 function edge(kind: 'supports'|'evidence-of'|'attacks'|'agrees-with'|'t2-link', source: string, target: string): DebateEdge {
@@ -55,6 +89,48 @@ export const useGraphStore = create<Store>((set, get) => ({
     { id: 'A', name: 'A' },
     { id: 'B', name: 'B' },
   ],
+
+  // UI reattach helpers (defaults)
+  selectedNodeId: '',
+  reparentTargetId: '',
+  eligibleAttachTargets: [],
+  setSelectedNodeId(id: string) { set(() => ({ selectedNodeId: id })) },
+  setReparentTargetId(id: string) { set(() => ({ reparentTargetId: id })) },
+  setEligibleAttachTargets(ids: string[]) { set(() => ({ eligibleAttachTargets: ids })) },
+
+  // Add new state:
+  linkHighlight: null,
+  setLinkHighlight: (highlight) => set({ linkHighlight: highlight }),
+
+  // Add new state and methods:
+  filters: {
+    participants: new Set(),
+    kinds: new Set()
+  },
+
+  setParticipantFilter: (id: string, active: boolean) => {
+    set(state => {
+      const newSet = new Set(state.filters.participants);
+      if (active) newSet.add(id);
+      else newSet.delete(id);
+      return { filters: { ...state.filters, participants: newSet } };
+    });
+  },
+
+  setKindFilter: (kind: StatementKind, active: boolean) => {
+    set(state => {
+      const newSet = new Set(state.filters.kinds);
+      if (active) newSet.add(kind);
+      else newSet.delete(kind);
+      return { filters: { ...state.filters, kinds: newSet } };
+    });
+  },
+
+  clearFilters: () => {
+    set(state => ({
+      filters: { participants: new Set(), kinds: new Set() }
+    }));
+  },
 
   addThesis(participantId, title, body, firstMention) {
     const n = node('Thesis', participantId, title, body, undefined, firstMention)
@@ -292,4 +368,9 @@ export const useGraphStore = create<Store>((set, get) => ({
     if (!okKinds.has(src.data.kind) || src.data.strengthType !== 'Type 2') return
     get().addT2Links(sourceId, targets)
   },
+
+  // Convenience: return the current participants + kind list for UIs
+  getLegendKinds() {
+    return ['Thesis','Argument','Argument Summary','Counter','Evidence','Agreement']
+  }
 }))

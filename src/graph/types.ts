@@ -17,10 +17,25 @@ export type DebateData = {
   kind: StatementKind
   participantId: string
   collapsed?: boolean
+  selfCollapsed?: boolean
+  bodyCollapsed?: boolean // Add this new field
   /** Only for Argument, Counter, Evidence */
   strengthType?: StrengthType
   firstMention?: string
+
+  // UI-only transient flags (optional)
+  canBeReparentTarget?: boolean
+  selectedForReparent?: boolean
 }
 
 export type DebateNode = Node<DebateData>
 export type DebateEdge = Edge & { data?: { kind: 'supports'|'evidence-of'|'attacks'|'t2-link'|'agrees-with' } }
+
+export const KIND_COLORS: Record<StatementKind, string> = {
+  Thesis: '#DBEAFE',
+  Argument: '#EDE9FE',
+  'Argument Summary': '#D1FAE5',
+  Counter: '#FEE2E2',
+  Evidence: '#FEF3C7',
+  Agreement: '#CFFAFE'
+}
