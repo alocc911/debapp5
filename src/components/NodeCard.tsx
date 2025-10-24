@@ -163,11 +163,11 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
   }
 
   const copyLinkText = (nodeId: string) => {
-    const text = `[[${nodeId}]]`
-    navigator.clipboard.writeText(text).then(() => {
-      alert(`Copied link template: ${text}`)
-    })
-  }
+  const text = `[[${nodeId}|${speakerName}: ${data.title || 'Untitled'}]]`;
+  navigator.clipboard.writeText(text).then(() => {
+    
+  });
+};
 
   const handleLinkClick = (linkId: string) => {
     store.setLinkHighlight({ sourceId: id, targetId: linkId })
@@ -203,7 +203,7 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
       setTimeout(() => {
         if (textareaRef.current) {
           textareaRef.current.focus();
-          textareaRef.current.setSelectionRange(editBodyText.length, editBodyText.length)
+          textareaRef.current.select();
           resizeTextarea();
         }
       }, 0);
