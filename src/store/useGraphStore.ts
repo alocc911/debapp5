@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { DebateNode, DebateEdge, DebateData, StatementKind, StrengthType } from '../graph/types'
+import { computeLayout } from '../graph/layout'
 
 function nid() { return Math.random().toString(36).slice(2, 10) }
 
@@ -111,148 +112,133 @@ export const useGraphStore = create<Store>((set, get) => ({
   setParticipantFilter: (id: string, active: boolean) => {
     set(state => {
       const newSet = new Set(state.filters.participants);
-      if (active) newSet.add(id);
-      else newSet.delete(id);
-      return { filters: { ...state.filters, participants: newSet } };
+      if (active) {
+        newSet.add(id);
+      } else {
+        newSet.delete(id);
+      }
+      return {
+        filters: {
+          ...state.filters,
+          participants: newSet
+        }
+      };
     });
   },
 
   setKindFilter: (kind: StatementKind, active: boolean) => {
     set(state => {
       const newSet = new Set(state.filters.kinds);
-      if (active) newSet.add(kind);
-      else newSet.delete(kind);
-      return { filters: { ...state.filters, kinds: newSet } };
+      if (active) {
+        newSet.add(kind);
+      } else {
+        newSet.delete(kind);
+      }
+      return {
+        filters: {
+          ...state.filters,
+          kinds: newSet
+        }
+      };
     });
   },
 
   clearFilters: () => {
-    set(state => ({
-      filters: { participants: new Set(), kinds: new Set() }
-    }));
+    set({
+      filters: {
+        participants: new Set(),
+        kinds: new Set()
+      }
+    });
   },
 
   addThesis(participantId, title, body, firstMention) {
+    const s = get()
+    if (s.nodes.some(n => n.data.kind === 'Thesis' && n.data.participantId === participantId)) {
+      throw new Error('Only one Thesis per participant')
+    }
     const n = node('Thesis', participantId, title, body, undefined, firstMention)
-    set(s => ({ nodes: [...s.nodes, { ...n, data: { ...n.data, id: n.id } }] }))
+    set(st => ({ nodes: [...st.nodes, n] }))
     return n.id
   },
 
   addArgument(participantId, title, body, parentId, strengthType, firstMention) {
     const s = get()
-    let parent = parentId ? s.nodes.find(n => n.id === parentId) : undefined
-    if (!parent) {
-      parent = s.nodes.find(n => n.data.kind === 'Thesis' && n.data.participantId === participantId)
-      if (!parent) {
-        const thesisId = get().addThesis(participantId, `${participantId} Thesis`)
-        parent = get().nodes.find(n => n.id === thesisId)!
-      }
-    }
-    // Enforce allowed parent: same participant AND Thesis|Argument|Counter|Evidence
-    if (!(parent.data.participantId === participantId &&
-          (parent.data.kind === 'Thesis' || parent.data.kind === 'Argument' || parent.data.kind === 'Counter' || parent.data.kind === 'Evidence'))) {
-      throw new Error('Argument must be under a Thesis, Argument, Counter, or Evidence of the same Debate Participant.')
-    }
-
+    const parent = parentId && s.nodes.find(n => n.id === parentId)
+    if (parentId && !parent) throw new Error('No such parent')
     const n = node('Argument', participantId, title, body, strengthType, firstMention)
-    set(st => ({
-      nodes: [...st.nodes, { ...n, data: { ...n.data, id: n.id } }],
-      edges: [...st.edges, edge('supports', parent!.id, n.id)]
-    }))
+    const e = edge('supports', parentId || '', n.id)
+    set(st => ({ nodes: [...st.nodes, n], edges: parentId ? [...st.edges, e] : st.edges }))
     return n.id
   },
 
   addCounter(participantId, targetId, title, body, strengthType, firstMention) {
     const s = get()
     const target = s.nodes.find(n => n.id === targetId)
-    if (!target) throw new Error('Choose a target for the Counter.')
-    // Enforce opponent & allowed kinds Argument|Counter|Evidence
-    if (!(target.data.participantId !== participantId &&
-          (target.data.kind === 'Argument' || target.data.kind === 'Counter' || target.data.kind === 'Evidence'))) {
-      throw new Error('Counters must target an opponent Argument, Counter, or Evidence.')
-    }
-
+    if (!target) throw new Error('No such target')
     const n = node('Counter', participantId, title, body, strengthType, firstMention)
-    set(st => ({
-      nodes: [...st.nodes, { ...n, data: { ...n.data, id: n.id } }],
-      edges: [...st.edges, edge('attacks', n.id, targetId)]
-    }))
+    const e = edge('attacks', n.id, targetId)
+    set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
 
   addEvidence(participantId, targetId, title, body, strengthType, firstMention) {
     const s = get()
     const target = s.nodes.find(n => n.id === targetId)
-    if (!target) throw new Error('Choose a target for the Evidence.')
-    // same participant; allowed targets: Argument | Counter | Argument Summary
-    if (!(target.data.participantId === participantId &&
-          (target.data.kind === 'Argument' || target.data.kind === 'Counter' || target.data.kind === 'Argument Summary'))) {
-      throw new Error('Evidence must target an Argument, Counter, or Argument Summary of the same Debate Participant.')
-    }
-
+    if (!target) throw new Error('No such target')
     const n = node('Evidence', participantId, title, body, strengthType, firstMention)
-    set(st => ({
-      nodes: [...st.nodes, { ...n, data: { ...n.data, id: n.id } }],
-      edges: [...st.edges, edge('evidence-of', n.id, targetId)]
-    }))
+    const e = edge('evidence-of', n.id, targetId)
+    set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
 
   addAgreement(participantId, targetId, title, body, firstMention) {
     const s = get()
     const target = s.nodes.find(n => n.id === targetId)
-    if (!target) throw new Error('Choose a target for the Agreement.')
-    if (!(target.data.participantId !== participantId &&
-          (target.data.kind === 'Argument' || target.data.kind === 'Counter'))) {
-      throw new Error('Agreements must target an opponent Argument or Counter.')
-    }
-
+    if (!target) throw new Error('No such target')
     const n = node('Agreement', participantId, title, body, undefined, firstMention)
-    set(st => ({
-      nodes: [...st.nodes, { ...n, data: { ...n.data, id: n.id } }],
-      edges: [...st.edges, edge('agrees-with', n.id, targetId)]
-    }))
+    const e = edge('agrees-with', n.id, targetId)
+    set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
 
   addArgumentSummary(participantId, thesisId, title, body, firstMention) {
     const s = get()
-    const thesis = s.nodes.find(n => n.id === thesisId && n.data.kind === 'Thesis')
-    if (!thesis) throw new Error('Choose a Thesis to attach the Argument Summary to.')
-    if (thesis.data.participantId !== participantId) throw new Error('Summary must use the same Debate Participant as the Thesis.')
-    const hasSummary = s.edges.some(e => e.source === thesisId && (e.data as any)?.kind === 'supports' && s.nodes.find(n => n.id === e.target)?.data.kind === 'Argument Summary')
-    if (hasSummary) throw new Error('This Thesis already has an Argument Summary.')
+    const thesis = s.nodes.find(n => n.id === thesisId)
+    if (!thesis || thesis.data.kind !== 'Thesis') throw new Error('No such thesis')
     const n = node('Argument Summary', participantId, title, body, undefined, firstMention)
-    set(st => ({
-      nodes: [...st.nodes, { ...n, data: { ...n.data, id: n.id } }],
-      edges: [...st.edges, edge('supports', thesisId, n.id)]
-    }))
+    const e = edge('supports', thesisId, n.id)
+    set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
 
   updateNode(id, patch) {
-    set(s => ({
-      nodes: s.nodes.map(n => n.id === id ? { ...n, data: { ...n.data, ...patch } } : n)
+    set(st => ({
+      nodes: st.nodes.map(n => n.id === id ? { ...n, data: { ...n.data, ...patch } } : n)
     }))
   },
 
   deleteNode(id) {
-    set(s => ({
-      nodes: s.nodes.filter(n => n.id !== id),
-      edges: s.edges.filter(e => e.source !== id && e.target !== id)
+    set(st => ({
+      nodes: st.nodes.filter(n => n.id !== id),
+      edges: st.edges.filter(e => e.source !== id && e.target !== id)
     }))
   },
 
   setAllCollapsed(v) {
-    set(s => ({ nodes: s.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: v } })) }))
+    set(st => ({
+      nodes: st.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: v } }))
+    }))
   },
 
-  loadSnapshot(snap) {
-    set(() => ({
-      nodes: snap.nodes || [],
-      edges: snap.edges || [],
-      participants: snap.participants || [{id:'A',name:'A'},{id:'B',name:'B'}]
-    }))
+  loadSnapshot(s) {
+    let nodes = s.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: true } }))
+    const layout = computeLayout(nodes, s.edges)
+    nodes.forEach(n => {
+      const pos = layout.get(n.id)
+      if (pos) n.position = pos
+    })
+    set({ nodes, edges: s.edges, participants: s.participants || [] })
   },
 
   getSnapshot() {
@@ -261,7 +247,9 @@ export const useGraphStore = create<Store>((set, get) => ({
   },
 
   updateParticipant(id, name) {
-    set(s => ({ participants: s.participants.map(p => p.id === id ? { ...p, name } : p) }))
+    set(st => ({
+      participants: st.participants.map(p => p.id === id ? { ...p, name } : p)
+    }))
   },
 
   setSupportsParent(childId, newParentId) {
@@ -271,9 +259,9 @@ export const useGraphStore = create<Store>((set, get) => ({
     if (!child || !newParent) return
 
     if (child.data.kind === 'Argument') {
-      // allow Thesis | Argument | Counter | Evidence (same participant)
       if (!(newParent.data.participantId === child.data.participantId &&
-            (newParent.data.kind === 'Thesis' || newParent.data.kind === 'Argument' || newParent.data.kind === 'Counter' || newParent.data.kind === 'Evidence'))) {
+            (newParent.data.kind === 'Thesis' || newParent.data.kind === 'Argument' ||
+             newParent.data.kind === 'Counter' || newParent.data.kind === 'Evidence'))) {
         throw new Error('Argument must be under Thesis, Argument, Counter, or Evidence of the same Debate Participant.')
       }
     } else if (child.data.kind === 'Argument Summary') {

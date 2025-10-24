@@ -148,52 +148,51 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
   const speakerCol = participantColor(data.participantId, participantIds)
   const kindCol = kindColor(data.kind)
 
-  const borderStyle: React.CSSProperties = {
-    borderTop: `8px solid ${speakerCol}`,
-    borderRight: `8px solid ${speakerCol}`,
-    borderBottom: `8px solid ${kindCol}`,
-    borderLeft: `8px solid ${kindCol}`,
-    opacity: data.dimmed && !data.edgeActive ? 0.25 : 1
+  const borderStyle = {
+    borderLeft: `5px solid ${speakerCol}`,
+    borderTop: `5px solid ${speakerCol}`,
+    borderRight: `5px solid ${kindCol}`,
+    borderBottom: `5px solid ${kindCol}`,
   }
 
-  // When this node is clicked while there is an active selection elsewhere and
-  // this node is eligible, interpret the click as "select this as reparent/target".
   const onMouseDown = (e: React.MouseEvent) => {
-    if (isEligible) {
+    if (e.metaKey || e.ctrlKey) {
+      store.setSelectedNodeId(store.selectedNodeId === id ? '' : id)
       e.stopPropagation()
-      e.preventDefault()
-      store.setReparentTargetId(id)
-
-      // Get the currently open dropdown and programmatically select this value
-      const activeForm = document.activeElement as HTMLSelectElement
-      if (activeForm?.tagName === 'SELECT') {
-        activeForm.value = id
-        // Trigger change event
-        activeForm.dispatchEvent(new Event('change', { bubbles: true }))
-        // Keep focus
-        setTimeout(() => activeForm.focus(), 0)
-      }
-      return
     }
-    // otherwise let React Flow/App handle selection as usual
   }
 
-  const handleLinkClick = (targetId: string) => {
-    store.setSelectedNodeId(targetId);
-    store.setLinkHighlight({ sourceId: id, targetId });
-  };
+  const copyLinkText = (nodeId: string) => {
+    const text = `[[${nodeId}]]`
+    navigator.clipboard.writeText(text).then(() => {
+      alert(`Copied link template: ${text}`)
+    })
+  }
 
-  const copyLinkText = (id: string) => {
-    const template = `[[${id}|${data.title || 'Untitled'}]]`;
-    navigator.clipboard.writeText(template);
-  };
+  const handleLinkClick = (linkId: string) => {
+    store.setLinkHighlight({ sourceId: id, targetId: linkId })
+  }
 
-  // Add effect to handle deselection
+  // Handle deselection
   React.useEffect(() => {
     if (isEditingBody && store.selectedNodeId !== id) {
       handleBodySave();
     }
   }, [store.selectedNodeId]);
+
+  const resizeTextarea = () => {
+    const ta = textareaRef.current;
+    if (ta) {
+      ta.style.height = 'auto';
+      ta.style.height = `${ta.scrollHeight}px`;
+    }
+  };
+
+  React.useEffect(() => {
+    if (isEditingBody) {
+      resizeTextarea();
+    }
+  }, [editBodyText, isEditingBody]);
 
   const handleBodyDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -204,7 +203,8 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
       setTimeout(() => {
         if (textareaRef.current) {
           textareaRef.current.focus();
-          textareaRef.current.select();
+          textareaRef.current.setSelectionRange(editBodyText.length, editBodyText.length)
+          resizeTextarea();
         }
       }, 0);
     }
@@ -282,7 +282,7 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
           style={{ 
             whiteSpace: 'pre-line',
             minHeight: '80px',
-            maxHeight: '300px',
+            maxHeight: '1200px',
             overflowY: 'auto'
           }}
           onDoubleClick={handleBodyDoubleClick}
@@ -299,8 +299,6 @@ export default function NodeCard({ id, data }: NodeProps<Data>) {
             onChange={e => setEditBodyText(e.target.value)}
             className="inline-edit-textarea"
             style={{
-              height: Math.max(bodyHeight, 80),
-              maxHeight: '300px',
               width: '100%',
               resize: 'none',
               overflowY: 'auto'

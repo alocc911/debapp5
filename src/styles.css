@@ -61,66 +61,46 @@ textarea { min-height: 92px; }
 .badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #0f172a; }
 .badge.thesis { background: #DBEAFE; border-color:#93c5fd; }
 .badge.argument { background: #EDE9FE; border-color:#c4b5fd; }
-.badge.summary { background: #D1FAE5; border-color:#86efac; } /* Argument Summary */
-.badge.counter { background: #FEE2E2; border-color:#fecaca; }
-.badge.evidence { background: #FEF3C7; border-color:#fde68a; }
-.badge.agreement { background: #CFFAFE; border-color:#a5f3fc; }
+.badge.summary { background: #D1FAE5; border-color:#6ee7b7; }
+.badge.counter { background: #FEE2E2; border-color:#fca5a5; }
+.badge.evidence { background: #FEF3C7; border-color:#fcd34d; }
+.badge.agreement { background: #CFFAFE; border-color:#67e8f9; }
 
-mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
+.speaker-badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #0f172a; }
+.strength-badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; font-weight: 800; letter-spacing: .25px; color: #0f172a; margin-left: auto; }
 
-.speaker-badge { display: inline-block; font-size: 11px; padding: 3px 9px; border-radius: 999px; font-weight: 800; color: #0b1220; border: 1px solid rgba(0,0,0,.1); background: #fefefe; }
+/* Edge styles */
+.edge-path { stroke-linecap: round; }
+.edge-label { background: #e2e8f0; color: #0f172a; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; border: 1px solid #cbd5e1; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 
-.edge-label { background: rgba(31,41,55,.9); color: #f1f5f9; padding: 4px 8px; border-radius: 8px; font-size: 12px; border: 1px solid #475569; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+.edge-path.active { stroke-width: 10px !important; }
 
-/* Much more obvious selection highlight from edges */
-.node-card.edge-on {
-  outline: 6px solid #22c55e;
-  box-shadow: 0 0 0 8px rgba(34,197,94,.25),
-              0 18px 32px rgba(0,0,0,.25), var(--shadow);
-  transform: translateZ(0);
+.dimmed { opacity: 0.4; }
+.edge-on { outline: 3px solid #0ea5e9; outline-offset: 2px; border-radius: 20px; }
+
+.eligible-target { outline: 2px dashed #0ea5e9; outline-offset: 2px; border-radius: 20px; opacity: 1 !important; }
+.eligible-selected { outline: 4px solid #0ea5e9; outline-offset: 2px; border-radius: 20px; opacity: 1 !important; }
+
+/* Type 1: if this is true, then the main claim is true */
+.strength-type1{
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
 }
 
-/* Highlight nodes that are valid targets for reattachment when the reattach UI is open */
-.node-card.eligible-target {
-  box-shadow: 0 8px 30px rgba(14,165,233,0.12), var(--shadow);
-  transform: translateY(-4px);
-  border-color: rgba(14,165,233,0.9);
+/* Type 2: if this AND other(s) are true... */
+.strength-type2{
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e40af;
 }
 
-/* Stronger visual when a node was picked as the reparent/target */
-.node-card.eligible-selected {
-  outline: 6px solid rgba(14,165,233,0.18);
-  box-shadow: 0 0 0 8px rgba(14,165,233,0.10), 0 18px 32px rgba(0,0,0,.25);
-  transform: translateZ(0);
+/* Type 3: adds general support */
+.strength-type3{
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color:#334155;
 }
-
-/* Legend */
-.legend-grid { display: grid; gap: 8px; }
-.legend-title { font-weight: 800; color: #1f2937; margin-top: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; }
-.legend-row { display: flex; flex-wrap: wrap; gap: 10px; }
-.legend-item { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,.08); padding: 6px 8px; border-radius: 10px; }
-.legend-swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); box-shadow: inset 0 0 0 2px rgba(255,255,255,.35); }
-.legend-line { width: 36px; height: 6px; border-radius: 999px; box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset; background: #475569; }
-
-/* Edge base + stronger active glow */
-.react-flow__edge-path { stroke-width: 5 !important; }
-.edge-path.active { filter: drop-shadow(0 0 1.2rem rgba(34,197,94,.45)); }
-
-/* === Strength Type pill styles (Type 1 / 2 / 3) === */
-.strength-badge{
-  display:inline-block;
-  font-size:11px;
-  font-weight:800;
-  padding:3px 9px;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,.08);
-  letter-spacing:.25px;
-  color:#0f172a;
-  background:#f8fafc;
-}
-.strength-type1{ background:#ecfdf5; border-color:#a7f3d0; color:#065f46; }
-.strength-type2{ background:#eff6ff; border-color:#bfdbfe; color:#1e40af; }
-.strength-type3{ background:#f8fafc; border-color:#cbd5e1; color:#334155; }
 
 /* Type 4: no meaningful support */
 .strength-type4{
@@ -236,13 +216,18 @@ mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
 }
 
 .inline-edit-textarea {
-  padding: 8px;
-  border: 2px solid #3b82f6;
-  border-radius: 8px;
-  background: #fff;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: 0 0 0 1px #3b82f6;
   font-size: 13px;
   font-family: inherit;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  color: #374151;
+  white-space: pre-line;
+  min-height: 80px;
+  max-height: 1200px;
+  overflow-y: auto;
+  resize: none;
 }
 
 .edit-buttons {
@@ -262,7 +247,7 @@ mark { background: #fde68a; padding: 0 2px; border-radius: 3px; }
   position: absolute;
   left: 0;
   width: 100%;
-  height: 10%;
+  height: 20px;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.2s;
