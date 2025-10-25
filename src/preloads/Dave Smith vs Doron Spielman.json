@@ -432,7 +432,7 @@
       "data": {
         "id": "",
         "title": "One simple goal ",
-        "body": "Israel is furthering only one goal: to get the civilians returned and to destroy Hamas. No other goals like ethnic cleansing or territorial expansion are on the table.\n\nNeeds Type 2 link showing cost of civilians vs war aims balancing.",
+        "body": "Israel is furthering only one goal: to get the civilians returned and to destroy Hamas. No other goals like ethnic cleansing or territorial expansion are on the table.\n\nResponded to:\n[[lm812aui|Dave Smith: The Israeli government has been dishonest on this issue]]\n\nNeeds Type 2 link showing cost of civilians vs war aims balancing.",
         "kind": "Argument",
         "participantId": "B",
         "collapsed": true,
@@ -1138,6 +1138,57 @@
         "selfCollapsed": false,
         "strengthType": "Type 2"
       }
+    },
+    {
+      "id": "zcv9krya",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Argument Summary",
+        "body": "Israel is defending its interests in a moral and necessary way.  Dave Smith is not credible.",
+        "kind": "Argument Summary",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "iobwknwc",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Argument Summary",
+        "body": "Israel is acting in the way a nation committing genocide would be acting.\nIsrael has been consistently dishonest on this issue.\nAs the public sees more of what's going on, they are becoming more anti-Israel.",
+        "kind": "Argument Summary",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "oz2uc041",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Argument Summary",
+        "body": "Israel is acting in a way that a nation committing genocide would be acting.\nIsrael is consistently dishonest on this issue.\nThe masses are shifting against Israel.",
+        "kind": "Argument Summary",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false
+      }
     }
   ],
   "edges": [
@@ -1423,7 +1474,7 @@
     {
       "id": "gpug2auq",
       "source": "14lwsci8",
-      "target": "yrzq8l9y",
+      "target": "cai8y799",
       "type": "thick",
       "data": {
         "kind": "evidence-of"
@@ -1679,6 +1730,33 @@
       "type": "t2",
       "data": {
         "kind": "t2-link"
+      }
+    },
+    {
+      "id": "gblot54n",
+      "source": "thesisB",
+      "target": "zcv9krya",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "o50aiwsp",
+      "source": "thesisA",
+      "target": "iobwknwc",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "rjj4bhyb",
+      "source": "thesisA",
+      "target": "oz2uc041",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
       }
     }
   ],
