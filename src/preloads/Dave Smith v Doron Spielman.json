@@ -13,7 +13,7 @@
         "body": "The government is doing genocide or something close to it.",
         "kind": "Thesis",
         "participantId": "A",
-        "collapsed": true,
+        "collapsed": false,
         "selfCollapsed": false
       }
     },
@@ -56,7 +56,7 @@
       "id": "oqol9ga2",
       "type": "nodeCard",
       "position": {
-        "x": 13740,
+        "x": 13360,
         "y": 300
       },
       "data": {
@@ -110,7 +110,7 @@
       "id": "eux62zfn",
       "type": "nodeCard",
       "position": {
-        "x": 0,
+        "x": 6080,
         "y": 300
       },
       "data": {
@@ -128,7 +128,7 @@
       "id": "nj5zcqwv",
       "type": "nodeCard",
       "position": {
-        "x": 4940,
+        "x": 5320,
         "y": 300
       },
       "data": {
@@ -139,14 +139,14 @@
         "participantId": "B",
         "collapsed": true,
         "selfCollapsed": false,
-        "strengthType": "Type 3"
+        "strengthType": "Type 4"
       }
     },
     {
       "id": "id6650v8",
       "type": "nodeCard",
       "position": {
-        "x": 5700,
+        "x": 7980,
         "y": 300
       },
       "data": {
@@ -164,13 +164,13 @@
       "id": "h9bjo3q4",
       "type": "nodeCard",
       "position": {
-        "x": 1520,
+        "x": 1140,
         "y": 300
       },
       "data": {
         "id": "",
         "title": "Israel is not trying to kill civilians",
-        "body": "",
+        "body": "Responded to:\n[[nya6piik|Dave Smith: Their actions are those of someone doing genocide or something close to it]]",
         "kind": "Argument",
         "participantId": "B",
         "collapsed": true,
@@ -182,7 +182,7 @@
       "id": "kitsz5g2",
       "type": "nodeCard",
       "position": {
-        "x": 3800,
+        "x": 6840,
         "y": 300
       },
       "data": {
@@ -200,7 +200,7 @@
       "id": "d1vwdhcl",
       "type": "nodeCard",
       "position": {
-        "x": 13170,
+        "x": 8800,
         "y": 600
       },
       "data": {
@@ -218,7 +218,7 @@
       "id": "qlb204nh",
       "type": "nodeCard",
       "position": {
-        "x": 12600,
+        "x": 8420,
         "y": 600
       },
       "data": {
@@ -236,7 +236,7 @@
       "id": "6g95mdx4",
       "type": "nodeCard",
       "position": {
-        "x": 12600,
+        "x": 8420,
         "y": 900
       },
       "data": {
@@ -255,7 +255,7 @@
       "id": "rykk10k5",
       "type": "nodeCard",
       "position": {
-        "x": 13360,
+        "x": 8800,
         "y": 900
       },
       "data": {
@@ -274,7 +274,7 @@
       "id": "cazm0h3p",
       "type": "nodeCard",
       "position": {
-        "x": 9180,
+        "x": 9560,
         "y": 600
       },
       "data": {
@@ -293,7 +293,7 @@
       "id": "epj7nemz",
       "type": "nodeCard",
       "position": {
-        "x": 9940,
+        "x": 11460,
         "y": 900
       },
       "data": {
@@ -312,7 +312,7 @@
       "id": "htsokzk6",
       "type": "nodeCard",
       "position": {
-        "x": 9940,
+        "x": 11460,
         "y": 1200
       },
       "data": {
@@ -331,7 +331,7 @@
       "id": "ijqulge8",
       "type": "nodeCard",
       "position": {
-        "x": 10320,
+        "x": 11840,
         "y": 600
       },
       "data": {
@@ -350,7 +350,7 @@
       "id": "9ezbu06m",
       "type": "nodeCard",
       "position": {
-        "x": 10320,
+        "x": 11840,
         "y": 900
       },
       "data": {
@@ -369,7 +369,7 @@
       "id": "try8hnfb",
       "type": "nodeCard",
       "position": {
-        "x": 7030,
+        "x": 3800,
         "y": 300
       },
       "data": {
@@ -378,7 +378,7 @@
         "body": "His criticisms of Israel should be disregarded, or at least taken with a grain of salt.",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "14:40"
@@ -388,7 +388,7 @@
       "id": "his09yf9",
       "type": "nodeCard",
       "position": {
-        "x": 7790,
+        "x": 4370,
         "y": 600
       },
       "data": {
@@ -397,7 +397,7 @@
         "body": "",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "14:50"
@@ -407,7 +407,7 @@
       "id": "55nafdx3",
       "type": "nodeCard",
       "position": {
-        "x": 7600,
+        "x": 4180,
         "y": 900
       },
       "data": {
@@ -416,7 +416,7 @@
         "body": "Smith applies a fog of war framework to the actions of Hamas, but not to Israel.",
         "kind": "Evidence",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 1",
         "firstMention": "14:50"
@@ -426,7 +426,7 @@
       "id": "tfxpksuy",
       "type": "nodeCard",
       "position": {
-        "x": 2280,
+        "x": 1140,
         "y": 600
       },
       "data": {
@@ -435,7 +435,7 @@
         "body": "Israel is furthering only one goal: to get the civilians returned and to destroy Hamas. No other goals like ethnic cleansing or territorial expansion are on the table.\n\nNeeds Type 2 link showing cost of civilians vs war aims balancing.",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 2",
         "firstMention": "15.:00"
@@ -445,7 +445,7 @@
       "id": "cai8y799",
       "type": "nodeCard",
       "position": {
-        "x": 1710,
+        "x": 570,
         "y": 600
       },
       "data": {
@@ -463,7 +463,7 @@
       "id": "xbwswvyt",
       "type": "nodeCard",
       "position": {
-        "x": 1520,
+        "x": 380,
         "y": 900
       },
       "data": {
@@ -472,7 +472,7 @@
         "body": "",
         "kind": "Evidence",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3"
       }
@@ -481,7 +481,7 @@
       "id": "mkra9u8k",
       "type": "nodeCard",
       "position": {
-        "x": 6840,
+        "x": 4940,
         "y": 600
       },
       "data": {
@@ -490,7 +490,7 @@
         "body": "",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 4",
         "firstMention": "15:10"
@@ -500,7 +500,7 @@
       "id": "aqh64ja1",
       "type": "nodeCard",
       "position": {
-        "x": 380,
+        "x": 0,
         "y": 600
       },
       "data": {
@@ -509,7 +509,7 @@
         "body": "After ceasefire was signed, Israel withdrew to the line they agree on.",
         "kind": "Evidence",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "15:30"
@@ -519,7 +519,7 @@
       "id": "mcmlibrv",
       "type": "nodeCard",
       "position": {
-        "x": 2660,
+        "x": 2280,
         "y": 600
       },
       "data": {
@@ -528,7 +528,7 @@
         "body": "",
         "kind": "Counter",
         "participantId": "A",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 1",
         "firstMention": "15:50"
@@ -538,7 +538,7 @@
       "id": "s97t041w",
       "type": "nodeCard",
       "position": {
-        "x": 7600,
+        "x": 4180,
         "y": 1200
       },
       "data": {
@@ -547,7 +547,7 @@
         "body": "The death of 2 IDF members is not in the fog of war, it certainly happened as the Israeli government claims it did.",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "15:50"
@@ -557,7 +557,7 @@
       "id": "soviq8ik",
       "type": "nodeCard",
       "position": {
-        "x": 6460,
+        "x": 2660,
         "y": 600
       },
       "data": {
@@ -576,7 +576,7 @@
       "id": "7xvmls1l",
       "type": "nodeCard",
       "position": {
-        "x": 7220,
+        "x": 3040,
         "y": 600
       },
       "data": {
@@ -585,7 +585,7 @@
         "body": "Dave Smith may condemn October 7, but he also condemns every action Israel takes in response.",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 1",
         "firstMention": "16:20"
@@ -595,7 +595,7 @@
       "id": "yrzq8l9y",
       "type": "nodeCard",
       "position": {
-        "x": 1900,
+        "x": 760,
         "y": 900
       },
       "data": {
@@ -604,7 +604,7 @@
         "body": "",
         "kind": "Argument",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "17:45"
@@ -614,7 +614,7 @@
       "id": "14lwsci8",
       "type": "nodeCard",
       "position": {
-        "x": 1900,
+        "x": 760,
         "y": 1200
       },
       "data": {
@@ -623,7 +623,7 @@
         "body": "If the openly genocidal members of the cabinet had any real power, this deal wouldn't have happened.",
         "kind": "Evidence",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "18:10"
@@ -633,7 +633,7 @@
       "id": "f8xv0lfu",
       "type": "nodeCard",
       "position": {
-        "x": 1140,
+        "x": 1900,
         "y": 600
       },
       "data": {
@@ -652,7 +652,7 @@
       "id": "ihkzu1n8",
       "type": "nodeCard",
       "position": {
-        "x": 10700,
+        "x": 12220,
         "y": 900
       },
       "data": {
@@ -671,7 +671,7 @@
       "id": "p4axmldi",
       "type": "nodeCard",
       "position": {
-        "x": 4560,
+        "x": 7600,
         "y": 300
       },
       "data": {
@@ -690,7 +690,7 @@
       "id": "eputrp6b",
       "type": "nodeCard",
       "position": {
-        "x": 12220,
+        "x": 13740,
         "y": 300
       },
       "data": {
@@ -709,8 +709,8 @@
       "id": "0k4n3k3q",
       "type": "nodeCard",
       "position": {
-        "x": 12980,
-        "y": 900
+        "x": 9940,
+        "y": 600
       },
       "data": {
         "id": "",
@@ -728,7 +728,7 @@
       "id": "yic752tx",
       "type": "nodeCard",
       "position": {
-        "x": 8420,
+        "x": 10320,
         "y": 600
       },
       "data": {
@@ -747,7 +747,7 @@
       "id": "j2d6i11a",
       "type": "nodeCard",
       "position": {
-        "x": 7980,
+        "x": 4560,
         "y": 900
       },
       "data": {
@@ -766,7 +766,7 @@
       "id": "tljyv4vx",
       "type": "nodeCard",
       "position": {
-        "x": 7220,
+        "x": 3040,
         "y": 900
       },
       "data": {
@@ -775,7 +775,7 @@
         "body": "",
         "kind": "Counter",
         "participantId": "A",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 1",
         "firstMention": "23:50"
@@ -785,7 +785,7 @@
       "id": "19izkmha",
       "type": "nodeCard",
       "position": {
-        "x": 8800,
+        "x": 10700,
         "y": 600
       },
       "data": {
@@ -804,7 +804,7 @@
       "id": "y900voph",
       "type": "nodeCard",
       "position": {
-        "x": 9560,
+        "x": 11080,
         "y": 600
       },
       "data": {
@@ -823,7 +823,7 @@
       "id": "15lgw1nl",
       "type": "nodeCard",
       "position": {
-        "x": 11840,
+        "x": 9180,
         "y": 600
       },
       "data": {
@@ -842,8 +842,8 @@
       "id": "px9wc5c6",
       "type": "nodeCard",
       "position": {
-        "x": 11270,
-        "y": 600
+        "x": 12790,
+        "y": 300
       },
       "data": {
         "id": "",
@@ -861,7 +861,7 @@
       "id": "pjtjt8lh",
       "type": "nodeCard",
       "position": {
-        "x": 11080,
+        "x": 12600,
         "y": 900
       },
       "data": {
@@ -880,8 +880,8 @@
       "id": "czbrp7eb",
       "type": "nodeCard",
       "position": {
-        "x": 11460,
-        "y": 900
+        "x": 12980,
+        "y": 600
       },
       "data": {
         "id": "",
@@ -899,8 +899,8 @@
       "id": "95ilsixi",
       "type": "nodeCard",
       "position": {
-        "x": 11460,
-        "y": 1200
+        "x": 12980,
+        "y": 900
       },
       "data": {
         "id": "",
@@ -918,8 +918,8 @@
       "id": "rxneio5w",
       "type": "nodeCard",
       "position": {
-        "x": 11460,
-        "y": 1500
+        "x": 12980,
+        "y": 1200
       },
       "data": {
         "id": "",
@@ -937,7 +937,7 @@
       "id": "1x2o2um6",
       "type": "nodeCard",
       "position": {
-        "x": 6080,
+        "x": 3800,
         "y": 600
       },
       "data": {
@@ -956,7 +956,7 @@
       "id": "btjzgsh2",
       "type": "nodeCard",
       "position": {
-        "x": 4180,
+        "x": 7220,
         "y": 300
       },
       "data": {
@@ -975,7 +975,7 @@
       "id": "2t9d5ckd",
       "type": "nodeCard",
       "position": {
-        "x": 5320,
+        "x": 5700,
         "y": 300
       },
       "data": {
@@ -994,7 +994,7 @@
       "id": "9qbajhmn",
       "type": "nodeCard",
       "position": {
-        "x": 5320,
+        "x": 5700,
         "y": 600
       },
       "data": {
@@ -1013,7 +1013,7 @@
       "id": "ozihw5nm",
       "type": "nodeCard",
       "position": {
-        "x": 3040,
+        "x": 6460,
         "y": 300
       },
       "data": {
@@ -1032,7 +1032,7 @@
       "id": "8v5jfj20",
       "type": "nodeCard",
       "position": {
-        "x": 760,
+        "x": 1520,
         "y": 600
       },
       "data": {
@@ -1051,7 +1051,7 @@
       "id": "kh92rux8",
       "type": "nodeCard",
       "position": {
-        "x": 760,
+        "x": 1520,
         "y": 900
       },
       "data": {
@@ -1060,7 +1060,7 @@
         "body": "He was in Gaza and saw tunnels with his own eyes.",
         "kind": "Evidence",
         "participantId": "B",
-        "collapsed": false,
+        "collapsed": true,
         "selfCollapsed": false,
         "strengthType": "Type 3",
         "firstMention": "30:45"
@@ -1071,7 +1071,7 @@
       "type": "nodeCard",
       "position": {
         "x": 3420,
-        "y": 300
+        "y": 600
       },
       "data": {
         "id": "",
@@ -1089,13 +1089,13 @@
       "id": "nya6piik",
       "type": "nodeCard",
       "position": {
-        "x": 12980,
+        "x": 8990,
         "y": 300
       },
       "data": {
         "id": "",
         "title": "Their actions are those of someone doing genocide or something close to it",
-        "body": "Needs Type 2 link showing genocidal intent.",
+        "body": "Responded to:\n[[h9bjo3q4|Doron Spielman: Israel is not trying to kill civilians]]\n\nNeeds Type 2 link showing genocidal intent.",
         "kind": "Argument",
         "participantId": "A",
         "collapsed": true,
@@ -1107,8 +1107,8 @@
       "id": "lm812aui",
       "type": "nodeCard",
       "position": {
-        "x": 0,
-        "y": 0
+        "x": 11080,
+        "y": 300
       },
       "data": {
         "id": "",
@@ -1125,8 +1125,8 @@
       "id": "xqtwral6",
       "type": "nodeCard",
       "position": {
-        "x": 0,
-        "y": 0
+        "x": 12600,
+        "y": 600
       },
       "data": {
         "id": "",
