@@ -45,13 +45,17 @@ type Store = Snapshot & {
   setLinkHighlight: (highlight: { sourceId: string, targetId: string } | null) => void;
 
   // Add these new properties:
-  filters: {
-    participants: Set<string>;
-    kinds: Set<StatementKind>;
-  };
+filters: {
+  participants: Set<string>;
+  kinds: Set<StatementKind>;
+  strengths: Set<StrengthType>;
+};
   setParticipantFilter: (id: string, active: boolean) => void;
   setKindFilter: (kind: StatementKind, active: boolean) => void;
   clearFilters: () => void;
+
+  filterMode: 'dim' | 'hide';
+  setFilterMode: (mode: 'dim' | 'hide') => void;
 
   // Convenience: return the current participants + kind list for UIs
   getLegendKinds: () => string[]
@@ -106,7 +110,8 @@ export const useGraphStore = create<Store>((set, get) => ({
   // Add new state and methods:
   filters: {
     participants: new Set(),
-    kinds: new Set()
+    kinds: new Set(),
+    strengths: new Set()
   },
 
   setParticipantFilter: (id: string, active: boolean) => {
@@ -142,15 +147,34 @@ export const useGraphStore = create<Store>((set, get) => ({
       };
     });
   },
-
-  clearFilters: () => {
-    set({
+  setStrengthFilter: (strength: StrengthType, active: boolean) => {
+  set(state => {
+    const newSet = new Set(state.filters.strengths);
+    if (active) {
+      newSet.add(strength);
+    } else {
+      newSet.delete(strength);
+    }
+    return {
       filters: {
-        participants: new Set(),
-        kinds: new Set()
+        ...state.filters,
+        strengths: newSet
       }
-    });
-  },
+    };
+  });
+},
+  clearFilters: () => {
+  set({
+    filters: {
+      participants: new Set(),
+      kinds: new Set(),
+      strengths: new Set()
+    }
+  });
+},
+
+  filterMode: 'dim',
+  setFilterMode: (mode) => set({ filterMode: mode }),
 
   addThesis(participantId, title, body, firstMention) {
     const s = get()
@@ -161,7 +185,6 @@ export const useGraphStore = create<Store>((set, get) => ({
     set(st => ({ nodes: [...st.nodes, n] }))
     return n.id
   },
-
   addArgument(participantId, title, body, parentId, strengthType, firstMention) {
     const s = get()
     const parent = parentId && s.nodes.find(n => n.id === parentId)
@@ -171,7 +194,6 @@ export const useGraphStore = create<Store>((set, get) => ({
     set(st => ({ nodes: [...st.nodes, n], edges: parentId ? [...st.edges, e] : st.edges }))
     return n.id
   },
-
   addCounter(participantId, targetId, title, body, strengthType, firstMention) {
     const s = get()
     const target = s.nodes.find(n => n.id === targetId)
@@ -181,7 +203,6 @@ export const useGraphStore = create<Store>((set, get) => ({
     set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
-
   addEvidence(participantId, targetId, title, body, strengthType, firstMention) {
     const s = get()
     const target = s.nodes.find(n => n.id === targetId)
@@ -191,7 +212,6 @@ export const useGraphStore = create<Store>((set, get) => ({
     set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
-
   addAgreement(participantId, targetId, title, body, firstMention) {
     const s = get()
     const target = s.nodes.find(n => n.id === targetId)
@@ -201,7 +221,6 @@ export const useGraphStore = create<Store>((set, get) => ({
     set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
-
   addArgumentSummary(participantId, thesisId, title, body, firstMention) {
     const s = get()
     const thesis = s.nodes.find(n => n.id === thesisId)
@@ -211,26 +230,22 @@ export const useGraphStore = create<Store>((set, get) => ({
     set(st => ({ nodes: [...st.nodes, n], edges: [...st.edges, e] }))
     return n.id
   },
-
   updateNode(id, patch) {
     set(st => ({
       nodes: st.nodes.map(n => n.id === id ? { ...n, data: { ...n.data, ...patch } } : n)
     }))
   },
-
   deleteNode(id) {
     set(st => ({
       nodes: st.nodes.filter(n => n.id !== id),
       edges: st.edges.filter(e => e.source !== id && e.target !== id)
     }))
   },
-
   setAllCollapsed(v) {
     set(st => ({
       nodes: st.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: v } }))
     }))
   },
-
   loadSnapshot(s) {
     let nodes = s.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: true } }))
     const layout = computeLayout(nodes, s.edges)
@@ -240,24 +255,20 @@ export const useGraphStore = create<Store>((set, get) => ({
     })
     set({ nodes, edges: s.edges, participants: s.participants || [] })
   },
-
   getSnapshot() {
     const s = get()
     return { nodes: s.nodes, edges: s.edges, participants: s.participants }
   },
-
   updateParticipant(id, name) {
     set(st => ({
       participants: st.participants.map(p => p.id === id ? { ...p, name } : p)
     }))
   },
-
   setSupportsParent(childId, newParentId) {
     const s = get()
     const child = s.nodes.find(n => n.id === childId)
     const newParent = s.nodes.find(n => n.id === newParentId)
     if (!child || !newParent) return
-
     if (child.data.kind === 'Argument') {
       if (!(newParent.data.participantId === child.data.participantId &&
             (newParent.data.kind === 'Thesis' || newParent.data.kind === 'Argument' ||
