@@ -1,0 +1,1695 @@
+{
+  "nodes": [
+    {
+      "id": "thesisA",
+      "type": "nodeCard",
+      "position": {
+        "x": 11460,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The Israeli Government has nefarious intent",
+        "body": "The government is doing genocide or something close to it.",
+        "kind": "Thesis",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "thesisB",
+      "type": "nodeCard",
+      "position": {
+        "x": 3990,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Israel is the most moral army",
+        "body": "",
+        "kind": "Thesis",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "ue52tc64",
+      "type": "nodeCard",
+      "position": {
+        "x": 14120,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "The ceasefire is a good thing",
+        "body": "Good that the Israeli hostages are back.\nAlso good that 1700 Palestinians held without charges are back",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4"
+      }
+    },
+    {
+      "id": "oqol9ga2",
+      "type": "nodeCard",
+      "position": {
+        "x": 13740,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Everyone involved deserves credit for ceasefire",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4"
+      }
+    },
+    {
+      "id": "1xdbswr8",
+      "type": "nodeCard",
+      "position": {
+        "x": 14120,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Less killing",
+        "body": "Israel is still killing in Gaza, but to a lesser extent.\nThe reports he read went from ~70 dead a day to ~12.",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1"
+      }
+    },
+    {
+      "id": "lz3kx53t",
+      "type": "nodeCard",
+      "position": {
+        "x": 14500,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "The situation is precarious",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4"
+      }
+    },
+    {
+      "id": "eux62zfn",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Hamas is an unpredictable terror organization",
+        "body": "Their goal is still to destroy Israel",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4"
+      }
+    },
+    {
+      "id": "nj5zcqwv",
+      "type": "nodeCard",
+      "position": {
+        "x": 4940,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "The deal disarms Hamas",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3"
+      }
+    },
+    {
+      "id": "id6650v8",
+      "type": "nodeCard",
+      "position": {
+        "x": 5700,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Trump personally backs the deal",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4"
+      }
+    },
+    {
+      "id": "h9bjo3q4",
+      "type": "nodeCard",
+      "position": {
+        "x": 1520,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Israel is not trying to kill civilians",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1"
+      }
+    },
+    {
+      "id": "kitsz5g2",
+      "type": "nodeCard",
+      "position": {
+        "x": 3800,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "No deal will work until Hamas is gone",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4"
+      }
+    },
+    {
+      "id": "d1vwdhcl",
+      "type": "nodeCard",
+      "position": {
+        "x": 13170,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Gaza has been destroyed",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1"
+      }
+    },
+    {
+      "id": "qlb204nh",
+      "type": "nodeCard",
+      "position": {
+        "x": 12600,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Aid withholding",
+        "body": "After Israel accused Hamas of slow rolling return of dead hostages, they cut aid to Gaza in half.  After recent hostilities with 2 idf soldiers killed, Israel is cutting off all aid.",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1"
+      }
+    },
+    {
+      "id": "6g95mdx4",
+      "type": "nodeCard",
+      "position": {
+        "x": 12600,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "IDF wages war against the civilian population",
+        "body": "These aid cuts are not directed at Hamas, the primary injury is inflicted on the civilian population.\n\nThese are examples of collective punishment.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "9:20"
+      }
+    },
+    {
+      "id": "rykk10k5",
+      "type": "nodeCard",
+      "position": {
+        "x": 13360,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Jared Kushner's description of Gaza",
+        "body": "Kushner, a close friend of Israel, said Gaza looked like a nuclear bomb had gone off.",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "9:50"
+      }
+    },
+    {
+      "id": "cazm0h3p",
+      "type": "nodeCard",
+      "position": {
+        "x": 9180,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Human shield excuse",
+        "body": "The Israelis treat Gazan civilians as fair game, because they claim Hamas uses them as human shields so they have no option but to treat the civilians as fair game.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "10:05"
+      }
+    },
+    {
+      "id": "epj7nemz",
+      "type": "nodeCard",
+      "position": {
+        "x": 9940,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Hamas is still in power",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "12:50"
+      }
+    },
+    {
+      "id": "htsokzk6",
+      "type": "nodeCard",
+      "position": {
+        "x": 9940,
+        "y": 1200
+      },
+      "data": {
+        "id": "",
+        "title": "Haaretz Article",
+        "body": "",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "12:50"
+      }
+    },
+    {
+      "id": "ijqulge8",
+      "type": "nodeCard",
+      "position": {
+        "x": 10320,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Lack of success signals false claims",
+        "body": "Israel said it had to do horrible things to the civilians to get Hamas out of power, and if they were being fully truthful, the horrible things would have gotten Hamas out of power.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "13:20"
+      }
+    },
+    {
+      "id": "9ezbu06m",
+      "type": "nodeCard",
+      "position": {
+        "x": 10320,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Smith predicted accurately ",
+        "body": "Dave Smith has been actively predicting for years that this strategy would not destroy Hamas, so that fact that he was right and Israel was wrong bolsters his credibility relative to theirs.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "13:30"
+      }
+    },
+    {
+      "id": "try8hnfb",
+      "type": "nodeCard",
+      "position": {
+        "x": 7030,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Dave Smith is not credible",
+        "body": "His criticisms of Israel should be disregarded, or at least taken with a grain of salt.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "14:40"
+      }
+    },
+    {
+      "id": "his09yf9",
+      "type": "nodeCard",
+      "position": {
+        "x": 7790,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "He is a partisan",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "14:50"
+      }
+    },
+    {
+      "id": "55nafdx3",
+      "type": "nodeCard",
+      "position": {
+        "x": 7600,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Selective use of \"Fog of War\"",
+        "body": "Smith applies a fog of war framework to the actions of Hamas, but not to Israel.",
+        "kind": "Evidence",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "14:50"
+      }
+    },
+    {
+      "id": "tfxpksuy",
+      "type": "nodeCard",
+      "position": {
+        "x": 2280,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "One simple goal ",
+        "body": "Israel is furthering only one goal: to get the civilians returned and to destroy Hamas. No other goals like ethnic cleansing or territorial expansion are on the table.\n\nNeeds Type 2 link showing cost of civilians vs war aims balancing.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 2",
+        "firstMention": "15.:00"
+      }
+    },
+    {
+      "id": "cai8y799",
+      "type": "nodeCard",
+      "position": {
+        "x": 1710,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "No genocidal intent",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1"
+      }
+    },
+    {
+      "id": "xbwswvyt",
+      "type": "nodeCard",
+      "position": {
+        "x": 1520,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "There was no Wannsee Conference",
+        "body": "",
+        "kind": "Evidence",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3"
+      }
+    },
+    {
+      "id": "mkra9u8k",
+      "type": "nodeCard",
+      "position": {
+        "x": 6840,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Dave Smith is unwilling to believe that Israel is the most moral army",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "15:10"
+      }
+    },
+    {
+      "id": "aqh64ja1",
+      "type": "nodeCard",
+      "position": {
+        "x": 380,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Israel abided by ceasefire obligations",
+        "body": "After ceasefire was signed, Israel withdrew to the line they agree on.",
+        "kind": "Evidence",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "15:30"
+      }
+    },
+    {
+      "id": "mcmlibrv",
+      "type": "nodeCard",
+      "position": {
+        "x": 2660,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "They are withholding aid",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "15:50"
+      }
+    },
+    {
+      "id": "s97t041w",
+      "type": "nodeCard",
+      "position": {
+        "x": 7600,
+        "y": 1200
+      },
+      "data": {
+        "id": "",
+        "title": "Recent killing",
+        "body": "The death of 2 IDF members is not in the fog of war, it certainly happened as the Israeli government claims it did.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "15:50"
+      }
+    },
+    {
+      "id": "soviq8ik",
+      "type": "nodeCard",
+      "position": {
+        "x": 6460,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Dave Smith has an unrealistic view of Hamas",
+        "body": "He is acting like we are dealing with children on a schoolyard, not serious terrorists.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "16:00"
+      }
+    },
+    {
+      "id": "7xvmls1l",
+      "type": "nodeCard",
+      "position": {
+        "x": 7220,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Dave Smith unreasonably condemns Israel",
+        "body": "Dave Smith may condemn October 7, but he also condemns every action Israel takes in response.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "16:20"
+      }
+    },
+    {
+      "id": "yrzq8l9y",
+      "type": "nodeCard",
+      "position": {
+        "x": 1900,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "The genocidal statements by members of the cabinet are \"Red Herrings\"",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "17:45"
+      }
+    },
+    {
+      "id": "14lwsci8",
+      "type": "nodeCard",
+      "position": {
+        "x": 1900,
+        "y": 1200
+      },
+      "data": {
+        "id": "",
+        "title": "A deal was made short of genocide",
+        "body": "If the openly genocidal members of the cabinet had any real power, this deal wouldn't have happened.",
+        "kind": "Evidence",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "18:10"
+      }
+    },
+    {
+      "id": "f8xv0lfu",
+      "type": "nodeCard",
+      "position": {
+        "x": 1140,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Israel is behaving in a way consistent with trusting Trump to make a good deal",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "18:30"
+      }
+    },
+    {
+      "id": "ihkzu1n8",
+      "type": "nodeCard",
+      "position": {
+        "x": 10700,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Israel's actions have been enormously successful",
+        "body": "This deal is not perfect but it's better than what would have happened if they raised the white flag like Dave Smith types wanted.  That deal would have left Hamas fully in charge with no return of hostages.",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "19:30"
+      }
+    },
+    {
+      "id": "p4axmldi",
+      "type": "nodeCard",
+      "position": {
+        "x": 4560,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "The deal  could be perfect if Trump goes the extra mile",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "19:40"
+      }
+    },
+    {
+      "id": "eputrp6b",
+      "type": "nodeCard",
+      "position": {
+        "x": 12220,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "It's easier politically to blame Palestinians for any failure in ceasefire",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "22:10"
+      }
+    },
+    {
+      "id": "0k4n3k3q",
+      "type": "nodeCard",
+      "position": {
+        "x": 12980,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Israel supporters speak out",
+        "body": "60 minutes interview with Jared Kushner and Steve Whitkoff who both said Israel was out of control and had to be brought to the table.\nThey also said intel about Hamas's willingness to deal seemed off.",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "22:45"
+      }
+    },
+    {
+      "id": "yic752tx",
+      "type": "nodeCard",
+      "position": {
+        "x": 8420,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Reporters contradict intel",
+        "body": "Jeremy Scahill and Ryan Grimm have talked to Hamas leadership and reported more willingness to deal than the intel going to the White House (which presumably Israel had a hand in).",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "23:00"
+      }
+    },
+    {
+      "id": "j2d6i11a",
+      "type": "nodeCard",
+      "position": {
+        "x": 7980,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "No reasonable person would view Smith as sympathetic to Hamas",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "23:20"
+      }
+    },
+    {
+      "id": "tljyv4vx",
+      "type": "nodeCard",
+      "position": {
+        "x": 7220,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "It is reasonable to condemn both Hamas and Israel's reaction",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "23:50"
+      }
+    },
+    {
+      "id": "19izkmha",
+      "type": "nodeCard",
+      "position": {
+        "x": 8800,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Hamas might have been willing to do this deal earlier",
+        "body": "Israel might have been the impediment",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "23:50"
+      }
+    },
+    {
+      "id": "y900voph",
+      "type": "nodeCard",
+      "position": {
+        "x": 9560,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Israel's inconsistency re Hamas undermines their claims",
+        "body": "Since Israel propped up Hamas, with the goal of preventing a two-state solution, it is unreasonable to now blame Israel's own creation for why Israel has to kill civilians.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "24:15"
+      }
+    },
+    {
+      "id": "15lgw1nl",
+      "type": "nodeCard",
+      "position": {
+        "x": 11840,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "The things Israel has done are horrible",
+        "body": "The bombings, killings, etc have a huge negative impact in a vacuum.  These could only be justified with a very strong justification.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "24:30"
+      }
+    },
+    {
+      "id": "px9wc5c6",
+      "type": "nodeCard",
+      "position": {
+        "x": 11270,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "The political turn against Israel is evidence Israel is doing something wrong",
+        "body": "The unusual magnitude of the opinion swing points to something significant happening.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "24:50"
+      }
+    },
+    {
+      "id": "pjtjt8lh",
+      "type": "nodeCard",
+      "position": {
+        "x": 11080,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Israeli approval swung from +48 to -1",
+        "body": "Needs Type 2 link showing this swing is because Israel is doing something wrong.",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "24:50"
+      }
+    },
+    {
+      "id": "czbrp7eb",
+      "type": "nodeCard",
+      "position": {
+        "x": 11460,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "The reasons this is happening",
+        "body": "1. What Israel is doing is so indefensible \n2. The relationship between the US and Israel is too weird.\n3. The preferred method of Israeli propaganda doesn't work anymore.\n\nNeeds Type 2 link showing a significant swing.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 2",
+        "firstMention": "25:00"
+      }
+    },
+    {
+      "id": "95ilsixi",
+      "type": "nodeCard",
+      "position": {
+        "x": 11460,
+        "y": 1200
+      },
+      "data": {
+        "id": "",
+        "title": "Example of #3 earlier in debate",
+        "body": "Spielman had earlier said they were the most moral army in response to Smith's claim that Israel is denying food because Hamas is slow rolling the return of corpses.",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "25:20"
+      }
+    },
+    {
+      "id": "rxneio5w",
+      "type": "nodeCard",
+      "position": {
+        "x": 11460,
+        "y": 1500
+      },
+      "data": {
+        "id": "",
+        "title": "Reasons why this type of propaganda doesn't work",
+        "body": "Most people are much more concerned with the living people who are still enduring hardship than with the corpses.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "25:35"
+      }
+    },
+    {
+      "id": "1x2o2um6",
+      "type": "nodeCard",
+      "position": {
+        "x": 6080,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Dave Smith does antisemetic diatribes",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "26:00"
+      }
+    },
+    {
+      "id": "btjzgsh2",
+      "type": "nodeCard",
+      "position": {
+        "x": 4180,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Qatar offsets Israeli influence",
+        "body": "Any concerns about Israeli lobbyists in the US is offset by Qatari lobbyists.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "28:00"
+      }
+    },
+    {
+      "id": "2t9d5ckd",
+      "type": "nodeCard",
+      "position": {
+        "x": 5320,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "The deal happened because of military pressure",
+        "body": "The strikes on Iran, Hezbollah, Hamas, and Qatar all contributed to Hamas making a deal.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "28:10"
+      }
+    },
+    {
+      "id": "9qbajhmn",
+      "type": "nodeCard",
+      "position": {
+        "x": 5320,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Netanyahu had to apologize for Qatar attack",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "29:00"
+      }
+    },
+    {
+      "id": "ozihw5nm",
+      "type": "nodeCard",
+      "position": {
+        "x": 3040,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Israel should have attacked Hamas more before 10/7",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "30:00"
+      }
+    },
+    {
+      "id": "8v5jfj20",
+      "type": "nodeCard",
+      "position": {
+        "x": 760,
+        "y": 600
+      },
+      "data": {
+        "id": "",
+        "title": "Israel didn't want to go in to Gaza",
+        "body": "They expected negative press from people like Piers Morgan because of the tunnels and the actions it would take to deal with them.",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "30:45"
+      }
+    },
+    {
+      "id": "kh92rux8",
+      "type": "nodeCard",
+      "position": {
+        "x": 760,
+        "y": 900
+      },
+      "data": {
+        "id": "",
+        "title": "Personal Experience",
+        "body": "He was in Gaza and saw tunnels with his own eyes.",
+        "kind": "Evidence",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "30:45"
+      }
+    },
+    {
+      "id": "qodiprh9",
+      "type": "nodeCard",
+      "position": {
+        "x": 3420,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "It is unreasonable to comment on Gaza if you haven't done a guided Israeli tour and smelled the burning flesh",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "35:30"
+      }
+    },
+    {
+      "id": "nya6piik",
+      "type": "nodeCard",
+      "position": {
+        "x": 12980,
+        "y": 300
+      },
+      "data": {
+        "id": "",
+        "title": "Their actions are those of someone doing genocide or something close to it",
+        "body": "Needs Type 2 link showing genocidal intent.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 2"
+      }
+    },
+    {
+      "id": "lm812aui",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The Israeli government has been dishonest on this issue",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 3"
+      }
+    },
+    {
+      "id": "xqtwral6",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Opinion has shifted against Israel",
+        "body": "Needs Type 2 link showing this swing is because Israel is doing something wrong.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": true,
+        "selfCollapsed": false,
+        "strengthType": "Type 2"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "u77mjw01",
+      "source": "thesisA",
+      "target": "ue52tc64",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "mn4nnzyt",
+      "source": "thesisA",
+      "target": "oqol9ga2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "69hgp4tf",
+      "source": "1xdbswr8",
+      "target": "ue52tc64",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "5o1v6r0m",
+      "source": "thesisA",
+      "target": "lz3kx53t",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "x7c5lezw",
+      "source": "thesisB",
+      "target": "eux62zfn",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "ajwxqdh7",
+      "source": "thesisB",
+      "target": "nj5zcqwv",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "ois8gzuj",
+      "source": "thesisB",
+      "target": "id6650v8",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "wgxmpbs8",
+      "source": "thesisB",
+      "target": "h9bjo3q4",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "euejz7ap",
+      "source": "thesisB",
+      "target": "kitsz5g2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "gv1es0yx",
+      "source": "nya6piik",
+      "target": "d1vwdhcl",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "7k7ro9fx",
+      "source": "qlb204nh",
+      "target": "nya6piik",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "kl5b2b9y",
+      "source": "qlb204nh",
+      "target": "6g95mdx4",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "zennjf6y",
+      "source": "rykk10k5",
+      "target": "d1vwdhcl",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "62rs39g9",
+      "source": "nya6piik",
+      "target": "cazm0h3p",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "c7busoqi",
+      "source": "ijqulge8",
+      "target": "epj7nemz",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "c8mze599",
+      "source": "htsokzk6",
+      "target": "epj7nemz",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "fexzit0u",
+      "source": "lm812aui",
+      "target": "ijqulge8",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "dyiqlw06",
+      "source": "ijqulge8",
+      "target": "9ezbu06m",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "xpfc697x",
+      "source": "thesisB",
+      "target": "try8hnfb",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "3alj27ne",
+      "source": "try8hnfb",
+      "target": "his09yf9",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "rmh18r7f",
+      "source": "55nafdx3",
+      "target": "his09yf9",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "5cw9egp8",
+      "source": "h9bjo3q4",
+      "target": "tfxpksuy",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "dvzjgld3",
+      "source": "h9bjo3q4",
+      "target": "cai8y799",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "gwgismw9",
+      "source": "xbwswvyt",
+      "target": "cai8y799",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "xkq59sn1",
+      "source": "try8hnfb",
+      "target": "mkra9u8k",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "47czsqft",
+      "source": "aqh64ja1",
+      "target": "h9bjo3q4",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "v22gscdn",
+      "source": "mcmlibrv",
+      "target": "h9bjo3q4",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "qkxiazea",
+      "source": "55nafdx3",
+      "target": "s97t041w",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "d9zuc4iu",
+      "source": "try8hnfb",
+      "target": "soviq8ik",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "3tc9vs5a",
+      "source": "try8hnfb",
+      "target": "7xvmls1l",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "uxcsgshh",
+      "source": "cai8y799",
+      "target": "yrzq8l9y",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "gpug2auq",
+      "source": "14lwsci8",
+      "target": "yrzq8l9y",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "9z60vl2d",
+      "source": "h9bjo3q4",
+      "target": "f8xv0lfu",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "u4my9e4d",
+      "source": "ihkzu1n8",
+      "target": "ijqulge8",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "jkex1sjt",
+      "source": "thesisB",
+      "target": "p4axmldi",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "1gegs2sj",
+      "source": "thesisA",
+      "target": "eputrp6b",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "2skb0ndc",
+      "source": "0k4n3k3q",
+      "target": "lm812aui",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "f3zlh35d",
+      "source": "yic752tx",
+      "target": "lm812aui",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "rp5z7tl4",
+      "source": "j2d6i11a",
+      "target": "his09yf9",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "rm6ezecz",
+      "source": "tljyv4vx",
+      "target": "7xvmls1l",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "68d24sf7",
+      "source": "lm812aui",
+      "target": "19izkmha",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "jmushvh4",
+      "source": "lm812aui",
+      "target": "y900voph",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "0xbo0j0n",
+      "source": "nya6piik",
+      "target": "15lgw1nl",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "effats79",
+      "source": "thesisA",
+      "target": "px9wc5c6",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "2aby3kxs",
+      "source": "pjtjt8lh",
+      "target": "xqtwral6",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "q2gn62pq",
+      "source": "px9wc5c6",
+      "target": "czbrp7eb",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "6oty76mk",
+      "source": "95ilsixi",
+      "target": "czbrp7eb",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "9tbtszyl",
+      "source": "95ilsixi",
+      "target": "rxneio5w",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "9iym4j27",
+      "source": "try8hnfb",
+      "target": "1x2o2um6",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "x2uzifvi",
+      "source": "thesisB",
+      "target": "btjzgsh2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "73u0x530",
+      "source": "thesisB",
+      "target": "2t9d5ckd",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "sbsq0lfi",
+      "source": "9qbajhmn",
+      "target": "2t9d5ckd",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "47f3ev7b",
+      "source": "thesisB",
+      "target": "ozihw5nm",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "4i3jqv9o",
+      "source": "h9bjo3q4",
+      "target": "8v5jfj20",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "naandk1m",
+      "source": "kh92rux8",
+      "target": "8v5jfj20",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "1rdsv5lg",
+      "source": "try8hnfb",
+      "target": "qodiprh9",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "501x8nqn",
+      "source": "thesisA",
+      "target": "nya6piik",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "tikkq3qm",
+      "source": "thesisA",
+      "target": "lm812aui",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "qcgt32w4",
+      "source": "px9wc5c6",
+      "target": "xqtwral6",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "mykmnpgs",
+      "source": "czbrp7eb",
+      "target": "xqtwral6",
+      "type": "t2",
+      "data": {
+        "kind": "t2-link"
+      }
+    }
+  ],
+  "participants": [
+    {
+      "id": "A",
+      "name": "Dave Smith"
+    },
+    {
+      "id": "B",
+      "name": "Doron Spielman"
+    }
+  ]
+}

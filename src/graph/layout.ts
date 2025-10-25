@@ -9,15 +9,23 @@ const NODE_H = 120
 const X_GAP = 60
 const Y_GAP = 180
 
-function kindOrder(kind: string): number {
-  switch (kind) {
-    case 'Evidence': return 0
-    case 'Agreement': return 1
-    case 'Argument': return 2
-    case 'Counter': return 3
-    case 'Thesis': return -1
-    case 'Argument Summary': return 0 // handled specially in placement
-    default: return 9
+function tierFor(node: DebateNode): number {
+  const kind = node.data?.kind
+  if (kind === 'Evidence') return 0
+  if (kind === 'Argument' || kind === 'Argument Summary') return 1
+  if (kind === 'Counter') return 2
+  if (kind === 'Agreement') return 3
+  return 9
+}
+
+function strengthOrder(strength?: string): number {
+  if (!strength) return 5
+  switch (strength) {
+    case 'Type 1': return 1
+    case 'Type 2': return 2
+    case 'Type 3': return 3
+    case 'Type 4': return 4
+    default: return 5
   }
 }
 
@@ -56,9 +64,14 @@ export function computeLayout(nodes: DebateNode[], edges: DebateEdge[]): Map<str
   // sort children lists (except summary special-case at placement)
   for (const [p, arr] of Array.from(children.entries())) {
     arr.sort((aid, bid) => {
-      const a = idToNode.get(aid)!; const b = idToNode.get(bid)!
-      const ko = kindOrder(a.data?.kind) - kindOrder(b.data?.kind)
-      if (ko !== 0) return ko
+      const a = idToNode.get(aid)!
+      const b = idToNode.get(bid)!
+      const ta = tierFor(a)
+      const tb = tierFor(b)
+      if (ta !== tb) return ta - tb
+      const sa = strengthOrder(a.data?.strengthType)
+      const sb = strengthOrder(b.data?.strengthType)
+      if (sa !== sb) return sa - sb
       return (a.data?.title || '').localeCompare(b.data?.title || '')
     })
   }
