@@ -36,7 +36,7 @@ function buildChildrenPairs(edges: DebateEdge[]) {
     if (kind === 'supports') pairs.push([e.source, e.target])
     else if (kind === 'evidence-of' || kind === 'agrees-with') pairs.push([e.target, e.source])
     else if (kind === 'attacks') pairs.push([e.target, e.source])
-    // t2-link has no parent/child relation
+    // t2-link has no parent/child relation(s)
   })
   return pairs
 }
