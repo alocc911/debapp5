@@ -36,32 +36,17 @@ type Store = Snapshot & {
   linkHighlight: { sourceId: string, targetId: string } | null;
   setLinkHighlight: (highlight: { sourceId: string, targetId: string } | null) => void;
   // Add these new properties:
-<<<<<<< HEAD
   filters: {
     participants: Set<string>;
     kinds: Set<StatementKind>;
     strengths: Set<StrengthType>;
   };
-=======
-filters: {
-  participants: Set<string>;
-  kinds: Set<StatementKind>;
-  strengths: Set<StrengthType>;
-};
->>>>>>> a32c1e012b8e1109de46231cdcbc3e25605c0216
   setParticipantFilter: (id: string, active: boolean) => void;
   setKindFilter: (kind: StatementKind, active: boolean) => void;
   setStrengthFilter: (strength: StrengthType, active: boolean) => void;
   clearFilters: () => void;
-<<<<<<< HEAD
   filterMode: 'dim' | 'hide';
   setFilterMode: (mode: 'dim' | 'hide') => void;
-=======
-
-  filterMode: 'dim' | 'hide';
-  setFilterMode: (mode: 'dim' | 'hide') => void;
-
->>>>>>> a32c1e012b8e1109de46231cdcbc3e25605c0216
   // Convenience: return the current participants + kind list for UIs
   getLegendKinds: () => string[]
   // New: add participant
@@ -114,15 +99,9 @@ export const useGraphStore = create<Store>((set, get) => ({
   setLinkHighlight(highlight) { set(() => ({ linkHighlight: highlight })) },
   // Add these new properties:
   filters: {
-<<<<<<< HEAD
     participants: new Set<string>(),
     kinds: new Set<StatementKind>(),
     strengths: new Set<StrengthType>(),
-=======
-    participants: new Set(),
-    kinds: new Set(),
-    strengths: new Set()
->>>>>>> a32c1e012b8e1109de46231cdcbc3e25605c0216
   },
   setParticipantFilter(id, active) {
     set(st => {
@@ -140,7 +119,6 @@ export const useGraphStore = create<Store>((set, get) => ({
       return { filters: { ...st.filters, kinds } }
     })
   },
-<<<<<<< HEAD
   setStrengthFilter(strength, active) {
     set(st => {
       const strengths = new Set(st.filters.strengths)
@@ -160,38 +138,6 @@ export const useGraphStore = create<Store>((set, get) => ({
   },
   // New: add participant
   addParticipant() {
-=======
-  setStrengthFilter: (strength: StrengthType, active: boolean) => {
-  set(state => {
-    const newSet = new Set(state.filters.strengths);
-    if (active) {
-      newSet.add(strength);
-    } else {
-      newSet.delete(strength);
-    }
-    return {
-      filters: {
-        ...state.filters,
-        strengths: newSet
-      }
-    };
-  });
-},
-  clearFilters: () => {
-  set({
-    filters: {
-      participants: new Set(),
-      kinds: new Set(),
-      strengths: new Set()
-    }
-  });
-},
-
-  filterMode: 'dim',
-  setFilterMode: (mode) => set({ filterMode: mode }),
-
-  addThesis(participantId, title, body, firstMention) {
->>>>>>> a32c1e012b8e1109de46231cdcbc3e25605c0216
     const s = get()
     const existingIds = s.participants.map(p => p.id)
     const maxCharCode = existingIds.length > 0 ? Math.max(...existingIds.map(id => id.charCodeAt(0))) : 64 // 'A' - 1
@@ -260,19 +206,8 @@ export const useGraphStore = create<Store>((set, get) => ({
       nodes: st.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: v } }))
     }))
   },
-<<<<<<< HEAD
   loadSnapshot(snap) {
     set(snap)
-=======
-  loadSnapshot(s) {
-    let nodes = s.nodes.map(n => ({ ...n, data: { ...n.data, collapsed: true } }))
-    const layout = computeLayout(nodes, s.edges)
-    nodes.forEach(n => {
-      const pos = layout.get(n.id)
-      if (pos) n.position = pos
-    })
-    set({ nodes, edges: s.edges, participants: s.participants || [] })
->>>>>>> a32c1e012b8e1109de46231cdcbc3e25605c0216
   },
   getSnapshot() {
     const s = get()
@@ -286,14 +221,9 @@ export const useGraphStore = create<Store>((set, get) => ({
   setSupportsParent(childId, newParentId) {
     const s = get()
     const child = s.nodes.find(n => n.id === childId)
-<<<<<<< HEAD
     if (!child) return
     const parent = s.nodes.find(n => n.id === newParentId)
     if (!parent) return
-=======
-    const newParent = s.nodes.find(n => n.id === newParentId)
-    if (!child || !newParent) return
->>>>>>> a32c1e012b8e1109de46231cdcbc3e25605c0216
     if (child.data.kind === 'Argument') {
       if (!(parent.data.participantId === child.data.participantId &&
             (parent.data.kind === 'Thesis' || parent.data.kind === 'Argument' || parent.data.kind === 'Counter' || parent.data.kind === 'Evidence'))) {
