@@ -55,7 +55,7 @@ textarea { min-height: 92px; }
 .node-card { width: 320px; max-width: 360px; background: var(--card); border-radius: 16px; padding: 12px 14px; border: 2px solid rgba(0,0,0,0.06); box-shadow: var(--shadow); transition: box-shadow .12s ease, outline-width .12s ease, transform .12s ease; }
 .node-card h3 { margin: 6px 0 6px; font-size: 17px; line-height: 1.2; color: #0f172a; }
 .node-card h3.summary { font-size: 22px; line-height: 1.2; font-weight: 800; } /* larger for Argument Summary */
-.node-card p { margin: 0; font-size: 13px; color: #374151; white-space: pre-line;}
+.node-card p { margin: 0; font-size: 13px; color: #374151; white-space: pre-line; text-align: left;}
 .node-meta { display:flex; align-items:center; gap:10px; font-size:12px; }
 
 .badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #0f172a; }
@@ -65,44 +65,55 @@ textarea { min-height: 92px; }
 .badge.counter { background: #FEE2E2; border-color:#fca5a5; }
 .badge.evidence { background: #FEF3C7; border-color:#fcd34d; }
 .badge.agreement { background: #CFFAFE; border-color:#67e8f9; }
+.speaker-badge { padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #fff; }
 
-.speaker-badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); font-weight: 800; letter-spacing: .25px; color: #0f172a; }
-.strength-badge { display:inline-block; padding: 3px 9px; font-size: 11px; border-radius: 999px; font-weight: 800; letter-spacing: .25px; color: #0f172a; margin-left: auto; }
-
-/* Edge styles */
+/* Edge paths */
 .edge-path { stroke-linecap: round; }
-.edge-label { background: #e2e8f0; color: #0f172a; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; border: 1px solid #cbd5e1; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.edge-path.active { stroke-width: 8px; stroke-opacity: .9; }
 
-.edge-path.active { stroke-width: 10px !important; }
-
-.dimmed { opacity: 0.4; }
-.edge-on { outline: 3px solid #0ea5e9; outline-offset: 2px; border-radius: 20px; }
-
-.eligible-target { outline: 2px dashed #0ea5e9; outline-offset: 2px; border-radius: 20px; opacity: 1 !important; }
-.eligible-selected { outline: 4px solid #0ea5e9; outline-offset: 2px; border-radius: 20px; opacity: 1 !important; }
-
-/* Type 1: if this is true, then the main claim is true */
-.strength-type1{
-  background: #ecfdf5;
-  border-color: #a7f3d0;
-  color: #065f46;
-}
-
-/* Type 2: if this AND other(s) are true... */
-.strength-type2{
-  background: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1e40af;
-}
-
-/* Type 3: adds general support */
-.strength-type3{
+.edge-label {
   background: #f8fafc;
-  border-color: #cbd5e1;
-  color:#334155;
+  color: #0f172a;
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 1px solid #94a3b8;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* Type 4: no meaningful support */
+.edge-on { outline: 2px solid #0ea5e9; outline-offset: 2px; box-shadow: 0 8px 32px rgba(14,165,233,.3); }
+
+.dimmed { opacity: 0.25; }
+.eligible-target { border-color: #0ea5e9; outline: 2px solid #0ea5e9; outline-offset: 2px; box-shadow: 0 8px 32px rgba(14,165,233,.3); }
+.eligible-selected { border-color: #059669; outline: 2px solid #059669; outline-offset: 2px; box-shadow: 0 8px 32px rgba(5,150,105,.3); }
+
+/* Strength badges */
+.strength-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  font-size: 11px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: .25px;
+  margin-left: auto;
+}
+.strength-type1 {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+.strength-type2 {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+.strength-type3 {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
 .strength-type4{
   background: repeating-linear-gradient(135deg,#f3f4f6, #f3f4f6 6px,#e5e7eb 6px,#e5e7eb 12px);
   color:#374151;

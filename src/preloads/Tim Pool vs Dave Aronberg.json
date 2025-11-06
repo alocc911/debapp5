@@ -1,0 +1,1370 @@
+{
+  "nodes": [
+    {
+      "id": "thesisA",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The cases brought against Trump were unconstitutional and/or bad for America",
+        "body": "",
+        "kind": "Thesis",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "thesisB",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The NY criminal case against Trump only required proof of an intent to commit an underlying crime which the prosecution did show",
+        "body": "",
+        "kind": "Thesis",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "6gz2ahtd",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The cases against Trump were unprecedented",
+        "body": "There has never been a case in  US history where the government presumed another crime happened without proving it in order to prosecute a crime that required it.\n[NOTE] Needs Type 2 link to something showing that the unprecedented nature of these charges will open the floodgates.",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 2",
+        "firstMention": "0:01"
+      }
+    },
+    {
+      "id": "pm05alyj",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Not part of the legal question",
+        "body": "A historian might tell if there was precedent, but that is not part of his job as a legal guy",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "0:08"
+      }
+    },
+    {
+      "id": "rx6wjkws",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Mafia example",
+        "body": "The way this statute has been used in the past is for cases such as a Mafioso having someone killed and then falsifying business records in relation to that murder",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "0:45"
+      }
+    },
+    {
+      "id": "10lyk209",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "If the prosecution can bend the law this way than our justice system is gone",
+        "body": "If the state can upgrade the penalty by implying another crime was committed without proving it, the justice system is gone",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "1:45"
+      }
+    },
+    {
+      "id": "ty35azxl",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Only need to show intent or that they \"tried to\" commit other crime",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "2:15"
+      }
+    },
+    {
+      "id": "f29kcy55",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "If Trump attempted to commit campaign finance violations, you would expect them to charge him with attempted campaign finance violations",
+        "body": "[NOTE] Implied from the question \"If someone attempts to evade taxes or to commit campaign finance violations, are those crimes?\"",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "2:30"
+      }
+    },
+    {
+      "id": "k2227gjr",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "3 potential crimes",
+        "body": "Trump might have violated federal campaign finance violations, state campaign finance violations, or tax fraud",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "2:50"
+      }
+    },
+    {
+      "id": "9c16sfcm",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The gov cannot impose a penalty on anyone without proving they committed a crime",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "3:30"
+      }
+    },
+    {
+      "id": "nwdfmz2m",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The statute in this case",
+        "body": "With this statute, you only have to prove the falsification of records and that he was doing it for a bad reason",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "3:40"
+      }
+    },
+    {
+      "id": "59wbwnx5",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The courts have found that this structure is allowed",
+        "body": "Even though Aronberg doesn't know of any similar statutes off hand",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "3:45"
+      }
+    },
+    {
+      "id": "eqa6grj7",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Legal analyses from both sides say that no case in US history has followed this structure",
+        "body": "",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "4:00"
+      }
+    },
+    {
+      "id": "2vpxgi4e",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Conspiracy charges",
+        "body": "You can be charged with conspiracy to rob a bank even if you never robbed a bank, so long as you had the intent to do so and took some action in furtherance",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "5:30"
+      }
+    },
+    {
+      "id": "qy7te7e7",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Similar precedents",
+        "body": "Some small crimes like reporting violations can be elevated if they are in furtherance of something like money laundering or fraud",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "6:55"
+      }
+    },
+    {
+      "id": "0ca4bbxo",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "This case would be more like charging someone with money laundering without proving money laundering",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "7:25"
+      }
+    },
+    {
+      "id": "twpo17wh",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "With money laundering, you don't have to prove the underlying crime, only that there was intent to commit an underlying crime",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "7:35"
+      }
+    },
+    {
+      "id": "1sbm2xgx",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The unprecedented nature of this crime is part of an unprecedented pattern including going after political opponents and arresting their lawyers",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "8:30"
+      }
+    },
+    {
+      "id": "yxyrb033",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Jenna Ellis",
+        "body": "She faced RICO charges for drafting a legal letter for Trump in relation to what was claimed to be a criminal attempt by Trump to overturn the 2020 election",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "9:05"
+      }
+    },
+    {
+      "id": "sfthtij9",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "She was not charged by the Feds",
+        "body": "This was a Georgia / Fanni Willis case",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "9:30"
+      }
+    },
+    {
+      "id": "xb7m3m15",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "She was charged with trying to overturn the election",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "9:35"
+      }
+    },
+    {
+      "id": "o6yqlwty",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Lawyers, such as mafia consiglieres, have been charged with crimes for many years",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "9:45"
+      }
+    },
+    {
+      "id": "gjbr2aps",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Not every form of challenging an election is legal",
+        "body": "Proper channels are legal, like going through the courts, but calling the Proud Boys to storm the capitol is not",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "9:55"
+      }
+    },
+    {
+      "id": "70k2guhk",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "She pled guilty",
+        "body": "Which implies guilt",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "10:20"
+      }
+    },
+    {
+      "id": "17t8m4s3",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Reasons to plead even if innocent",
+        "body": "Trial tax\nHer fear that there was no defense apparatus to governments willing to prosecute lawyers",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "10:30"
+      }
+    },
+    {
+      "id": "wbrkhav3",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "She participated in lies Giuliani made before the Senate",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "11:25"
+      }
+    },
+    {
+      "id": "3hezfu00",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "This pattern includes overcharging related to January 6th",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "12:10"
+      }
+    },
+    {
+      "id": "whv3mbu6",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Seditious conspiracy was a valid charge in at least some of these cases",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "12:20"
+      }
+    },
+    {
+      "id": "wohcc01y",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "What Merrick Garland did was very different",
+        "body": "Trump ordered Pam Bondi to go after his political opponents, which she wavered on.\nHe then fired to Federal prosecutor in that jurisdiction and appointed an ally to bring charges",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "12:50"
+      }
+    },
+    {
+      "id": "kvl9cywk",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Trump's actions open the door to vindictive prosecution claims",
+        "body": "Direct orders to prosecute your enemies shows vindictive prosecution",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "13:25"
+      }
+    },
+    {
+      "id": "b07j4r5u",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Democrats did the same thing",
+        "body": "By creating a law that allowed only E Jean Carrol to bring charges",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "13:40"
+      }
+    },
+    {
+      "id": "q6m3b18i",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "That was an NY state action",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "13:45"
+      }
+    },
+    {
+      "id": "e9gq6v7z",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The Dems act on the Federal and State level",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "13:50"
+      }
+    },
+    {
+      "id": "m78ht2y2",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Historically, political actors don't go after their top opponents, even if there was a crime",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "14:45"
+      }
+    },
+    {
+      "id": "395s2awx",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Aronberg thinks cases like Bolton's would be fair game, but are tainted by more politicized prosecutions like Comey or James",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "15:00"
+      }
+    },
+    {
+      "id": "usryl1jy",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Mar a Lago raid was by the book",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 4",
+        "firstMention": "15:00"
+      }
+    },
+    {
+      "id": "vqaz2gou",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Facts of the \"raid\"",
+        "body": "Feds got a warrant.\nThey notified Secret Service.\nThey went in plain clothes.\nThey did find documents Trump claimed to not have.\nThe case was brought in a politically unfavorable jurisdiction.",
+        "kind": "Evidence",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "15:00"
+      }
+    },
+    {
+      "id": "7y85fhky",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Technical legal answers always seem to favor Democrats",
+        "body": "",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "16:05"
+      }
+    },
+    {
+      "id": "ao7lfve9",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Not charging Biden",
+        "body": "",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "16:15"
+      }
+    },
+    {
+      "id": "otu9wb29",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "E Jean Carrol Case",
+        "body": "The law was passed that applied only to her, and she won with dubious facts",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "16:30"
+      }
+    },
+    {
+      "id": "ckyywojj",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Civil Fraud Case",
+        "body": "The documents Trump submitted said you must do your own due diligence.\nThe bank said they weren't defrauded",
+        "kind": "Evidence",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "16:35"
+      }
+    },
+    {
+      "id": "2mrepr26",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The Alvin Bragg (34 felonies) case seems over-politicized",
+        "body": "The DA campaigned on charging Trump and resurrected this case in way that seemed politicized. \nHowever, the Feds had nothing to do with this.",
+        "kind": "Agreement",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "firstMention": "17:10"
+      }
+    },
+    {
+      "id": "0a7gmxl8",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "That law was not passed for Trump",
+        "body": "Weinstein got charged because of that law, as did other powerful people",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "18:20"
+      }
+    },
+    {
+      "id": "dzcxk27a",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "A Tim Pool viewing juror was allowed on the case",
+        "body": "After Pool had discussed how bogus these charges are.\nThat juror rules against Trump",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "18:50"
+      }
+    },
+    {
+      "id": "q2in2xbm",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "He had only seen some episodes",
+        "body": "This was not a Tim Pool fan or regular viewer",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "19:05"
+      }
+    },
+    {
+      "id": "m2kcp3mm",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "This unprecedented example opens the door for lawfare from both sides",
+        "body": "",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "6:30"
+      }
+    },
+    {
+      "id": "bhvorwz2",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "The politcal optics on the treatment of Trump v Biden on the documents cases is not something people will stand for",
+        "body": "Feds staging photos and adding cover sheets for Trump vs not charging Biden despite explicit findings he retained documents to make money is something the public will not accept legal technicalities as an answer for.\n[NOTE] Needs Type 2 link showing that the treatment of Trump was unprecedented",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 2",
+        "firstMention": "14:00"
+      }
+    },
+    {
+      "id": "6ypixfvd",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Argument Summary",
+        "body": "The cases brought against Trump and his allies set a new precedent that allows using the legal force of the state to attack one's political enemies.",
+        "kind": "Argument Summary",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "umw2epno",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "",
+        "title": "Argument Summary",
+        "body": "None of the cases brought against Trump and his allies were out of line with former precedent and the use of the legal force of the state is a precedent Trump is setting himself.",
+        "kind": "Argument Summary",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "gweas947",
+      "source": "m2kcp3mm",
+      "target": "6gz2ahtd",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "bg66t30s",
+      "source": "pm05alyj",
+      "target": "6gz2ahtd",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "5mnq6ki7",
+      "source": "rx6wjkws",
+      "target": "6gz2ahtd",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "zzihkicz",
+      "source": "thesisA",
+      "target": "10lyk209",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "6dt0iojr",
+      "source": "thesisB",
+      "target": "ty35azxl",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "4uxfkrx1",
+      "source": "f29kcy55",
+      "target": "ty35azxl",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "soz97kle",
+      "source": "thesisB",
+      "target": "k2227gjr",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "w04w71px",
+      "source": "thesisA",
+      "target": "9c16sfcm",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "6pfcs2bm",
+      "source": "nwdfmz2m",
+      "target": "9c16sfcm",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "vylefsy9",
+      "source": "nwdfmz2m",
+      "target": "59wbwnx5",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "90rb2g71",
+      "source": "eqa6grj7",
+      "target": "6gz2ahtd",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "v0xdju8b",
+      "source": "2vpxgi4e",
+      "target": "9c16sfcm",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "fbvp0g7m",
+      "source": "qy7te7e7",
+      "target": "6gz2ahtd",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "1ish634m",
+      "source": "0ca4bbxo",
+      "target": "qy7te7e7",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "ksfk2ci5",
+      "source": "twpo17wh",
+      "target": "0ca4bbxo",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "gqakde4j",
+      "source": "6gz2ahtd",
+      "target": "1sbm2xgx",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "f9tya53r",
+      "source": "yxyrb033",
+      "target": "1sbm2xgx",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "rb67t5s4",
+      "source": "sfthtij9",
+      "target": "yxyrb033",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "7wk9yzs8",
+      "source": "sfthtij9",
+      "target": "xb7m3m15",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "kob4s7ju",
+      "source": "o6yqlwty",
+      "target": "1sbm2xgx",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "7yrfqpm8",
+      "source": "o6yqlwty",
+      "target": "gjbr2aps",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "w4tgjfrn",
+      "source": "70k2guhk",
+      "target": "yxyrb033",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "7u4vrzat",
+      "source": "17t8m4s3",
+      "target": "70k2guhk",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "fjh3y55o",
+      "source": "wbrkhav3",
+      "target": "yxyrb033",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "0j5mw5zz",
+      "source": "1sbm2xgx",
+      "target": "3hezfu00",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "4qhjcys8",
+      "source": "whv3mbu6",
+      "target": "3hezfu00",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "sytapp60",
+      "source": "wohcc01y",
+      "target": "6gz2ahtd",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "73xqslnl",
+      "source": "wohcc01y",
+      "target": "kvl9cywk",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "u3zvfwoy",
+      "source": "b07j4r5u",
+      "target": "kvl9cywk",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "wd8q1wvu",
+      "source": "q6m3b18i",
+      "target": "b07j4r5u",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "edzh4sdd",
+      "source": "e9gq6v7z",
+      "target": "q6m3b18i",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "ijtlmf3s",
+      "source": "6gz2ahtd",
+      "target": "m78ht2y2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "jbw8mt19",
+      "source": "395s2awx",
+      "target": "m78ht2y2",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "mfjp6bjl",
+      "source": "usryl1jy",
+      "target": "m78ht2y2",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "vlac4mut",
+      "source": "vqaz2gou",
+      "target": "usryl1jy",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "cc5djd2n",
+      "source": "7y85fhky",
+      "target": "usryl1jy",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "9bzal2u4",
+      "source": "ao7lfve9",
+      "target": "7y85fhky",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "0zqmflwn",
+      "source": "otu9wb29",
+      "target": "7y85fhky",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "pcgj5f67",
+      "source": "ckyywojj",
+      "target": "7y85fhky",
+      "type": "thick",
+      "data": {
+        "kind": "evidence-of"
+      }
+    },
+    {
+      "id": "it4olvsm",
+      "source": "2mrepr26",
+      "target": "7y85fhky",
+      "type": "thick",
+      "data": {
+        "kind": "agrees-with"
+      }
+    },
+    {
+      "id": "j7l44g8h",
+      "source": "0a7gmxl8",
+      "target": "otu9wb29",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "s2bxv5ah",
+      "source": "dzcxk27a",
+      "target": "otu9wb29",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "mafppwkp",
+      "source": "q2in2xbm",
+      "target": "dzcxk27a",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "7f1idyxk",
+      "source": "thesisA",
+      "target": "m2kcp3mm",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "uhyt9zxy",
+      "source": "m2kcp3mm",
+      "target": "bhvorwz2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "2rgg62ka",
+      "source": "6gz2ahtd",
+      "target": "bhvorwz2",
+      "type": "t2",
+      "data": {
+        "kind": "t2-link"
+      }
+    },
+    {
+      "id": "i3l3khat",
+      "source": "thesisA",
+      "target": "6ypixfvd",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "v6uasjxx",
+      "source": "thesisB",
+      "target": "umw2epno",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    }
+  ],
+  "participants": [
+    {
+      "id": "A",
+      "name": "Tim Pool"
+    },
+    {
+      "id": "B",
+      "name": "Dave Aronberg"
+    }
+  ]
+}

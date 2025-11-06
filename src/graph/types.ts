@@ -1,3 +1,4 @@
+// src/graph/types.ts
 import type { Node, Edge } from 'reactflow'
 
 export type StatementKind =
@@ -26,10 +27,11 @@ export type DebateData = {
   // UI-only transient flags (optional)
   canBeReparentTarget?: boolean
   selectedForReparent?: boolean
+  isEditing?: boolean
 }
 
 export type DebateNode = Node<DebateData>
-export type DebateEdge = Edge & { data?: { kind: 'supports'|'evidence-of'|'attacks'|'t2-link'|'agrees-with' } }
+export type DebateEdge = Edge & { data?: { kind: 'supports'|'evidence-of'|'attacks'|'t2-link'|'agrees-with'|'refers-to' } }
 
 export const KIND_COLORS: Record<StatementKind, string> = {
   Thesis: '#DBEAFE',
