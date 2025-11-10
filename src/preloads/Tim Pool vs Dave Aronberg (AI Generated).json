@@ -1,0 +1,606 @@
+{
+  "nodes": [
+    {
+      "id": "thesisA",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "thesisA",
+        "title": "The prosecutions of Donald Trump represent an unprecedented and politically motivated weaponization of the justice system, setting a dangerous precedent that will lead to destructive retaliation.",
+        "body": "",
+        "kind": "Thesis",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "thesisB",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "thesisB",
+        "title": "The prosecutions against Trump operate within established legal frameworks and should be evaluated on their legal merits, even if some aspects have become unduly politicized.",
+        "body": "",
+        "kind": "Thesis",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "A_summary",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "A_summary",
+        "title": "Argument Summary",
+        "body": "Speaker A argues that the prosecutions against Trump are a politically motivated weaponization of the justice system, citing unprecedented legal maneuvers and the targeting of lawyers, which set a dangerous precedent for future retaliation.",
+        "kind": "Argument Summary",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "B_summary",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "B_summary",
+        "title": "Argument Summary",
+        "body": "Speaker B argues that the prosecutions, while sometimes politicized, operate within established legal frameworks, asserting that the legal standard of 'intent' is valid and that many cases are independent state-level actions.",
+        "kind": "Argument Summary",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false
+      }
+    },
+    {
+      "id": "global-A-1",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-1",
+        "title": "The Felony Upgrade Is Unprecedented for Relying on a Presumed, Unproven Crime",
+        "body": "Based on legal analyses, this is the first time in U.S. history a felony conviction has been secured using an 'add-on' charge that requires an underlying crime as an element, without the prosecution ever proving that underlying crime. Prosecutors upgraded an expired misdemeanor (falsifying business records) by presuming a secondary crime occurred. This historical unprecedentedness is a core flaw in the case. (merged from chunks 1, 2, 9, 10, 11, 14)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:00:00"
+      }
+    },
+    {
+      "id": "global-A-2",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-2",
+        "title": "Relying on 'Intent' Instead of Proof of a Crime is an Unconstitutional Legal Maneuver",
+        "body": "The legal standard being used is unconstitutional because it allows the government to impose a penalty without proving a crime was actually committed. If our system allows a charge to be elevated to a felony by merely implying another crime happened\u2014based on 'intent'\u2014then constitutional protections are meaningless. Using an uncharged crime's 'intent' as a predicate for another felony is an illegitimate legal maneuver, unlike established inchoate crimes like 'conspiracy' or 'attempt'. If prosecutors believe a crime was intended, they should charge that crime directly. (merged from chunks 4, 5, 7, 8, 10, 12, 13, 17)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:01:44"
+      }
+    },
+    {
+      "id": "global-A-3",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-3",
+        "title": "Prosecuting Political Opponents' Lawyers for Legal Work is a Shocking Escalation",
+        "body": "It is a shocking and terrifying precedent for the government to arrest and prosecute the lawyers of their chief political rival. Charging lawyers with RICO for drafting legal letters as part of an election challenge is an absurd criminalization of legal work. This specific, unprecedented action should be the focus, not broader events like January 6th. (merged from chunks 19, 20, 21, 22, 24)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:08:42"
+      }
+    },
+    {
+      "id": "global-A-4",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-4",
+        "title": "Guilty Pleas from Associates Are Coerced and Do Not Indicate Guilt",
+        "body": "A guilty plea, such as the one from Trump's lawyer in Georgia, is not a reliable indicator of actual guilt. Defendants often plead guilty due to systemic coercion, the overwhelming pressure of the state's legal machine, and the fear of a 'trial tax,' rather than because they are factually guilty. The lawyer's plea was an act of capitulation to fear, not a genuine admission of wrongdoing. (merged from chunk 23)",
+        "kind": "Counter",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:10:29"
+      }
+    },
+    {
+      "id": "global-A-5",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-5",
+        "title": "The Prosecutions Reveal a Politically Motivated 'Show Me the Man, I'll Find the Crime' System",
+        "body": "The various legal actions against Trump and his entire inner circle are not legitimate prosecutions but a broad, politically motivated campaign to target a political opponent. This follows a dangerous model of 'show me the man, and I'll find the crime,' where individuals are targeted first and legal justifications are manufactured later. The use of complex strategies like RICO charges against lawyers for challenging an election demonstrates this is a political attack, not a pursuit of justice. (merged from chunks 15, 18, 24, 26)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:06:46"
+      }
+    },
+    {
+      "id": "global-A-6",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-6",
+        "title": "Democrats' Aggressive Legal Tactics Will Provoke Severe Retaliation",
+        "body": "Democrats are disregarding historical norms that prevent the prosecution of top political rivals. This weaponization of the justice system, seen in the Trump cases and the disproportionate prosecution of J6 defendants, is untenable in a hyper-partisan environment. These actions are setting a dangerous precedent that will provoke an equal and opposite reaction\u2014a 'nuclear bomb'\u2014from a future Trump administration, leading to a destructive cycle of political retaliation. (merged from chunks 24, 27, 31)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:11:09"
+      }
+    },
+    {
+      "id": "global-A-7",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-7",
+        "title": "The E. Jean Carroll and NY Civil Fraud Cases Exemplify Politically Targeted Lawfare",
+        "body": "State-level cases further demonstrate the political targeting of Trump. In the E. Jean Carroll case, a specific law was created to resurrect a claim past the statute of limitations. In the New York civil fraud case, prosecutors ignored standard business practices and disclaimers that advise lenders to conduct their own due diligence, manufacturing a fraud claim where no victim lost money. (merged from chunks 29, 33)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:13:41"
+      }
+    },
+    {
+      "id": "global-A-8",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-A-8",
+        "title": "A Clear Double Standard Exists in the Prosecution of Trump vs. Biden Over Documents",
+        "body": "Regardless of legal technicalities, the public perceives a clear story of unequal justice. Joe Biden retained national security documents in multiple locations, allegedly for financial gain, yet was not charged. Meanwhile, Trump's home was raided\u2014with authorities allegedly staging photos to look more incriminating\u2014and he was aggressively prosecuted. This perceived double standard is what matters most. (merged from chunks 30)",
+        "kind": "Argument",
+        "participantId": "A",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:14:05"
+      }
+    },
+    {
+      "id": "global-B-1",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-1",
+        "title": "The Law Only Requires Proving 'Intent' to Conceal a Crime for a Felony Upgrade",
+        "body": "To elevate the charge of falsifying business records from a misdemeanor to a felony, the law does not require the prosecution to prove that a secondary crime was actually completed. The legal burden is to prove that the records were falsified with the *intent* to commit or conceal another crime. The prosecution met this burden by arguing Trump's intent was to conceal one of three potential election-related crimes to influence the election. (merged from chunks 3, 4, 5, 6, 8, 12, 14, 17, 18)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "00:01:13"
+      }
+    },
+    {
+      "id": "global-B-2",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-2",
+        "title": "The 'Intent' Standard is Analogous to Established Principles in Conspiracy Law",
+        "body": "The legal principle of punishing criminal intent is well-established and comparable to conspiracy law. In a conspiracy case, individuals can be prosecuted for preparatory acts and the agreement to commit a crime (e.g., buying rope to rob a bank), even if the crime is never carried out. The criminal intent itself constitutes the offense. (merged from chunks 12, 13)",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:05:34"
+      }
+    },
+    {
+      "id": "global-B-3",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-3",
+        "title": "The Case's Legal Merits Outweigh the Lack of Direct Historical Precedent",
+        "body": "Expecting a comprehensive historical accounting of every similar case in U.S. history is an unreasonable standard for evaluating the legal merits of this prosecution. While an offhand example of this specific felony enhancement may not be available, the key point is that courts have reviewed this legal mechanism and have found it to be permissible. (merged from chunks 1, 9)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:00:09"
+      }
+    },
+    {
+      "id": "global-B-4",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-4",
+        "title": "Lawyers Are Not Immune From Prosecution When They Participate in Crimes",
+        "body": "Having a law license is not a 'get out of jail free card.' A lawyer's actions, including writing letters, become criminal if they knowingly facilitate a crime, such as participating in lies and committing perjury before legislative committees. The fact that one of Trump's lawyers took a plea deal is evidence of the legitimacy of the charges against them. (merged from chunks 21, 22, 25)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:09:47"
+      }
+    },
+    {
+      "id": "global-B-5",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-5",
+        "title": "Challenging an Election is Only Legal Through Proper Channels",
+        "body": "It is not illegal to challenge an election, provided it is done through the proper, established legal channels. Actions outside of these channels, such as calling for groups like the Proud Boys to come to the Capitol, are not legitimate or legally protected forms of election challenges. (merged from chunks 21, 22)",
+        "kind": "Argument",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:09:54"
+      }
+    },
+    {
+      "id": "global-B-6",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-6",
+        "title": "Many Cases Against Trump Are State-Level and Independent of the Federal Government",
+        "body": "It's important to distinguish between federal and state actions. The prosecutions in Georgia (Fani Willis) and New York (Alvin Bragg, Letitia James), as well as the law related to the E. Jean Carroll suit, are state-level issues. Elected district attorneys operate independently and do not take orders from the White House. (merged from chunks 25, 29, 35)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:11:17"
+      }
+    },
+    {
+      "id": "global-B-7",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-7",
+        "title": "Trump, Not Democrats, First Attempted to Weaponize the Justice Department",
+        "body": "The narrative of Democrats setting a new precedent of weaponization is false. In fact, AG Merrick Garland is often criticized by the left for being too timid. It was President Trump who actively tried to use the DOJ to prosecute his political enemies like James Comey, even firing a U.S. Attorney who found insufficient evidence in order to appoint someone who would pursue the case. (merged from chunks 28, 29)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:12:48"
+      }
+    },
+    {
+      "id": "global-B-8",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-8",
+        "title": "The Mar-a-Lago Document Search Was a Justified and Professional Legal Action",
+        "body": "The search of Mar-a-Lago was not a political 'raid.' It was a legal search conducted with a warrant, executed professionally by agents in plain clothes who called ahead. They successfully recovered documents that Trump's team had claimed were not there. Furthermore, Special Counsel Jack Smith demonstrated propriety over political gain by filing the case in a less favorable South Florida venue. (merged from chunks 31, 32)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:15:15"
+      }
+    },
+    {
+      "id": "global-B-9",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-9",
+        "title": "The New York Cases Were 'Unduly Politicized' by Prosecutors",
+        "body": "I agree that the New York cases brought by D.A. Alvin Bragg and A.G. Letitia James were 'unduly politicized.' Both prosecutors campaigned on promises to go after Trump, which they should never have done. This created a bad appearance, particularly in the Bragg case, that they were simply 'trying to find something' to charge him with. (merged from chunk 34)",
+        "kind": "Agreement",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 3",
+        "firstMention": "00:17:05"
+      }
+    },
+    {
+      "id": "global-B-10",
+      "type": "nodeCard",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "id": "global-B-10",
+        "title": "The Law Enabling the E. Jean Carroll Suit Was a General Law for All Survivors",
+        "body": "The New York law that allowed the E. Jean Carroll lawsuit was not created specifically to target Trump. It was a general law intended to help all sexual assault survivors whose claims were beyond the statute of limitations. It was also used against other powerful men; Trump was simply another person affected by it. (merged from chunk 35)",
+        "kind": "Counter",
+        "participantId": "B",
+        "collapsed": false,
+        "selfCollapsed": false,
+        "strengthType": "Type 1",
+        "firstMention": "00:18:18"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "thesisA",
+      "target": "A_summary",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e2",
+      "source": "thesisB",
+      "target": "B_summary",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e3",
+      "source": "thesisA",
+      "target": "global-A-1",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e4",
+      "source": "thesisA",
+      "target": "global-A-2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e5",
+      "source": "thesisA",
+      "target": "global-A-3",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e6",
+      "source": "thesisA",
+      "target": "global-A-5",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e7",
+      "source": "thesisA",
+      "target": "global-A-6",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e8",
+      "source": "thesisA",
+      "target": "global-A-7",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "e9",
+      "source": "thesisA",
+      "target": "global-A-8",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "global-B-1-global-A-2-normalized",
+      "source": "global-B-1",
+      "target": "global-A-2",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "e11",
+      "source": "global-B-1",
+      "target": "global-B-2",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "global-B-3-global-A-1-normalized",
+      "source": "global-B-3",
+      "target": "global-A-1",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "global-B-4-global-A-3-normalized",
+      "source": "global-B-4",
+      "target": "global-A-3",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "global-A-4-global-B-4-normalized",
+      "source": "global-A-4",
+      "target": "global-B-4",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "e15",
+      "source": "global-B-4",
+      "target": "global-B-5",
+      "type": "thick",
+      "data": {
+        "kind": "supports"
+      }
+    },
+    {
+      "id": "global-B-6-global-A-5-normalized",
+      "source": "global-B-6",
+      "target": "global-A-5",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "global-B-7-global-A-5-normalized",
+      "source": "global-B-7",
+      "target": "global-A-5",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "global-B-8-global-A-8-normalized",
+      "source": "global-B-8",
+      "target": "global-A-8",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    },
+    {
+      "id": "global-B-9-global-A-7-normalized",
+      "source": "global-B-9",
+      "target": "global-A-7",
+      "type": "thick",
+      "data": {
+        "kind": "agrees-with"
+      }
+    },
+    {
+      "id": "global-B-10-global-A-7-normalized",
+      "source": "global-B-10",
+      "target": "global-A-7",
+      "type": "thick",
+      "data": {
+        "kind": "attacks"
+      }
+    }
+  ],
+  "participants": [
+    {
+      "id": "A",
+      "name": "Tim Pool"
+    },
+    {
+      "id": "B",
+      "name": "Dave Aronberg"
+    }
+  ]
+}
